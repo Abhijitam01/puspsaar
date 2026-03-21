@@ -1,156 +1,145 @@
 'use client'
 
-import { Award, Car, Heart, Shield, Users, Clock, Sparkles, ArrowRight, Star, Zap, Target, Globe } from 'lucide-react'
+import { Award, Flower2, Heart, Shield, Users, Clock, Sparkles, ArrowRight, Star, Zap, Target, Globe } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import { motion } from 'framer-motion'
 
 const stats = [
-  { value: '500+', label: 'Premium Vehicles', icon: Car, color: 'text-teal-600 dark:text-teal-400', bgColor: 'bg-teal-500' },
-  { value: '10K+', label: 'Happy Customers', icon: Users, color: 'text-violet-600 dark:text-violet-400', bgColor: 'bg-violet-500' },
-  { value: '50+', label: 'Luxury Brands', icon: Award, color: 'text-amber-600 dark:text-amber-400', bgColor: 'bg-amber-500' },
-  { value: '99%', label: 'Satisfaction Rate', icon: Heart, color: 'text-rose-600 dark:text-rose-400', bgColor: 'bg-rose-500' },
+  { value: '250+', label: 'Artisanal Blends', icon: Flower2, color: 'text-[#C6A969]', bgColor: 'bg-[#C6A969]/10' },
+  { value: '15K+', label: 'Global Connoisseurs', icon: Users, color: 'text-[#C6A969]', bgColor: 'bg-[#C6A969]/10' },
+  { value: '12', label: 'Master Perfumers', icon: Award, color: 'text-[#C6A969]', bgColor: 'bg-[#C6A969]/10' },
+  { value: '100%', label: 'Pure Essence', icon: Heart, color: 'text-[#C6A969]', bgColor: 'bg-[#C6A969]/10' },
 ]
 
 const values = [
   {
     icon: Shield,
-    title: 'Trust & Transparency',
-    description: 'Every vehicle in our collection undergoes a rigorous 210-point inspection. We believe in complete transparency - no hidden fees, no surprises.',
-    iconBg: 'bg-cyan-500',
+    title: 'Purity & Provenance',
+    description: 'Every essence is sourced from its origin, ensuring the highest concentration of natural oils and absolute transparency in our distillation process.',
+    iconBg: 'bg-[#C6A969]/20',
   },
   {
     icon: Award,
-    title: 'Excellence in Quality',
-    description: 'We curate only the finest pre-owned luxury vehicles. Each car is meticulously vetted to ensure it meets our exceptional standards.',
-    iconBg: 'bg-amber-500',
+    title: 'Artisanal Excellence',
+    description: 'We reject mass production. Each bottle of Puspsaar is hand-filled and aged to perfection, honoring the slow-craft philosophy of haute parfumerie.',
+    iconBg: 'bg-[#C6A969]/20',
   },
   {
     icon: Heart,
-    title: 'Customer First',
-    description: 'Your satisfaction is our priority. From browsing to delivery, we provide a seamless, white-glove experience tailored to your needs.',
-    iconBg: 'bg-rose-500',
+    title: 'Sustenance of Soul',
+    description: 'A fragrance is more than a scent; it is an emotional anchor. Our creations are designed to evoke memories and define identities.',
+    iconBg: 'bg-[#C6A969]/20',
   },
   {
     icon: Clock,
-    title: 'Timeless Experience',
-    description: 'We don\'t just sell cars; we deliver an experience. Our concierge service ensures every interaction feels premium and personalized.',
-    iconBg: 'bg-violet-500',
+    title: 'Timeless Longevity',
+    description: 'Our proprietary "Infusion-X" technique ensures that our extraits de parfum linger for 24+ hours, creating a silken sillage that never fades.',
+    iconBg: 'bg-[#C6A969]/20',
   },
 ]
 
 const team = [
   {
-    name: 'Arjun Mehta',
-    role: 'Founder & CEO',
+    name: 'Aravind K. Iyer',
+    role: 'Founder & Chief Curator',
     image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
-    bio: 'Automotive enthusiast with 15+ years in luxury car industry',
-    roleColor: 'text-teal-600 dark:text-teal-400',
-    iconBg: 'bg-teal-500',
+    bio: 'A third-generation botanist dedicated to preserving the ancient art of Indian attars through modern olfaction.',
+    roleColor: 'text-[#C6A969]',
+    iconBg: 'bg-[#C6A969]/10',
   },
   {
-    name: 'Priya Sharma',
-    role: 'Head of Operations',
+    name: 'Elena Vance',
+    role: 'Master Perfumer',
     image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80',
-    bio: 'Expert in streamlining customer experiences and logistics',
-    roleColor: 'text-violet-600 dark:text-violet-400',
-    iconBg: 'bg-violet-500',
+    bio: 'Trained in Grasse, Elena brings European finesse to Puspsaar\'s rich, exotic botanical palette.',
+    roleColor: 'text-[#C6A969]',
+    iconBg: 'bg-[#C6A969]/10',
   },
   {
-    name: 'Vikram Singh',
-    role: 'Chief Curator',
+    name: 'Samuel Thorne',
+    role: 'Head of Distillation',
     image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&q=80',
-    bio: 'Passionate about finding the perfect vehicle for every client',
-    roleColor: 'text-amber-600 dark:text-amber-400',
-    iconBg: 'bg-amber-500',
+    bio: 'The architect behind our signature extraits, mastering the delicate balance of heat and pressure.',
+    roleColor: 'text-[#C6A969]',
+    iconBg: 'bg-[#C6A969]/10',
   },
 ]
 
 const milestones = [
-  { year: '2019', title: 'Founded', description: 'Started with a vision to transform luxury car buying' },
-  { year: '2020', title: '1000 Sales', description: 'Reached our first thousand happy customers' },
-  { year: '2022', title: 'Expansion', description: 'Opened showrooms in 5 major cities' },
-  { year: '2024', title: 'Industry Leader', description: 'Recognized as India\'s top luxury pre-owned platform' },
+  { year: '2019', title: 'The First Bloom', description: 'Maison Puspsaar was founded in the foothills of Kannauj, reviving extinct floral extractions.' },
+  { year: '2020', title: 'Global Discovery', description: 'Our signature "Oud Noir" gains international acclaim in London and Paris.' },
+  { year: '2022', title: 'Sustainability Pledge', description: 'Achieved 100% zero-plastic packaging and ethical botanical sourcing across 4 continents.' },
+  { year: '2024', title: 'The Modern Archive', description: 'Launched the Puspsaar Experience Centers in Tokyo, NYC, and Dubai.' },
 ]
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-background overflow-hidden">
+    <div className="min-h-screen bg-[#0A0A0A] text-white overflow-hidden">
       {/* Hero Section */}
-      <section className="relative py-24 lg:py-32 overflow-hidden">
-        {/* Background Effects */}
+      <section className="relative py-32 lg:py-48 overflow-hidden">
+        {/* Cinematic Background */}
         <div className="absolute inset-0">
           <img
-            src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=2000&q=80"
-            alt="Luxury car"
-            className="w-full h-full object-cover"
+            src="https://images.unsplash.com/photo-1592945403244-b3fbafd7ef53?auto=format&fit=crop&w=2500&q=80"
+            alt="Perfume Distillation"
+            className="w-full h-full object-cover opacity-30"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background" />
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-transparent to-background" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0A0A0A] via-transparent to-[#0A0A0A]" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A] via-transparent to-[#0A0A0A]" />
         </div>
         
-        {/* Subtle Background Accents */}
-        <div className="absolute top-20 left-10 w-96 h-96 bg-teal-500/10 dark:bg-teal-500/20 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 right-10 w-80 h-80 bg-violet-500/10 dark:bg-violet-500/15 rounded-full blur-3xl" />
-
         <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-4xl mx-auto">
-            <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-teal-500/10 dark:bg-teal-500/20 border border-teal-500/30 mb-8 backdrop-blur-sm">
-              <Sparkles className="w-4 h-4 text-teal-600 dark:text-teal-400" />
-              <span className="text-sm font-medium text-teal-700 dark:text-teal-300">Our Story</span>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            className="text-center max-w-4xl mx-auto"
+          >
+            <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#C6A969]/10 border border-[#C6A969]/30 mb-8 backdrop-blur-sm">
+              <Sparkles className="w-4 h-4 text-[#C6A969]" />
+              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#C6A969]">Our Heritage</span>
             </div>
             
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-8 leading-tight text-foreground">
-              Redefining{' '}
-              <span className="text-teal-600 dark:text-teal-400">Luxury</span>
-              <br />
-              Pre-Owned{' '}
-              <span className="text-amber-600 dark:text-amber-400">Vehicles</span>
+            <h1 className="text-6xl sm:text-7xl lg:text-9xl font-light mb-8 leading-tight tracking-tighter" style={{ fontFamily: 'Georgia, serif' }}>
+              The Archive of <br />
+              <span className="italic text-[#C6A969]">Rare Essences</span>
             </h1>
             
-            <p className="text-lg lg:text-xl text-foreground/80 max-w-3xl mx-auto leading-relaxed">
-              Velaire House is India's premier destination for curated pre-owned luxury vehicles. 
-              We bring together exceptional automobiles and discerning buyers through an unmatched 
-              experience of trust, quality, and sophistication.
+            <p className="text-lg lg:text-xl text-white/60 max-w-2xl mx-auto leading-relaxed font-serif">
+              Maison Puspsaar is curated for those who seek more than a scent. We capture movement, memory, and the ephemeral beauty of the natural world.
             </p>
             
-            <div className="flex flex-wrap justify-center gap-4 mt-10">
+            <div className="flex flex-wrap justify-center gap-6 mt-12">
               <Link href="/product">
-                <Button size="lg" className="bg-teal-600 hover:bg-teal-700 text-white gap-2 shadow-lg transition-all duration-300">
-                  Explore Collection
+                <Button size="lg" className="bg-[#C6A969] hover:bg-[#B59858] text-black gap-3 rounded-full px-10 py-7 text-[10px] font-bold uppercase tracking-widest transition-all">
+                  Browse the archive
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>
-              <Link href="/contact">
-                <Button size="lg" variant="outline" className="border-2 border-foreground/30 hover:border-foreground/50 hover:bg-foreground/5 gap-2">
-                  Get in Touch
-                </Button>
-              </Link>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Stats Section */}
-      <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-muted/50 dark:bg-muted" />
-        
+      <section className="relative py-24 bg-zinc-900/50 border-y border-white/5">
         <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat) => {
               const IconComponent = stat.icon
               return (
                 <div 
                   key={stat.label} 
-                  className="group relative p-6 lg:p-8 rounded-2xl bg-card border border-border hover:border-border/80 transition-all duration-300 hover:shadow-lg"
+                  className="group text-center"
                 >
-                  <div className={`inline-flex items-center justify-center w-14 h-14 rounded-xl ${stat.bgColor} mb-5 shadow-md`}>
-                    <IconComponent className="w-7 h-7 text-white" />
+                  <div className={`inline-flex items-center justify-center w-16 h-16 rounded-3xl ${stat.bgColor} mb-6 transition-transform group-hover:scale-110 duration-500`}>
+                    <IconComponent className={`w-8 h-8 ${stat.color}`} />
                   </div>
-                  
-                  <p className={`text-4xl lg:text-5xl font-bold ${stat.color} mb-2`}>
+                  <p className="text-5xl font-light text-white mb-2 tabular-nums">
                     {stat.value}
                   </p>
-                  <p className="text-sm lg:text-base text-foreground/70 font-medium">{stat.label}</p>
+                  <p className="text-[10px] text-white/40 font-bold uppercase tracking-widest">{stat.label}</p>
                 </div>
               )
             })}
@@ -158,93 +147,96 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Mission Section */}
-      <section className="py-20 lg:py-28">
+      {/* Heritage Section */}
+      <section className="py-32 lg:py-48">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            <div>
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-violet-500/10 dark:bg-violet-500/20 border border-violet-500/30 mb-6">
-                <Target className="w-4 h-4 text-violet-600 dark:text-violet-400" />
-                <span className="text-sm font-medium text-violet-700 dark:text-violet-300">Our Mission</span>
+          <div className="grid lg:grid-cols-2 gap-24 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1 }}
+            >
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#C6A969]/10 border border-[#C6A969]/20 mb-8">
+                <Target className="w-4 h-4 text-[#C6A969]" />
+                <span className="text-[10px] font-bold uppercase tracking-widest text-[#C6A969]">The philosophy</span>
               </div>
               
-              <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-6">
-                Transforming How India Buys{' '}
-                <span className="text-violet-600 dark:text-violet-400">Luxury Cars</span>
+              <h2 className="text-4xl lg:text-6xl font-light text-white mb-8 leading-tight" style={{ fontFamily: 'Georgia, serif' }}>
+                Sculpting Air into <br />
+                <span className="italic">Profound Memories</span>
               </h2>
               
-              <p className="text-lg text-foreground/80 mb-8 leading-relaxed">
-                We believe that buying a pre-owned luxury vehicle should be as exciting and trustworthy 
-                as buying a new one. Our mission is to create a seamless, transparent marketplace where 
-                quality meets affordability.
+              <p className="text-lg text-white/60 mb-10 leading-relaxed font-serif">
+                We believe olfaction is the highest form of art. Unlike sight or sound, scent bypasses logic and strikes the heart directly. At Puspsaar, we don't just "mix" perfumes; we sculpt them using botanical extractions and rare molecular structures.
               </p>
               
-              <div className="space-y-4">
+              <div className="space-y-6">
                 {[
-                  { icon: Zap, text: '210+ point quality inspection on every vehicle' },
-                  { icon: Globe, text: 'Nationwide delivery with doorstep service' },
-                  { icon: Star, text: 'Industry-leading warranty programs' },
+                  { icon: Zap, text: 'Proprietary Cold-Press Distillation' },
+                  { icon: Globe, text: 'Globally Sourced, Ethically Harvested' },
+                  { icon: Star, text: 'Limited Edition Serialized Batches' },
                 ].map((item, index) => (
-                  <div key={index} className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-violet-500/10 dark:bg-violet-500/20 flex items-center justify-center">
-                      <item.icon className="w-5 h-5 text-violet-600 dark:text-violet-400" />
+                  <div key={index} className="flex items-center gap-5">
+                    <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
+                      <item.icon className="w-5 h-5 text-[#C6A969]" />
                     </div>
-                    <span className="text-foreground">{item.text}</span>
+                    <span className="text-sm text-white/80 font-medium tracking-wide">{item.text}</span>
                   </div>
                 ))}
               </div>
-            </div>
+            </motion.div>
             
             <div className="relative">
-              <div className="relative rounded-2xl overflow-hidden border border-border">
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1.5 }}
+                className="relative rounded-[3rem] overflow-hidden border border-white/10 aspect-[4/5]"
+              >
                 <img
-                  src="https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=800&q=80"
-                  alt="Luxury car showroom"
-                  className="w-full h-[400px] lg:h-[500px] object-cover"
+                  src="https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=1200&q=100"
+                  alt="Artisanal Perfumery"
+                  className="w-full h-full object-cover grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-1000"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-                <div className="absolute bottom-6 left-6 right-6">
-                  <p className="text-white/90 text-sm mb-2">Velaire House Showroom</p>
-                  <p className="text-white text-xl font-semibold">Mumbai, India</p>
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-transparent" />
+                <div className="absolute bottom-10 left-10">
+                  <p className="text-[#C6A969] text-[10px] font-bold uppercase tracking-widest mb-1">Maison Workshop</p>
+                  <p className="text-2xl font-light italic">Batch No. 892 Extraction</p>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Our Values */}
-      <section className="py-20 lg:py-28 relative overflow-hidden">
-        <div className="absolute inset-0 bg-muted/50 dark:bg-muted" />
-        
-        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 dark:bg-cyan-500/20 border border-cyan-500/30 mb-6">
-              <Heart className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
-              <span className="text-sm font-medium text-cyan-700 dark:text-cyan-300">Our Values</span>
+      <section className="py-32 bg-zinc-950">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-24">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#C6A969]/10 border border-[#C6A969]/20 mb-8">
+              <Heart className="w-4 h-4 text-[#C6A969]" />
+              <span className="text-[10px] font-bold uppercase tracking-widest text-[#C6A969]">The Core</span>
             </div>
-            <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4">
-              The Principles That{' '}
-              <span className="text-cyan-600 dark:text-cyan-400">Guide Us</span>
+            <h2 className="text-4xl sm:text-5xl font-light text-white mb-6" style={{ fontFamily: 'Georgia, serif' }}>
+              Built on <span className="italic text-[#C6A969]">Legacy & Essence</span>
             </h2>
-            <p className="text-lg text-foreground/80 max-w-2xl mx-auto">
-              These core values shape every interaction and decision at Velaire House
-            </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
             {values.map((value) => {
               const IconComponent = value.icon
               return (
                 <div
                   key={value.title}
-                  className="group relative p-6 lg:p-8 rounded-2xl bg-card border border-border hover:border-border/80 transition-all duration-300 hover:shadow-lg"
+                  className="group relative"
                 >
-                  <div className={`w-14 h-14 rounded-xl ${value.iconBg} flex items-center justify-center mb-6 shadow-md`}>
-                    <IconComponent className="w-7 h-7 text-white" />
+                  <div className={`w-16 h-16 rounded-3xl ${value.iconBg} flex items-center justify-center mb-8 border border-[#C6A969]/30 transition-all duration-500 group-hover:bg-[#C6A969] group-hover:rotate-6`}>
+                    <IconComponent className="w-7 h-7 text-[#C6A969] group-hover:text-black transition-colors" />
                   </div>
-                  <h3 className="font-bold text-lg text-foreground mb-3">{value.title}</h3>
-                  <p className="text-sm text-foreground/70 leading-relaxed">{value.description}</p>
+                  <h3 className="font-bold text-[11px] uppercase tracking-widest text-[#C6A969] mb-4">{value.title}</h3>
+                  <p className="text-sm text-white/50 leading-relaxed font-serif">{value.description}</p>
                 </div>
               )
             })}
@@ -252,124 +244,58 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Timeline/Milestones */}
-      <section className="py-20 lg:py-28">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/30 mb-6">
-              <Clock className="w-4 h-4 text-amber-600 dark:text-amber-400" />
-              <span className="text-sm font-medium text-amber-700 dark:text-amber-300">Our Journey</span>
-            </div>
-            <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4">
-              Milestones That{' '}
-              <span className="text-amber-600 dark:text-amber-400">Define Us</span>
-            </h2>
+      {/* Timeline */}
+      <section className="py-32 lg:py-48">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-24">
+            <h2 className="text-4xl font-light text-white mb-4" style={{ fontFamily: 'Georgia, serif' }}>The Puspsaar Journey</h2>
+            <div className="h-px w-24 bg-[#C6A969] mx-auto" />
           </div>
 
-          <div className="relative">
-            <div className="absolute left-1/2 top-0 bottom-0 w-px bg-border hidden lg:block" />
-            
-            <div className="space-y-8 lg:space-y-0">
-              {milestones.map((milestone, index) => (
-                <div key={milestone.year} className={`relative lg:flex items-center gap-8 ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'}`}>
-                  <div className={`lg:w-1/2 ${index % 2 === 0 ? 'lg:text-right lg:pr-12' : 'lg:text-left lg:pl-12'}`}>
-                    <div className="inline-block p-6 rounded-2xl bg-card border border-border hover:border-amber-500/30 transition-all duration-300 hover:shadow-lg">
-                      <span className="text-3xl font-bold text-amber-600 dark:text-amber-400">
-                        {milestone.year}
-                      </span>
-                      <h3 className="text-xl font-semibold text-foreground mt-2 mb-1">{milestone.title}</h3>
-                      <p className="text-foreground/70">{milestone.description}</p>
-                    </div>
-                  </div>
-                  
-                  <div className="hidden lg:flex absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-amber-500 shadow-md" />
-                  
-                  <div className="lg:w-1/2" />
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Team Section */}
-      <section className="py-20 lg:py-28 relative overflow-hidden">
-        <div className="absolute inset-0 bg-muted/50 dark:bg-muted" />
-        
-        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-rose-500/10 dark:bg-rose-500/20 border border-rose-500/30 mb-6">
-              <Users className="w-4 h-4 text-rose-600 dark:text-rose-400" />
-              <span className="text-sm font-medium text-rose-700 dark:text-rose-300">Leadership</span>
-            </div>
-            <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4">
-              Meet Our{' '}
-              <span className="text-rose-600 dark:text-rose-400">Team</span>
-            </h2>
-            <p className="text-lg text-foreground/80 max-w-2xl mx-auto">
-              Passionate individuals dedicated to delivering excellence
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {team.map((member) => (
-              <div
-                key={member.name}
-                className="group relative p-6 rounded-2xl bg-card border border-border hover:border-border/80 transition-all duration-300 hover:shadow-lg"
+          <div className="space-y-24">
+            {milestones.map((milestone, index) => (
+              <motion.div 
+                key={milestone.year}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="flex flex-col md:flex-row gap-10 items-start"
               >
-                <div className="relative w-32 h-32 mx-auto mb-6 rounded-xl overflow-hidden">
-                  <img
-                    src={member.image}
-                    alt={member.name}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
+                <div className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-[#C6A969] to-transparent opacity-40 shrink-0">
+                  {milestone.year}
                 </div>
-                
-                <div className="text-center">
-                  <h3 className="font-bold text-lg text-foreground mb-1">{member.name}</h3>
-                  <p className={`text-sm font-medium ${member.roleColor} mb-3`}>
-                    {member.role}
-                  </p>
-                  <p className="text-sm text-foreground/70">{member.bio}</p>
+                <div className="pt-2 border-l border-white/10 pl-10">
+                  <h3 className="text-xl font-bold uppercase tracking-widest text-white mb-3">{milestone.title}</h3>
+                  <p className="text-white/50 font-serif leading-relaxed">{milestone.description}</p>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 lg:py-28">
+      <section className="py-32 lg:py-48">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="relative rounded-2xl overflow-hidden">
-            {/* Background */}
+          <div className="relative rounded-[4rem] overflow-hidden group">
             <div className="absolute inset-0">
               <img
-                src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?auto=format&fit=crop&w=2000&q=80"
-                alt="Luxury car"
-                className="w-full h-full object-cover"
+                src="https://images.unsplash.com/photo-1594125355975-d01138bb5244?auto=format&fit=crop&w=2000&q=80"
+                alt="Luxury Lifestyle"
+                className="w-full h-full object-cover grayscale opacity-40 group-hover:scale-110 transition-transform duration-[3s]"
               />
-              <div className="absolute inset-0 bg-black/70" />
+              <div className="absolute inset-0 bg-black/80" />
             </div>
             
-            <div className="relative z-10 py-20 lg:py-28 px-8 lg:px-16 text-center">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">
-                Ready to Find Your{' '}
-                <span className="text-teal-400">Dream Car</span>?
+            <div className="relative z-10 py-32 px-8 text-center max-w-3xl mx-auto">
+              <h2 className="text-4xl sm:text-6xl font-light text-white mb-10 leading-tight" style={{ fontFamily: 'Georgia, serif' }}>
+                Your Signature <br /> 
+                <span className="italic text-[#C6A969]">Awaits Discovery</span>
               </h2>
-              <p className="text-white/80 text-lg max-w-xl mx-auto mb-10">
-                Explore our curated collection of premium pre-owned vehicles and experience the Velaire difference
-              </p>
-              <div className="flex flex-wrap justify-center gap-4">
+              <div className="flex flex-wrap justify-center gap-6">
                 <Link href="/product">
-                  <Button size="lg" className="bg-teal-500 hover:bg-teal-600 text-white gap-2 shadow-lg transition-all duration-300 px-8">
-                    Browse Collection
-                    <ArrowRight className="w-4 h-4" />
-                  </Button>
-                </Link>
-                <Link href="/contact">
-                  <Button size="lg" variant="outline" className="border-2 border-white/40 text-white hover:bg-white/10 hover:border-white/60 gap-2 px-8">
-                    Schedule a Visit
+                  <Button size="lg" className="bg-white text-black hover:bg-[#C6A969] transition-colors rounded-full px-12 py-8 text-[10px] font-bold uppercase tracking-widest">
+                    Enter the archive
                   </Button>
                 </Link>
               </div>

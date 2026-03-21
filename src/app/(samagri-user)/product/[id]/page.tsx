@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react'
-import { Star, Heart, Share2, ShoppingBag, ChevronLeft, ChevronRight, Check, Minus, Plus } from 'lucide-react'
+import { Star, Heart, Share2, ShoppingBag, ChevronLeft, ChevronRight, Check, Minus, Plus, Wind, Flower2, Zap } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useCartStore } from '@/store/cartStore'
 import { perfumeProducts } from '@/data/perfume-data'
@@ -10,6 +10,7 @@ import { notFound } from 'next/navigation'
 
 import { createClient } from '@/lib/supabase/client'
 import { IPerfumeProduct } from '@/model/product'
+import ProductCard from '@/components/product/productcard'
 
 export default function ProductDetailPage(props: { params: Promise<{ id: string }> }) {
   const params = React.use(props.params)
@@ -315,15 +316,15 @@ export default function ProductDetailPage(props: { params: Promise<{ id: string 
 
             {/* Top Notes */}
             <div className="relative z-10 group">
-              <div className="h-full glass-panel rounded-[2rem] p-8 text-center transition-all duration-500 hover:border-[#C6A969]/40 hover:shadow-2xl">
-                <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-emerald-400/20 to-teal-500/20 flex items-center justify-center text-2xl mb-6 border border-emerald-500/20 group-hover:scale-110 transition-transform duration-500">
-                  🍃
+              <div className="h-full bg-zinc-900/40 backdrop-blur-3xl rounded-[2.5rem] p-10 text-center border border-white/5 transition-all duration-700 hover:border-[#C6A969]/40 hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+                <div className="w-20 h-20 mx-auto rounded-3xl bg-emerald-500/10 flex items-center justify-center mb-8 border border-emerald-500/20 group-hover:scale-110 group-hover:rotate-3 transition-all duration-700">
+                  <Wind className="w-8 h-8 text-emerald-400" />
                 </div>
-                <h3 className="text-sm font-bold uppercase tracking-[0.2em] mb-2">Top Notes</h3>
-                <p className="text-[10px] text-muted-foreground uppercase tracking-widest mb-6 whitespace-nowrap">The First Impression</p>
+                <h3 className="text-xs font-bold uppercase tracking-[0.3em] text-[#C6A969] mb-3">Top Notes</h3>
+                <p className="text-[10px] text-white/40 uppercase tracking-widest mb-8 whitespace-nowrap">The First Impression</p>
                 <div className="flex flex-wrap justify-center gap-2">
                   {product.fragrance_notes?.top?.map((note: string) => (
-                    <span key={note} className="px-3 py-1.5 rounded-full bg-muted/50 text-foreground text-[11px] font-medium border border-border/50">
+                    <span key={note} className="px-4 py-2 rounded-full bg-white/5 text-white/80 text-[11px] font-medium border border-white/10 hover:border-[#C6A969]/40 transition-colors">
                       {note}
                     </span>
                   ))}
@@ -333,15 +334,15 @@ export default function ProductDetailPage(props: { params: Promise<{ id: string 
 
             {/* Heart Notes */}
             <div className="relative z-10 group">
-              <div className="h-full glass-panel rounded-[2rem] p-8 text-center border-[#C6A969]/20 transition-all duration-500 hover:border-[#C6A969]/50 hover:shadow-2xl">
-                <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-rose-400/20 to-pink-500/20 flex items-center justify-center text-2xl mb-6 border border-rose-500/20 group-hover:scale-110 transition-transform duration-500">
-                  🌹
+              <div className="h-full bg-zinc-900/40 backdrop-blur-3xl rounded-[2.5rem] p-10 text-center border border-[#C6A969]/20 transition-all duration-700 hover:border-[#C6A969]/60 hover:shadow-[0_20px_50px_rgba(198,169,105,0.15)]">
+                <div className="w-20 h-20 mx-auto rounded-3xl bg-rose-500/10 flex items-center justify-center mb-8 border border-rose-500/20 group-hover:scale-110 group-hover:-rotate-3 transition-all duration-700">
+                  <Flower2 className="w-8 h-8 text-rose-400" />
                 </div>
-                <h3 className="text-sm font-bold uppercase tracking-[0.2em] mb-2">Heart Notes</h3>
-                <p className="text-[10px] text-muted-foreground uppercase tracking-widest mb-6 whitespace-nowrap">The Soul of Essence</p>
+                <h3 className="text-xs font-bold uppercase tracking-[0.3em] text-[#C6A969] mb-3">Heart Notes</h3>
+                <p className="text-[10px] text-white/40 uppercase tracking-widest mb-8 whitespace-nowrap">The Soul of Essence</p>
                 <div className="flex flex-wrap justify-center gap-2">
                   {product.fragrance_notes?.middle?.map((note: string) => (
-                    <span key={note} className="px-3 py-1.5 rounded-full bg-muted/50 text-foreground text-[11px] font-medium border border-border/50">
+                    <span key={note} className="px-4 py-2 rounded-full bg-white/5 text-white/80 text-[11px] font-medium border border-white/10 hover:border-[#C6A969]/40 transition-colors">
                       {note}
                     </span>
                   ))}
@@ -351,15 +352,15 @@ export default function ProductDetailPage(props: { params: Promise<{ id: string 
 
             {/* Base Notes */}
             <div className="relative z-10 group">
-              <div className="h-full glass-panel rounded-[2rem] p-8 text-center transition-all duration-500 hover:border-[#C6A969]/40 hover:shadow-2xl">
-                <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-amber-400/20 to-orange-500/20 flex items-center justify-center text-2xl mb-6 border border-amber-500/20 group-hover:scale-110 transition-transform duration-500">
-                  🪵
+              <div className="h-full bg-zinc-900/40 backdrop-blur-3xl rounded-[2.5rem] p-10 text-center border border-white/5 transition-all duration-700 hover:border-[#C6A969]/40 hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+                <div className="w-20 h-20 mx-auto rounded-3xl bg-amber-500/10 flex items-center justify-center mb-8 border border-amber-500/20 group-hover:scale-110 group-hover:rotate-3 transition-all duration-700">
+                  <Zap className="w-8 h-8 text-amber-400" />
                 </div>
-                <h3 className="text-sm font-bold uppercase tracking-[0.2em] mb-2">Base Notes</h3>
-                <p className="text-[10px] text-muted-foreground uppercase tracking-widest mb-6 whitespace-nowrap">The Lasting Memory</p>
+                <h3 className="text-xs font-bold uppercase tracking-[0.3em] text-[#C6A969] mb-3">Base Notes</h3>
+                <p className="text-[10px] text-white/40 uppercase tracking-widest mb-8 whitespace-nowrap">The Lasting Memory</p>
                 <div className="flex flex-wrap justify-center gap-2">
                   {product.fragrance_notes?.base?.map((note: string) => (
-                    <span key={note} className="px-3 py-1.5 rounded-full bg-muted/50 text-foreground text-[11px] font-medium border border-border/50">
+                    <span key={note} className="px-4 py-2 rounded-full bg-white/5 text-white/80 text-[11px] font-medium border border-white/10 hover:border-[#C6A969]/40 transition-colors">
                       {note}
                     </span>
                   ))}
@@ -385,21 +386,7 @@ export default function ProductDetailPage(props: { params: Promise<{ id: string 
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               {relatedProducts.map(rp => (
-                <Link key={rp.id} href={`/product/${rp.id}`} className="group block">
-                  <div className="relative aspect-[3/4] rounded-[1.5rem] overflow-hidden bg-muted mb-4">
-                    <img
-                      src={rp.image}
-                      alt={rp.name}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
-                    />
-                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-500" />
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-[10px] text-[#C6A969] font-bold uppercase tracking-widest">{rp.brand}</p>
-                    <h3 className="text-sm font-bold uppercase tracking-widest text-foreground group-hover:text-[#C6A969] transition-colors">{rp.name}</h3>
-                    <p className="text-sm font-black text-foreground pt-1">₹{rp.price.toLocaleString()}</p>
-                  </div>
-                </Link>
+                <ProductCard key={rp.id} product={rp as any} />
               ))}
             </div>
           </div>

@@ -6,19 +6,23 @@ import Link from 'next/link';
 export default function HeroBanner() {
   return (
     <section className="relative w-full h-[95vh] flex items-center justify-center overflow-hidden bg-[#0A0A0A]">
-      {/* Cinematic Background */}
+      {/* Cinematic Background Video */}
       <div className="absolute inset-0">
-        <motion.img
-          initial={{ scale: 1.1, opacity: 0 }}
-          animate={{ scale: 1, opacity: 0.6 }}
-          transition={{ duration: 2.5, ease: "easeOut" }}
-          src="https://images.unsplash.com/photo-1590156206657-acd3d6e3e231?auto=format&fit=crop&w=2500&q=100"
-          alt="Luxury Perfume Cinematic Viewer"
-          className="w-full h-full object-cover object-top"
-        />
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover opacity-40 scale-105"
+        >
+          <source 
+            src="https://player.vimeo.com/external/494252666.hd.mp4?s=2f5c78673899661414467c699926d83377755866&profile_id=175" 
+            type="video/mp4" 
+          />
+        </video>
         {/* Subtle vignette and gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-[#0A0A0A]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.5)_100%)]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0A0A0A] via-transparent to-[#0A0A0A]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.6)_100%)]" />
       </div>
 
       {/* Hero Content - True Minimalism */}

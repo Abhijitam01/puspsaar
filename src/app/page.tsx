@@ -7,6 +7,7 @@ import FeaturedProducts from "@/components/homepage/featured-products";
 import BrandStory from "@/components/homepage/brand-story";
 import { Footer } from "@/components/layout/footer";
 import TopNavbar from "@/components/user/navigation/top-header";
+import DiscoverySet from "@/components/homepage/discovery-set";
 
 export default function Home() {
   return (
@@ -18,6 +19,7 @@ export default function Home() {
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 mt-24 mb-24 space-y-32">
           <CollectionGrid />
           <FeaturedProducts />
+          <DiscoverySet />
           <BrandStory />
           <TrustSection />
         </div>

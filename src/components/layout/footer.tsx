@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Instagram, Twitter, Facebook } from 'lucide-react'
+import { Instagram, Twitter, Facebook, ArrowRight } from 'lucide-react'
 
 export function Footer() {
   return (
@@ -53,21 +53,36 @@ export function Footer() {
             <p className="text-[#F5F5F5]/50 text-xs tracking-wide mb-6 font-light">
               Subscribe to receive exclusive access to private sales and limited editions.
             </p>
-            <form className="relative group" onSubmit={(e) => e.preventDefault()}>
+            <form className="relative flex items-center group" onSubmit={(e) => e.preventDefault()}>
               <input
                 type="email"
                 placeholder="Email Address"
-                className="w-full bg-transparent border-b border-white/20 pb-3 text-xs text-white placeholder:text-white/30 focus:outline-none focus:border-[#C6A969] transition-colors"
+                className="w-full bg-transparent border-b border-white/20 pb-4 text-[10px] font-bold uppercase tracking-widest text-white placeholder:text-white/20 focus:outline-none focus:border-[#C6A969] transition-all"
                 required
               />
               <button
                 type="submit"
-                className="absolute right-0 bottom-3 text-[10px] font-semibold tracking-[0.1em] text-white/50 uppercase group-hover:text-[#C6A969] transition-colors"
+                className="absolute right-0 bottom-3 w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white/40 group-hover:border-[#C6A969] group-hover:text-[#C6A969] transition-all duration-500 hover:bg-[#C6A969] hover:text-black"
               >
-                Join
+                <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </form>
           </div>
+        </div>
+
+        {/* Trust Badges */}
+        <div className="flex flex-wrap justify-between items-center gap-8 py-12 border-y border-white/5 mb-12">
+          {[
+            { label: 'Artisanal Distillation', icon: '⚗️' },
+            { label: 'Ethically Sourced', icon: '🌍' },
+            { label: 'Zero Plastic Packaging', icon: '📦' },
+            { label: 'Hand-crafted in India', icon: '🇮🇳' },
+          ].map((badge) => (
+            <div key={badge.label} className="flex items-center gap-3 grayscale opacity-30 hover:grayscale-0 hover:opacity-100 transition-all duration-700">
+              <span className="text-lg">{badge.icon}</span>
+              <span className="text-[9px] font-bold uppercase tracking-[0.2em]">{badge.label}</span>
+            </div>
+          ))}
         </div>
 
         {/* Bottom */}
