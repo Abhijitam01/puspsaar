@@ -4,10 +4,10 @@ import * as React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import {
-  LayoutDashboard, Users, Settings, HelpCircle, User,Bell,LogOut,  UserPlus, ChevronDown,
+  LayoutDashboard, ShoppingCart,Users,Truck, Settings, HelpCircle, User,Bell,LogOut,  UserPlus, ChevronDown,
   Warehouse, BarChart3, ShoppingBag, Building2,
   Calculator,  Zap, Gift,
-  Command, Car, Gauge
+  Command
 } from "lucide-react"
 
 import {
@@ -73,94 +73,31 @@ function MenuBadge({ badge, urgent }: { badge?: string | number; urgent?: boolea
   )
 }
 
-// Main navigation menu data
 const navigationMenu: MenuItem[] = [
   {
     label: "Dashboard",
     href: "/admin",
     icon: LayoutDashboard,
     roles: ["SUPER_ADMIN", "ADMIN"],
-    description: "Used-car KPIs, live alerts, and actions"
+    description: "Overview of sales, inventory, and business metrics"
   },
   {
-    label: "Analytics",
-    href: "/admin/analytics",
-    icon: BarChart3,
-    roles: ["SUPER_ADMIN", "ADMIN"]
-  },
-  {
-    label: "User Management",
-    href: "/admin/user",
-    icon: Users,
-    roles: ["SUPER_ADMIN", "ADMIN"],
-    permissions: ["users:read"]
-  },
-  {
-    label: "Vehicle Listings",
-    href: "/admin/product",
-    icon: Car,
-    description: "Certified vehicles, pricing, and readiness",
-  },
-  {
-    label: "Inventory Lifecycle",
-    href: "/admin/inventory",
-    icon: Warehouse,
-    roles: ["SUPER_ADMIN", "ADMIN"],
-  },
-  {
-    label: "Test Drives",
-    href: "/admin/delivery",
-    icon: Gauge,
-    roles: ["SUPER_ADMIN", "ADMIN"]
-  },
-  {
-    label: "Lead Pipeline",
+    label: "Orders",
     href: "/admin/order",
     icon: ShoppingBag,
     roles: ["SUPER_ADMIN", "ADMIN"],
+    badge: "live"
   },
   {
-    label: "Pricing & Finance",
-    href: "/admin/finance",
-    icon: Calculator,
-    roles: ["SUPER_ADMIN", "ADMIN"]
+    label: "Products",
+    href: "/admin/product",
+    icon: ShoppingCart,
   },
   {
-    label: "Vendor Network",
-    href: "/admin/vendor",
-    icon: Building2,
-    roles: ["SUPER_ADMIN", "ADMIN"]
-  },
-  {
-    label: "Employees",
-    href: "/admin/employee",
-    icon: UserPlus,
+    label: "Inventory",
+    href: "/admin/inventory",
+    icon: Warehouse,
     roles: ["SUPER_ADMIN", "ADMIN"],
-    permissions: ["employees:read"],
-    
-  },
-  {
-    label: "Marketing",
-    href: "/admin/marketing",
-    icon: Zap,
-    roles: ["SUPER_ADMIN", "ADMIN"],
-    children: [
-      { label: "Coupons", href: "/admin/marketing/coupon", icon: Gift }
-    ]
-  },
- 
-  {
-    label: "System",
-    href: "/admin/system",
-    icon: Settings,
-    roles: ["SUPER_ADMIN", "ADMIN"],
-    permissions: ["settings:read"]
-  },
-  {
-    label: "Support",
-    href: "/admin/support",
-    icon: HelpCircle,
-    roles: ["SUPER_ADMIN", "ADMIN"]
   }
 ]
 
@@ -307,12 +244,12 @@ export function AdminSidebarModern() {
             <SidebarMenuButton size="lg" asChild className="py-y ">
              
               <Link href="/admin">
-                <div className="flex aspect-square size-8 items-center justify-center gap-4 bg-black rounded-lg ">
-                  <Command className="size-4 text-white " />
+                <div className="flex aspect-square size-8 items-center justify-center gap-4 bg-[#C6A969] rounded-lg ">
+                  <span className="text-black font-bold text-lg" style={{ fontFamily: 'Georgia, serif' }}>P</span>
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight ">
-                  <span className="truncate font-semibold">Velaire House</span>
-                  <span className="truncate text-xs">Admin Console</span>
+                  <span className="truncate font-semibold" style={{ fontFamily: 'Georgia, serif' }}>Puspsaar</span>
+                  <span className="truncate text-xs text-muted-foreground">Admin Portal</span>
                 </div>
               </Link>
               

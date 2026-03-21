@@ -1,63 +1,98 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { orders } from '@/data/order-data';
-
-/**
- * GET /api/orders
- * Returns all orders with optional filtering
- */
-export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const status = searchParams.get('status');
-  const userId = searchParams.get('userId');
-
-  let filteredOrders = [...orders];
-
-  // Filter by status
-  if (status) {
-    filteredOrders = filteredOrders.filter(order => order.status === status);
-  }
-
-  // Filter by user (placeholder - orders don't have userId in current data)
-  if (userId) {
-    // TODO: Filter by user when user data is added to orders
-  }
-
-  return NextResponse.json({
-    orders: filteredOrders,
-    total: filteredOrders.length,
-  });
-}
+import { createClient } from '@/lib/supabase/server';
 
 /**
  * POST /api/orders
- * Create a new order
+ * Creates order + order_items in Supabase. Works with or without auth.
  */
 export async function POST(request: NextRequest) {
   try {
+    const supabase = await createClient();
     const body = await request.json();
-    
-    // Validate required fields
-    if (!body.items || !body.deliveryAddress) {
-      return NextResponse.json(
-        { message: 'Items and delivery address are required' },
-        { status: 400 }
-      );
+
+    const { items, total_amount, shipping_name, shipping_phone, shipping_address } = body;
+
+    if (!items || !Array.isArray(items) || items.length === 0) {
+      return NextResponse.json({ error: 'Cart items are required' }, { status: 400 });
     }
 
-    // TODO: Save to database
-    const newOrder = {
-      id: `VH-${Date.now()}`,
-      date: new Date().toISOString().split('T')[0],
-      status: 'pending',
-      ...body,
-    };
+    // Get current user (optional — guest checkout supported)
+    const { data: { user } } = await supabase.auth.getUser();
 
-    return NextResponse.json(newOrder, { status: 201 });
+    // Insert order
+    const { data: order, error: orderError } = await supabase
+      .from('orders')
+      .insert({
+        user_id: user?.id ?? null,
+        total_amount,
+        shipping_name,
+        shipping_phone,
+        shipping_address,
+        status: 'confirmed',
+      })
+      .select()
+      .single();
+
+    if (orderError) {
+      console.error('Order insert error:', orderError);
+      return NextResponse.json({ error: orderError.message }, { status: 500 });
+    }
+
+    // Insert order items
+    const orderItems = items.map((item: {
+      product_id: string;
+      product_name: string;
+      product_image: string;
+      volume: string;
+      quantity: number;
+      price: number;
+    }) => ({
+      order_id: order.id,
+      product_id: item.product_id,
+      product_name: item.product_name,
+      product_image: item.product_image,
+      volume: item.volume,
+      quantity: item.quantity,
+      price: item.price,
+    }));
+
+    const { error: itemsError } = await supabase.from('order_items').insert(orderItems);
+
+    if (itemsError) {
+      console.error('Order items insert error:', itemsError);
+      // Order was created — still return success but log the error
+    }
+
+    return NextResponse.json({ orderId: order.id, status: 'confirmed' }, { status: 201 });
   } catch (error) {
-    return NextResponse.json(
-      { message: 'Invalid request body' },
-      { status: 400 }
-    );
+    console.error('Order creation error:', error);
+    return NextResponse.json({ error: 'Failed to create order' }, { status: 500 });
   }
 }
 
+/**
+ * GET /api/orders
+ * Returns orders for the authenticated user.
+ */
+export async function GET(request: NextRequest) {
+  try {
+    const supabase = await createClient();
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const { data: orders, error } = await supabase
+      .from('orders')
+      .select(`*, order_items (*)`)
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+
+    return NextResponse.json({ orders });
+  } catch (error) {
+    return NextResponse.json({ error: 'Failed to fetch orders' }, { status: 500 });
+  }
+}

@@ -1,189 +1,89 @@
-'use client'
+import { createClient } from '@/lib/supabase/server';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
+import { Search } from 'lucide-react';
+import { Input } from '@/components/ui/input';
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
-import { DataTable } from '@/components/ui/data-table';
-import { dummyOrders } from '@/data/order-history-data';
-import { IOrder, OrderStatus, PaymentStatus } from '@/model/order';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { ShoppingBasketIcon } from 'lucide-react';
-import { AssignDeliverySheet } from '@/components/admin/orders/assign-delivery-sheet.tsx';
-import { createOrderColumns } from '@/components/admin/orders/order-columns';
-import OrdersStatsPage from '@/components/admin/orders/order-stars';
+export default async function AdminOrdersPage() {
+  const supabase = await createClient();
 
-const orderStatusOptions = [
-    { value: "all", label: "All Status" },
-    { value: OrderStatus.PENDING, label: "Pending" },
-    { value: OrderStatus.CONFIRMED, label: "Confirmed" },
-    { value: OrderStatus.PACKED, label: "Packed" },
-    { value: OrderStatus.OUT_FOR_DELIVERY, label: "Out for Delivery" },
-    { value: OrderStatus.DELIVERED, label: "Delivered" },
-    { value: OrderStatus.CANCELLED, label: "Cancelled" },
-    { value: OrderStatus.RETURNED, label: "Returned" },
-];
+  // Fetch orders
+  const { data: orders, error } = await supabase
+    .from('orders')
+    .select('*')
+    .order('created_at', { ascending: false });
 
-const paymentStatusOptions = [
-    { value: "all", label: "All Payment Status" },
-    { value: PaymentStatus.PENDING, label: "Pending" },
-    { value: PaymentStatus.COMPLETED, label: "Completed" },
-    { value: PaymentStatus.FAILED, label: "Failed" },
-    { value: PaymentStatus.REFUNDED, label: "Refunded" },
-];
+  if (error) {
+    console.error('Failed to fetch orders:', error);
+  }
 
-export default function OrderPage() {
-    const router = useRouter();
-    const [orderStatusFilter, setOrderStatusFilter] = useState("all");
-    const [orders, setOrders] = useState<IOrder[]>(dummyOrders as IOrder[]);
-    const [isAssignDeliveryOpen, setIsAssignDeliveryOpen] = useState(false);
-    const [selectedOrderId, setSelectedOrderId] = useState<string>("");
-    const [searchValue, setSearchValue] = useState("");
-    const [paymentStatusFilter, setPaymentStatusFilter] = useState("all");
-    const [isLoading, setIsLoading] = useState(false);
+  const formatDate = (dateStr: string) => {
+    return new Intl.DateTimeFormat('en-IN', {
+      day: 'numeric', month: 'short', year: 'numeric',
+      hour: '2-digit', minute: '2-digit'
+    }).format(new Date(dateStr));
+  };
 
-    // Handler for updating order status
-    const handleStatusUpdate = async (orderId: string, status: OrderStatus) => {
-        // console.log(`Updating order ${orderId} to status: ${status}`);
-
-        // Update the local state for demo purposes
-        setOrders(prevOrders =>
-            prevOrders.map(order =>
-                order.id === orderId
-                    ? { ...order, orderStatus: status }
-                    : order
-            )
-        );
-    };
-
-    // Handler for assigning delivery agent
-    const handleAssignDelivery = (orderId: string) => {
-        console.log(`Assigning delivery agent to order: ${orderId}`);
-        setSelectedOrderId(orderId);
-        setIsAssignDeliveryOpen(true);
-    };
-
-    // Handler for viewing order details
-    const handleViewDetails = (orderId: string) => {
-        console.log(`Viewing details for order: ${orderId}`);
-        router.push(`/admin/order/${orderId}`);
-    };
-
-    const handleRefresh = () => {
-        setIsLoading(true);
-        // Simulate refresh
-        setTimeout(() => {
-            setIsLoading(false);
-            console.log('Orders refreshed');
-        }, 1000);
-    };
-
-    const handleClearFilters = () => {
-        setSearchValue("");
-        setOrderStatusFilter("all");
-        setPaymentStatusFilter("all");
-    };
-
-    const filteredOrders = orders.filter(order => {
-        const matchesSearch = searchValue === "" ||
-            order.orderNumber.toLowerCase().includes(searchValue.toLowerCase()) ||
-            (order.customerName && order.customerName.toLowerCase().includes(searchValue.toLowerCase()));
-
-        const matchesOrderStatus = orderStatusFilter === "all" ||
-            order.orderStatus === orderStatusFilter;
-
-        const matchesPaymentStatus = paymentStatusFilter === "all" ||
-            order.paymentStatus === paymentStatusFilter;
-
-        return matchesSearch && matchesOrderStatus && matchesPaymentStatus;
-    });
-
-    return (
-        <div className="min-h-screen py-2 px-4 md:px-8">
-            <div className="m-4">
-                <h1 className='text-2xl font-bold'>Sales & Test Drives</h1>
-                <Breadcrumb>
-                    <BreadcrumbList>
-                        <BreadcrumbItem className="hidden md:block">
-                            <BreadcrumbLink href="/dashboard">Dashboard</BreadcrumbLink>
-                        </BreadcrumbItem>
-                        <BreadcrumbSeparator className="hidden md:block" />
-                        <BreadcrumbItem>
-                            <BreadcrumbPage>Sales & Test Drives</BreadcrumbPage>
-                        </BreadcrumbItem>
-                    </BreadcrumbList>
-                </Breadcrumb>
-            </div>
-
-            <Separator className="my-5" />
-        
-            <div className="space-y-5">
-                <div className="p-0.5 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-zinc-700 dark:to-zinc-800   rounded-xl">
-                    <Card className="border-0 shadow-sm">
-                        <CardHeader className="pb-2">
-                            <CardTitle className="text-lg flex items-center gap-2">
-                                <ShoppingBasketIcon className="h-5 w-5 text-blue-600" />
-                                Sales & Test Drives Overview
-                            </CardTitle>
-                            <CardDescription>Monitor key order metrics and monthly performance changes.</CardDescription>
-                        </CardHeader>
-                        <CardContent className='pb-4'>
-                            <OrdersStatsPage />
-                        </CardContent>
-                    </Card>
-                </div>
-            </div>
-
-            <div className='space-y-5 mt-5 p-0.5 bg-gray-50 dark:bg-muted-foreground/10 rounded-lg'>
-                <Card className='border-0 shadow-sm'>
-                    <CardContent className="p-5">
-                        <DataTable
-                            columns={createOrderColumns(
-                                handleStatusUpdate,
-                                handleAssignDelivery,
-                                handleViewDetails
-                            )}
-                            data={filteredOrders} // Use filteredOrders instead of orders
-                            searchPlaceholder="Search orders..."
-                            searchValue={searchValue}
-                            onSearchChange={setSearchValue}
-                            filters={[
-                                {
-                                    key: "orderStatus",
-                                    placeholder: "Order Status",
-                                    value: orderStatusFilter,
-                                    options: orderStatusOptions,
-                                    onChange: setOrderStatusFilter,
-                                },
-                                {
-                                    key: "paymentStatus",
-                                    placeholder: "Payment Status",
-                                    value: paymentStatusFilter,
-                                    options: paymentStatusOptions,
-                                    onChange: setPaymentStatusFilter,
-                                }
-                            ]}
-                            onRefresh={handleRefresh}
-                            onClearFilters={handleClearFilters}
-                            isLoading={isLoading}
-                            // pagination={{
-                            //     pageIndex: 0,
-                            //     pageSize: 10,
-                            //     totalItems: filteredOrders.length,
-                            //     totalPages: Math.ceil(filteredOrders.length / 10),
-                            // }}
-                            // onPaginationChange={(pageIndex, pageSize) => {
-                            //     console.log(`Page changed to ${pageIndex + 1}, page size: ${pageSize}`);
-                            // }}
-                        />
-                    </CardContent>
-                </Card>
-            </div>
-            <AssignDeliverySheet
-                open={isAssignDeliveryOpen}
-                onOpenChange={setIsAssignDeliveryOpen}
-                orderId={selectedOrderId}
-            />
+  return (
+    <div className="p-8 space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h1 className="text-3xl font-bold font-serif text-foreground" style={{ fontFamily: 'Georgia, serif' }}>Customer Orders</h1>
+          <p className="text-muted-foreground mt-1">Monitor purchases and fulfillment status.</p>
         </div>
-    );
+      </div>
+
+      <div className="rounded-xl border overflow-hidden bg-card">
+        <Table>
+          <TableHeader className="bg-muted/50">
+            <TableRow>
+              <TableHead className="w-[100px]">Order ID</TableHead>
+              <TableHead>Date</TableHead>
+              <TableHead>Customer Info</TableHead>
+              <TableHead>Total Amount</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead className="text-right">Payment</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {orders && orders.length > 0 ? (
+              orders.map((order) => (
+                <TableRow key={order.id}>
+                  <TableCell className="font-medium text-xs">
+                    {(order.id as string).split('-')[0].toUpperCase()}
+                  </TableCell>
+                  <TableCell className="text-sm">
+                    {formatDate(order.created_at)}
+                  </TableCell>
+                  <TableCell>
+                    <p className="font-medium">{order.delivery_address?.fullName || 'Guest'}</p>
+                    <p className="text-xs text-muted-foreground">{order.delivery_address?.email || 'N/A'}</p>
+                  </TableCell>
+                  <TableCell>
+                    <span className="font-semibold">₹{Number(order.total_amount).toLocaleString()}</span>
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant={order.status === 'Completed' ? 'default' : 'outline'} className={order.status === 'Completed' ? 'bg-emerald-500/15 text-emerald-500 hover:bg-emerald-500/20' : ''}>
+                      {order.status || 'Pending'}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <Badge variant="secondary" className="text-xs font-mono">
+                      {order.payment_method || 'CASH_ON_DELIVERY'}
+                    </Badge>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+                  No orders have been placed yet.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+    </div>
+  );
 }

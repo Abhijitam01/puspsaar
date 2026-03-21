@@ -161,7 +161,7 @@ export default function OrdersPage() {
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
           <div>
             <h1 className="text-2xl font-bold text-foreground">My Orders</h1>
-            <p className="text-muted-foreground mt-1">Track and manage your vehicle orders</p>
+            <p className="text-muted-foreground mt-1">Track and manage your fragrance orders</p>
           </div>
           <Link href="/product">
             <Button variant="outline" className="gap-2">
@@ -176,7 +176,7 @@ export default function OrdersPage() {
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <Input
-              placeholder="Search by order ID or vehicle name..."
+              placeholder="Search by order ID or fragrance name..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10 bg-muted/50"

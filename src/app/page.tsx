@@ -12,15 +12,14 @@ export default function Home() {
   return (
     <div className="relative flex flex-col min-h-screen w-full bg-background">
       <TopNavbar />
-      <main className="flex-grow">
-        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="space-y-24 py-12">
-            <HeroBanner />
-            <CollectionGrid />
-            <FeaturedProducts />
-            <BrandStory />
-            <TrustSection />
-          </div>
+      <main className="flex-grow w-full overflow-x-hidden">
+        <HeroBanner />
+        
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 mt-24 mb-24 space-y-32">
+          <CollectionGrid />
+          <FeaturedProducts />
+          <BrandStory />
+          <TrustSection />
         </div>
       </main>
       <Footer />

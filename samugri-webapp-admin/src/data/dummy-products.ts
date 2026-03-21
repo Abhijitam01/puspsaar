@@ -1,0 +1,140 @@
+import { IProduct } from "@/model/product";
+
+export const dummyProducts: IProduct[] = [
+  {
+    _id: 'prod_001',
+    name: 'Brass Diya Set',
+    sku: "BD-1001",
+    slug: "brass-diya-set",
+    description: "Elegant brass diya set perfect for all poojas and festive occasions.",
+    shortDescription: "Brass pooja diya set.",
+    mrp: 799,
+    sellingPrice: 599,
+    costPrice: 300,
+    taxRate: 5,
+    hsnCode: "94051000",
+    brandId: "brand_divine",
+    categoryIds: ["pooja", "lighting"],
+    tags: ["diya", "brass", "pooja", "decor"],
+    attributes: [
+      { attributeTypeId: "material", attributeName: "Material", dataType: "TEXT", isRequired: true, value: "Brass" },
+      { attributeTypeId: "size", attributeName: "Size", dataType: "TEXT", isRequired: false, value: "Small" },
+    ],
+    images: [
+      { url: "https://www.ritualistic.in/cdn/shop/files/DSC00119.jpg?v=1746967676", isPrimary: true, alt: "Brass Diya Set" },
+      { url: "https://www.varyra.com/cdn/shop/files/omdiwalibrassdiyabyvaryra.jpg?v=1696582216&width=1946", isPrimary: false, alt: "Brass Diya Set Side" },
+      { url: "https://ashtok.com/cdn/shop/files/IMG20231104155913_1024x1024.jpg?v=1700119666", isPrimary: false, alt: "Brass Diya Set Top View" },
+    ],
+    weight: 200,
+    dimensions: [{ length: 10, width: 10, height: 3, unit: "cm" }],
+    hasVariants: true,
+    variants: [
+      {
+        variantSku: "BD-1001-S",
+        variantName: "Small Brass Diya Set",
+        attributes: [
+          { attributeTypeId: "size", attributeName: "Size", dataType: "TEXT", isRequired: true, value: "Small" }
+        ],
+        mrp: 799,
+        sellingPrice: 599,
+        isActive: true,
+      },
+      {
+        variantSku: "BD-1001-M",
+        variantName: "Medium Brass Diya Set",
+        attributes: [
+          { attributeTypeId: "size", attributeName: "Size", dataType: "TEXT", isRequired: true, value: "Medium" }
+        ],
+        mrp: 999,
+        sellingPrice: 799,
+        isActive: true,
+      },
+    ],
+    status: "ACTIVE",
+    stockStatus: "IN_STOCK",
+    isReturnable: true,
+    returnPeriodDays: 7,
+    returnPolicyNote: "7-day return policy",
+    warehouseInventory: [
+      { availableQuantity: 150, addQuantity: 50, location: { rack: "B1", shelf: "S1", bin: "B1" } }
+    ],
+    createdAt: "2025-01-01T09:15:00Z",
+    updatedAt: "2025-01-01T09:15:00Z",
+  },
+  {
+    _id: 'prod_003',
+    name: 'Incense Stick Pack',
+    sku: "ISP-2001",
+    slug: "incense-stick-pack",
+    description: "Aromatic incense sticks to create a divine ambiance for your poojas.",
+    shortDescription: "Fragrant incense sticks pack.",
+    mrp: 199,
+    sellingPrice: 149,
+    costPrice: 80,
+    taxRate: 5,
+    hsnCode: "33074900",
+    brandId: "brand_divine",
+    categoryIds: ["pooja", "aroma"],
+    tags: ["incense", "dhoop", "pooja", "fragrance"],
+    attributes: [
+      { attributeTypeId: "scent", attributeName: "Scent", dataType: "TEXT", isRequired: true, value: "Sandalwood" },
+      { attributeTypeId: "quantity", attributeName: "Quantity", dataType: "NUMBER", isRequired: true, value: 20 },
+    ],
+    images: [
+      { url: "https://www.divinearoma.org/cdn/shop/products/1_684998de-222e-4dbc-b503-7be4bbc67a12_600x.png?v=1678102259", isPrimary: true, alt: "Incense Stick Pack" },
+      { url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6QhBdCAt3BYYNUHNIDJd92x4SN7hG4uL80bfMZ4GzULzr_NsKnSog8HkJGU7_-Eog8n8&usqp=CAU", isPrimary: false, alt: "Incense Pack Side View" },
+      { url: "https://m.media-amazon.com/images/I/81IMJY9CXPL.jpg", isPrimary: false, alt: "Incense Sticks" },
+    ],
+    weight: 50,
+    dimensions: [{ length: 15, width: 5, height: 2, unit: "cm" }],
+    hasVariants: false,
+    variants: [],
+    status: "ACTIVE",
+    stockStatus: "IN_STOCK",
+    isReturnable: true,
+    returnPeriodDays: 7,
+    returnPolicyNote: "7-day return policy",
+    warehouseInventory: [
+      { availableQuantity: 200, addQuantity: 50, location: { rack: "C1", shelf: "S2", bin: "B2" } }
+    ],
+    createdAt: "2025-01-05T11:00:00Z",
+    updatedAt: "2025-01-05T11:00:00Z",
+  },
+  {
+    _id: 'prod_004',
+    name: 'Navratri Pooja Kit',
+    sku: "NPK-3001",
+    slug: "navratri-pooja-kit",
+    description: "Complete Navratri pooja kit including kumkum, flowers, diya, and sweets.",
+    shortDescription: "All-in-one Navratri pooja kit.",
+    mrp: 1499,
+    sellingPrice: 1199,
+    costPrice: 700,
+    taxRate: 5,
+    hsnCode: "96190090",
+    brandId: "brand_divine",
+    categoryIds: ["pooja", "kits"],
+    tags: ["pooja-kit", "navratri", "festival"],
+    attributes: [
+      { attributeTypeId: "items", attributeName: "Items Included", dataType: "TEXT", isRequired: true, value: "Diya, Kumkum, Flowers, Sweets" }
+    ],
+    images: [
+      { url: "https://m.media-amazon.com/images/I/91n-oNCm3NL.jpg", isPrimary: true, alt: "Navratri Pooja Kit" },
+      { url: "https://pujadukaan.com/wp-content/uploads/2024/04/Untitled-design-8.webp", isPrimary: false, alt: "Pooja Kit Contents" },
+    ],
+    weight: 500,
+    dimensions: [{ length: 25, width: 20, height: 8, unit: "cm" }],
+    hasVariants: false,
+    variants: [],
+    status: "ACTIVE",
+    stockStatus: "IN_STOCK",
+    isReturnable: true,
+    returnPeriodDays: 7,
+    returnPolicyNote: "7-day return policy",
+    warehouseInventory: [
+      { availableQuantity: 80, addQuantity: 20, location: { rack: "D1", shelf: "S3", bin: "B3" } }
+    ],
+    createdAt: "2025-01-10T10:30:00Z",
+    updatedAt: "2025-01-10T10:30:00Z",
+  },
+];

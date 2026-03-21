@@ -1,110 +1,83 @@
-'use client'
+'use client';
 
-import Link from 'next/link'
-import { motion } from 'framer-motion'
-import { Star, Heart, ShoppingBag } from 'lucide-react'
-import { featuredProducts } from '@/data/perfume-data'
-import { useCartStore } from '@/store/cartStore'
-import { toast } from 'sonner'
+import { Suspense, useEffect, useState } from 'react';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { createClient } from '@/lib/supabase/client';
+import { IPerfumeProduct } from '@/model/product';
 
 export default function FeaturedProducts() {
-  const addItem = useCartStore(s => s.addItem)
+  const [products, setProducts] = useState<IPerfumeProduct[]>([]);
+  const supabase = createClient();
+
+  useEffect(() => {
+    async function loadFeatured() {
+      const { data } = await supabase
+        .from('products')
+        .select('*')
+        .order('price', { ascending: false }) // e.g. show highest price first as premium
+        .limit(4);
+      if (data) setProducts(data as IPerfumeProduct[]);
+    }
+    loadFeatured();
+  }, [supabase]);
 
   return (
-    <section className="w-full">
-      {/* Header */}
-      <div className="flex items-end justify-between mb-10">
-        <div>
-          <p className="text-[#C6A969] text-xs tracking-[0.3em] uppercase mb-3">Handpicked</p>
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground" style={{ fontFamily: 'Georgia, serif' }}>
-            Featured Fragrances
+    <section className="w-full py-20 px-4 md:px-8 bg-background">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex flex-col items-center text-center mb-16">
+          <p className="text-[#C6A969] text-[10px] md:text-xs tracking-[0.3em] uppercase mb-4">Curated Collection</p>
+          <h2 className="text-3xl md:text-5xl font-normal text-foreground" style={{ fontFamily: 'Georgia, serif' }}>
+            The Premium Selection
           </h2>
+          <div className="mt-6 w-12 h-px bg-[#C6A969]/50 mx-auto"></div>
         </div>
-        <Link
-          href="/product"
-          className="text-sm text-muted-foreground hover:text-[#C6A969] transition-colors hidden sm:block"
-        >
-          View all →
-        </Link>
-      </div>
 
-      {/* Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {featuredProducts.map((product, i) => (
-          <motion.div
-            key={product.id}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.08 }}
-            className="group"
-          >
-            <div className="bg-card border border-border rounded-2xl overflow-hidden card-hover">
-              {/* Image */}
-              <div className="relative aspect-square overflow-hidden bg-muted">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                {/* Discount badge */}
-                {product.discount && (
-                  <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-[#C6A969] text-black text-xs font-semibold">
-                    {product.discount}
-                  </span>
-                )}
-                {/* Wishlist */}
-                <button className="absolute top-3 right-3 p-2 rounded-full bg-black/30 backdrop-blur-sm text-white hover:text-[#C6A969] transition-all opacity-0 group-hover:opacity-100">
-                  <Heart className="w-4 h-4" />
-                </button>
-                {/* Quick add */}
-                <button
-                  onClick={() => {
-                    addItem({
-                      id: String(product.id),
-                      name: product.name,
-                      brand: product.brand,
-                      price: product.price,
-                      image: product.image,
-                      volume: product.volumes[0],
-                      category: product.category,
-                    })
-                    toast.success(`${product.name} added to cart`)
-                  }}
-                  className="absolute bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap flex items-center gap-2 px-4 py-2 rounded-full bg-black/60 backdrop-blur-sm text-white text-xs font-medium hover:bg-[#C6A969] hover:text-black transition-all opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0"
-                >
-                  <ShoppingBag className="w-3.5 h-3.5" />
-                  Quick Add
-                </button>
-              </div>
-
-              {/* Info */}
-              <Link href={`/product/${product.id}`}>
-                <div className="p-4">
-                  <p className="text-[#C6A969] text-xs mb-1 font-medium">{product.brand}</p>
-                  <h3 className="text-foreground font-semibold text-base mb-1 line-clamp-1">{product.name}</h3>
-                  <p className="text-muted-foreground text-xs mb-3 line-clamp-1">{product.subtitle}</p>
-
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <span className="text-foreground font-bold">₹{product.price.toLocaleString()}</span>
-                      {product.originalPrice && (
-                        <span className="text-muted-foreground text-xs line-through ml-2">
-                          ₹{product.originalPrice.toLocaleString()}
-                        </span>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                      <Star className="w-3 h-3 fill-[#C6A969] text-[#C6A969]" />
-                      <span>{product.rating}</span>
-                    </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16">
+          {products.map((product, i) => (
+            <motion.div
+              key={product.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ delay: i * 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="group flex flex-col items-center cursor-pointer"
+            >
+              <Link href={`/product/${product.id}`} className="w-full">
+                {/* Minimalist Image Container */}
+                <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#E8E5DE] dark:bg-[#1A1A1A] mb-6">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full h-full object-cover mix-blend-multiply dark:mix-blend-normal transition-transform duration-[1.5s] ease-out group-hover:scale-105"
+                  />
+                </div>
+                
+                {/* Ultra-minimal info */}
+                <div className="text-center w-full px-2">
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-[#C6A969] mb-2">{product.brand}</p>
+                  <h3 className="text-sm md:text-base font-medium text-foreground mb-2" style={{ fontFamily: 'Georgia, serif' }}>
+                    {product.name}
+                  </h3>
+                  <div className="flex items-center justify-center gap-3 mt-3">
+                    <span className="text-sm text-foreground">₹{product.price.toLocaleString()}</span>
                   </div>
                 </div>
               </Link>
-            </div>
-          </motion.div>
-        ))}
+            </motion.div>
+          ))}
+        </div>
+        
+        <div className="mt-20 flex justify-center">
+          <Link 
+            href="/product" 
+            className="group flex items-center gap-4 text-xs tracking-widest uppercase text-foreground hover:text-[#C6A969] transition-colors"
+          >
+            Explore the full collection
+            <div className="w-8 h-px bg-foreground group-hover:bg-[#C6A969] transition-colors"></div>
+          </Link>
+        </div>
       </div>
     </section>
-  )
+  );
 }
