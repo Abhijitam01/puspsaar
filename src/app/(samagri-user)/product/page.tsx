@@ -109,7 +109,7 @@ function ProductPageContent() {
           <img
             src="https://images.unsplash.com/photo-1541643600914-78b084683702?auto=format&fit=crop&w=2000&q=80"
             alt="Perfume collection"
-            className="w-full h-full object-cover opacity-[0.03] grayscale"
+            className="w-full h-full object-cover opacity-[0.05] grayscale"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-[#0A0A0A] via-transparent to-background" />
         </div>
