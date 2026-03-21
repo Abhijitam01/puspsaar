@@ -1,109 +1,65 @@
 'use client'
 
-import { Shield, Truck, RefreshCw, Headphones, CheckCircle, ArrowRight } from 'lucide-react'
-import Link from 'next/link'
+import { motion } from 'framer-motion'
+import { Truck, RotateCcw, Shield, Headphones } from 'lucide-react'
 
 const features = [
   {
-    icon: Shield,
-    title: 'Certified Quality',
-    description: 'Every car undergoes 200+ point inspection',
-    color: 'bg-primary',
-  },
-  {
     icon: Truck,
     title: 'Free Delivery',
-    description: 'Doorstep delivery across India',
-    color: 'bg-secondary',
+    description: 'Free shipping on all orders above ₹999',
+    gradient: 'from-amber-500/20 to-yellow-600/10',
+    iconColor: '#C6A969',
   },
   {
-    icon: RefreshCw,
-    title: '7-Day Returns',
-    description: 'Not satisfied? Return within 7 days',
-    color: 'bg-tertiary',
+    icon: Shield,
+    title: '100% Authentic',
+    description: 'Every fragrance is certified genuine',
+    gradient: 'from-green-500/20 to-emerald-600/10',
+    iconColor: '#6ee7b7',
+  },
+  {
+    icon: RotateCcw,
+    title: 'Easy Returns',
+    description: '7-day hassle-free return policy',
+    gradient: 'from-blue-500/20 to-indigo-600/10',
+    iconColor: '#93c5fd',
   },
   {
     icon: Headphones,
     title: '24/7 Support',
-    description: 'Expert assistance anytime you need',
-    color: 'bg-chart-4',
+    description: 'Expert fragrance consultants always ready',
+    gradient: 'from-purple-500/20 to-violet-600/10',
+    iconColor: '#c4b5fd',
   },
 ]
 
 export default function TrustSection() {
   return (
-    <section className="w-full py-8">
-      {/* Section Header */}
-      <div className="text-center mb-12">
-        <h2 className="text-3xl font-bold text-foreground mb-3">Why Choose Us</h2>
-        <p className="text-muted-foreground max-w-2xl mx-auto">
-          We make buying your dream car simple, safe, and satisfying
-        </p>
-      </div>
-
-      {/* Features Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-        {features.map((feature) => (
-          <div
-            key={feature.title}
-            className="group p-6 rounded-2xl bg-card border border-border hover:bg-accent hover:border-primary/20 transition-all duration-300 dark:bg-white/5 dark:border-white/10 dark:hover:bg-white/10 dark:hover:border-white/20"
-          >
-            <div className={`w-14 h-14 rounded-2xl ${feature.color} flex items-center justify-center mb-5`}>
-              <feature.icon className="w-7 h-7 text-primary-foreground" />
-            </div>
-            <h3 className="text-lg font-semibold text-foreground mb-2">{feature.title}</h3>
-            <p className="text-muted-foreground text-sm leading-relaxed">{feature.description}</p>
-          </div>
-        ))}
-      </div>
-
-      {/* CTA Banner */}
-      <div className="relative rounded-3xl overflow-hidden">
-        {/* Background Image */}
-        <div className="absolute inset-0">
-          <img
-            src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=2000&q=80"
-            alt="Luxury car"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/90 via-primary/70 to-transparent dark:from-blue-900/90 dark:via-blue-900/70" />
-        </div>
-
-        {/* Content */}
-        <div className="relative z-10 p-8 md:p-12 lg:p-16 flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="max-w-xl">
-            <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
-              Ready to Find Your Dream Car?
-            </h3>
-            <p className="text-white/70 mb-6">
-              Browse our collection of 500+ premium vehicles. Financing available with easy EMI options.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              {['Verified Sellers', 'Easy Financing', 'Warranty Included'].map((item) => (
-                <div key={item} className="flex items-center gap-2 text-white/80 text-sm">
-                  <CheckCircle className="w-4 h-4 text-green-400" />
-                  <span>{item}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Link 
-              href="/product"
-              className="flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-white text-primary font-semibold hover:bg-gray-100 transition-colors dark:text-blue-900"
+    <section className="w-full">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {features.map((f, i) => {
+          const Icon = f.icon
+          return (
+            <motion.div
+              key={f.title}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className={`bg-gradient-to-br ${f.gradient} border border-border rounded-2xl p-5 text-center card-hover`}
             >
-              Browse Cars
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link 
-              href="/contact"
-              className="flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-white/10 border border-white/30 text-white font-semibold hover:bg-white/20 transition-colors"
-            >
-              Contact Us
-            </Link>
-          </div>
-        </div>
+              <div
+                className="w-12 h-12 rounded-full mx-auto mb-3 flex items-center justify-center"
+                style={{ backgroundColor: `${f.iconColor}20` }}
+              >
+                <Icon className="w-5 h-5" style={{ color: f.iconColor }} />
+              </div>
+              <h3 className="text-foreground font-semibold text-sm mb-1">{f.title}</h3>
+              <p className="text-muted-foreground text-xs">{f.description}</p>
+            </motion.div>
+          )
+        })}
       </div>
     </section>
   )
