@@ -1,8 +1,9 @@
 'use client';
 
-import { Suspense, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { Heart } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { IPerfumeProduct } from '@/model/product';
 
@@ -15,7 +16,7 @@ export default function FeaturedProducts() {
       const { data } = await supabase
         .from('products')
         .select('*')
-        .order('price', { ascending: false }) // e.g. show highest price first as premium
+        .order('price', { ascending: false })
         .limit(4);
       if (data) setProducts(data as IPerfumeProduct[]);
     }
@@ -23,60 +24,68 @@ export default function FeaturedProducts() {
   }, [supabase]);
 
   return (
-    <section className="w-full py-20 px-4 md:px-8 bg-background">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col items-center text-center mb-16">
-          <p className="text-[#C6A969] text-[10px] md:text-xs tracking-[0.3em] uppercase mb-4">Curated Collection</p>
-          <h2 className="text-3xl md:text-5xl font-normal text-foreground" style={{ fontFamily: 'Georgia, serif' }}>
-            The Premium Selection
-          </h2>
-          <div className="mt-6 w-12 h-px bg-[#C6A969]/50 mx-auto"></div>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16">
-          {products.map((product, i) => (
-            <motion.div
-              key={product.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ delay: i * 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="group flex flex-col items-center cursor-pointer"
-            >
-              <Link href={`/product/${product.id}`} className="w-full">
-                {/* Minimalist Image Container */}
-                <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#E8E5DE] dark:bg-[#1A1A1A] mb-6">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-full object-cover mix-blend-multiply dark:mix-blend-normal transition-transform duration-[1.5s] ease-out group-hover:scale-105"
-                  />
-                </div>
-                
-                {/* Ultra-minimal info */}
-                <div className="text-center w-full px-2">
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-[#C6A969] mb-2">{product.brand}</p>
-                  <h3 className="text-sm md:text-base font-medium text-foreground mb-2" style={{ fontFamily: 'Georgia, serif' }}>
-                    {product.name}
-                  </h3>
-                  <div className="flex items-center justify-center gap-3 mt-3">
-                    <span className="text-sm text-foreground">₹{product.price.toLocaleString()}</span>
-                  </div>
-                </div>
-              </Link>
-            </motion.div>
-          ))}
-        </div>
-        
-        <div className="mt-20 flex justify-center">
-          <Link 
-            href="/product" 
-            className="group flex items-center gap-4 text-xs tracking-widest uppercase text-foreground hover:text-[#C6A969] transition-colors"
+    <section className="w-full">
+      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-10 gap-4">
+        <div>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#6B6B6B] mb-2">Handpicked for You</p>
+          <h2
+            className="text-3xl md:text-4xl font-bold text-[#1C1C1C]"
+            style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}
           >
-            Explore the full collection
-            <div className="w-8 h-px bg-foreground group-hover:bg-[#C6A969] transition-colors"></div>
-          </Link>
+            Featured Fragrances
+          </h2>
         </div>
+        <Link
+          href="/product"
+          className="text-xs font-semibold uppercase tracking-[0.15em] text-[#1C1C1C] underline underline-offset-4 hover:text-[#6B6B6B] transition-colors"
+        >
+          View All
+        </Link>
+      </div>
+
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        {products.map((product, i) => (
+          <motion.div
+            key={product.id}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={{ delay: i * 0.1, duration: 0.6 }}
+            className="group"
+          >
+            <Link href={`/product/${product.id}`} className="block">
+              {/* Image */}
+              <div className="relative aspect-[3/4] overflow-hidden bg-[#F5F5F5] mb-3">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                {/* Wishlist */}
+                <button
+                  aria-label="Add to wishlist"
+                  className="absolute top-3 right-3 w-8 h-8 bg-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-[#F5F5F5]"
+                  onClick={(e) => e.preventDefault()}
+                >
+                  <Heart className="w-4 h-4 text-[#1C1C1C]" />
+                </button>
+                {/* Quick add */}
+                <div className="absolute bottom-0 left-0 right-0 bg-black text-white text-center py-3 text-[11px] font-bold uppercase tracking-[0.15em] opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-300">
+                  Quick Add
+                </div>
+              </div>
+
+              {/* Info */}
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.15em] text-[#6B6B6B] mb-1">{product.brand}</p>
+                <h3 className="text-sm font-medium text-[#1C1C1C] mb-2 leading-snug line-clamp-2">
+                  {product.name}
+                </h3>
+                <p className="text-sm font-semibold text-[#1C1C1C]">₹{product.price.toLocaleString()}</p>
+              </div>
+            </Link>
+          </motion.div>
+        ))}
       </div>
     </section>
   );

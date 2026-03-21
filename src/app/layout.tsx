@@ -1,45 +1,36 @@
 // app/layout.tsx
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Dancing_Script } from "next/font/google";
-import { ThemeProvider } from "next-themes";
+import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
   subsets: ["latin"],
-});
-
-const dancingScript = Dancing_Script({
-  variable: "--font-dancing-script",
-  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
 });
 
 export const metadata: Metadata = {
-  title: "Velaire House",
-  description: "Velaire House | Private reserve for limited-series electric icons",
+  title: "Puspsaar — Premium Fragrances",
+  description: "Discover premium fragrances — Middle Eastern-quality perfumes, attars, and gifting sets at unbeatable prices.",
 };
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${dancingScript.variable} antialiased bg-background text-foreground`}
+        className={`${inter.variable} ${playfair.variable} antialiased bg-white text-[#1C1C1C]`}
+        style={{ fontFamily: "var(--font-inter), sans-serif" }}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange={false}
-        >
-          {children}
-        </ThemeProvider>
+        {children}
       </body>
     </html>
   );

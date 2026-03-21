@@ -1,92 +1,119 @@
 'use client'
 
-import React from 'react'
-
+import React, { useState } from 'react'
+import Link from 'next/link'
+import { Heart } from 'lucide-react'
 import WishlistCard from '@/components/wishlist/wishlist-card'
 import { IProduct } from '@/components/product/productcard'
 
+const initialWishlist: IProduct[] = [
+  {
+    id: 1,
+    name: 'Oud Noir Extrait de Parfum',
+    subtitle: 'Woody · Smoky · Dark Amber',
+    price: 8500,
+    originalPrice: 9500,
+    discount: '11% OFF',
+    rating: 4.7,
+    ratingCount: '1.2k',
+    image: 'https://images.unsplash.com/photo-1587017539504-67cfbddac569?auto=format&fit=crop&w=900&q=80',
+  },
+  {
+    id: 2,
+    name: 'Rose Absolue Eau de Parfum',
+    subtitle: 'Floral · Soft · Romantic',
+    price: 6200,
+    originalPrice: 7000,
+    discount: '11% OFF',
+    rating: 4.5,
+    ratingCount: '840',
+    image: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7ef53?auto=format&fit=crop&w=900&q=80',
+  },
+  {
+    id: 3,
+    name: 'Santal Blanc Eau de Toilette',
+    subtitle: 'Woody · Creamy · Warm',
+    price: 4800,
+    originalPrice: 5500,
+    discount: '13% OFF',
+    rating: 4.3,
+    ratingCount: '520',
+    image: 'https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=900&q=80',
+  },
+  {
+    id: 4,
+    name: 'Amber Oud Concentrated',
+    subtitle: 'Oriental · Spicy · Rich',
+    price: 3200,
+    originalPrice: 3800,
+    discount: '16% OFF',
+    rating: 4.5,
+    ratingCount: '104',
+    image: 'https://images.unsplash.com/photo-1590736969596-1c2b7ba4e0e3?auto=format&fit=crop&w=900&q=80',
+  },
+  {
+    id: 5,
+    name: 'Jasmine Attar Pure',
+    subtitle: 'Floral · Fresh · Feminine',
+    price: 2800,
+    originalPrice: 3200,
+    discount: '13% OFF',
+    rating: 4.8,
+    ratingCount: '312',
+    image: 'https://images.unsplash.com/photo-1541643600914-78b084683702?auto=format&fit=crop&w=900&q=80',
+  },
+]
 
 export default function WishListPage() {
-  const wishlistItems: IProduct[] = [
-    {
-      id: 1,
-      name: '2022 Hyundai Creta SX (O) Turbo',
-      subtitle: '18,000 km • Petrol AT • Panoramic roof',
-      price: 1725000,
-      originalPrice: 1899000,
-      discount: '9% OFF',
-      rating: 4.7,
-      ratingCount: '1.2k',
-      image: 'https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=900&q=80',
-      size: ['Petrol', 'Automatic', 'Turbo']
-    },
-    {
-      id: 2,
-      name: '2021 Kia Seltos GTX+ DCT',
-      subtitle: '27,500 km • Turbo petrol • ADAS retrofit',
-      price: 1830000,
-      originalPrice: 1990000,
-      discount: '8% OFF',
-      rating: 4.5,
-      ratingCount: '104',
-      size: ['Petrol', 'Automatic', 'Turbo'],
-      image: 'https://images.unsplash.com/photo-1471479913433-1f86dd9c9580?auto=format&fit=crop&w=900&q=80',
-    },
-    {
-      id: 3,
-      name: '2020 Tata Nexon EV XZ+',
-      subtitle: '21,000 km • 40 kWh battery • Fast charger',
-      price: 1520000,
-      originalPrice: 1650000,
-      discount: '7% OFF',
-      rating: 4.3,
-      ratingCount: '4.5k',
-      size: ['Electric', 'Automatic', 'Fast Charge'],
-      image: 'https://images.unsplash.com/photo-1518552781628-df835fcf7729?auto=format&fit=crop&w=900&q=80'
-    },
-    {
-      id: 4,
-      name: '2019 Maruti Suzuki Swift AMT',
-      subtitle: '38,500 km • Petrol AMT • Dual airbags',
-      image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=900&q=80",
-      price: 615000,
-      originalPrice: 725000,
-      discount: '15% OFF',
-      rating: 4.5,
-      ratingCount: '104',
-      size: ['Petrol', 'Automatic', 'Hatchback'],
-    },
-    {
-      id: 5,
-      name: '2020 Jeep Compass 4x4',
-      subtitle: '31,500 km • Diesel AT • Trailhawk kit',
-      price: 2249000,
-      originalPrice: 2450000,
-      discount: '8% OFF',
-      size: ['Diesel', 'Automatic', '4x4'],
-      rating: 4.8,
-      ratingCount: '312',
-      image: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=900&q=80',
-    },
-  ]
+  const [wishlistItems, setWishlistItems] = useState<IProduct[]>(initialWishlist)
+
+  const handleRemove = (id: number) => {
+    setWishlistItems(prev => prev.filter(item => item.id !== id))
+  }
 
   return (
-    <div className="w-full min-h-screen bg-background">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-2">
-          <h2 className="text-2xl font-semibold text-foreground">Your Wishlist</h2>
-          <p className="text-muted-foreground text-sm sm:text-base">
-            Items in wishlist: <span className="font-medium text-foreground">{wishlistItems.length}</span>
-          </p>
+    <div className="min-h-screen bg-white">
+      {/* Header */}
+      <div className="border-b border-[#E0E0E0] py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#6B6B6B] mb-1">Puspsaar</p>
+            <h1 className="text-3xl font-bold text-[#1C1C1C]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>My Wishlist</h1>
+            <p className="text-[#6B6B6B] mt-1 text-sm">
+              {wishlistItems.length} item{wishlistItems.length !== 1 ? 's' : ''} saved
+            </p>
+          </div>
+          <Link
+            href="/product"
+            className="border border-[#1C1C1C] px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.1em] text-[#1C1C1C] hover:bg-black hover:text-white transition-colors"
+          >
+            Browse Fragrances
+          </Link>
         </div>
+      </div>
 
-        {/* Wishlist Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {wishlistItems.map((product) => (
-            <WishlistCard key={product.id} product={product} />
-          ))}
-        </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {wishlistItems.length === 0 ? (
+          <div className="text-center py-32 border border-[#E0E0E0]">
+            <Heart className="w-16 h-16 mx-auto text-[#E0E0E0] mb-6" />
+            <h3 className="text-xl font-bold text-[#1C1C1C] mb-3" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+              Your wishlist is empty
+            </h3>
+            <p className="text-[#6B6B6B] text-sm mb-8">Save your favourite fragrances here</p>
+            <Link
+              href="/product"
+              className="inline-block px-8 py-3 bg-black text-white text-xs font-bold uppercase tracking-[0.15em] hover:bg-[#1C1C1C] transition-colors"
+            >
+              Start Shopping
+            </Link>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            {wishlistItems.map((product) => (
+              <WishlistCard key={product.id} product={product} onRemove={handleRemove} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )

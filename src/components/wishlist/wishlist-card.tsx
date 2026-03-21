@@ -1,9 +1,8 @@
 'use client'
 
-import { HeartIcon, Star, ShoppingCart, Trash2 } from 'lucide-react'
+import { HeartIcon, Star, ShoppingCart } from 'lucide-react'
 import React, { useState } from 'react'
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
 
 export interface IProduct {
   id: number
@@ -30,7 +29,6 @@ export const WishlistCard: React.FC<ProductCardProps> = ({ product, onRemove }) 
     e.preventDefault()
     e.stopPropagation()
     setIsRemoving(true)
-    // Simulate removal
     setTimeout(() => {
       onRemove?.(product.id)
     }, 300)
@@ -44,51 +42,50 @@ export const WishlistCard: React.FC<ProductCardProps> = ({ product, onRemove }) 
 
   return (
     <Link href={`/product/${product.id}`}>
-      <div className={`relative bg-muted rounded-lg transition-all duration-300 ${isRemoving ? 'opacity-50 scale-95' : ''}`}>
-        <div className="bg-card rounded-lg p-3 hover:shadow-lg transition-all duration-300 relative border border-border hover:border-primary/30">
-          {/* Discount Tag */}
-          <div className="absolute top-2 left-2 bg-green-600 text-white text-[10px] font-semibold px-2 py-1 rounded-tr-md rounded-bl-md z-10">
+      <div className={`border border-[#E0E0E0] bg-white overflow-hidden transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 ${isRemoving ? 'opacity-50 scale-95' : ''}`}>
+        {/* Image */}
+        <div className="relative aspect-[3/4] bg-[#F5F5F5] overflow-hidden">
+          <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+
+          {/* Discount badge */}
+          <div className="absolute top-3 left-3 bg-[#E32C2B] text-white text-[9px] font-bold uppercase tracking-wider px-2 py-1">
             {product.discount}
           </div>
 
-          {/* Remove Button */}
-          <button 
+          {/* Remove / Wishlisted button */}
+          <button
             onClick={handleRemove}
-            className="absolute top-2 right-2 bg-rose-100 dark:bg-rose-500/20 p-1.5 rounded-full shadow-sm z-10 hover:bg-rose-200 dark:hover:bg-rose-500/30 transition-colors"
+            className="absolute top-3 right-3 w-8 h-8 bg-white flex items-center justify-center shadow-sm hover:bg-[#F5F5F5] transition-colors"
           >
-            <HeartIcon className="text-rose-600 dark:text-rose-400 h-5 w-5 fill-rose-600 dark:fill-rose-400" />
+            <HeartIcon className="h-4 w-4 text-[#E32C2B] fill-[#E32C2B]" />
           </button>
 
-          {/* Image */}
-          <div className="relative w-full h-48 mb-3 rounded-md overflow-hidden flex items-center justify-center bg-gradient-to-b from-muted to-accent">
-            <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
-          </div>
-
           {/* Rating */}
-          <div className="text-xs text-foreground font-semibold flex items-center gap-1 mb-1">
-            <Star className="h-4 w-4 text-green-600 fill-green-600" />
-            {product.rating} | {product.ratingCount}
+          <div className="absolute bottom-3 left-3 flex items-center gap-1.5 px-2.5 py-1 bg-white text-[10px] font-bold text-[#1C1C1C]">
+            <Star className="h-3 w-3 text-[#FFAF00] fill-[#FFAF00]" />
+            <span>{product.rating}</span>
+          </div>
+        </div>
+
+        {/* Info */}
+        <div className="p-4">
+          <h3 className="font-semibold text-[#1C1C1C] text-sm mb-0.5 line-clamp-1">{product.name}</h3>
+          <p className="text-xs text-[#6B6B6B] italic mb-3 line-clamp-1">{product.subtitle}</p>
+
+          <div className="flex items-baseline gap-2 mb-4">
+            <span className="text-sm font-bold text-[#1C1C1C]">₹{product.price.toLocaleString()}</span>
+            {product.originalPrice > product.price && (
+              <span className="text-[11px] text-[#ABABAB] line-through">₹{product.originalPrice.toLocaleString()}</span>
+            )}
           </div>
 
-          {/* Title */}
-          <h3 className="font-bold text-sm text-foreground line-clamp-1">{product.name}</h3>
-          <p className="text-xs text-muted-foreground mb-2 line-clamp-1">{product.subtitle}</p>
-
-          {/* Price */}
-          <div className="text-sm font-semibold text-foreground mb-3">
-            ₹{product.price.toLocaleString()}{' '}
-            <span className="line-through text-xs text-muted-foreground ml-2">₹{product.originalPrice.toLocaleString()}</span>
-          </div>
-
-          {/* Add to Cart Button */}
-          <Button 
+          <button
             onClick={handleAddToCart}
-            size="sm" 
-            className="w-full gap-2"
+            className="w-full py-2.5 bg-black text-white text-[11px] font-bold uppercase tracking-[0.1em] hover:bg-[#1C1C1C] transition-colors flex items-center justify-center gap-2"
           >
-            <ShoppingCart className="h-4 w-4" />
+            <ShoppingCart className="h-3.5 w-3.5" />
             Add to Cart
-          </Button>
+          </button>
         </div>
       </div>
     </Link>

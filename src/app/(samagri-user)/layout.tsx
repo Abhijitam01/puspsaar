@@ -10,7 +10,7 @@ export default function EcommerceLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="relative flex flex-col min-h-screen w-full bg-background">
+    <div className="relative flex flex-col min-h-screen w-full bg-white">
       {/* Header */}
       <TopNavbar />
       

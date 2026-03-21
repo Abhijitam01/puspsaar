@@ -58,106 +58,61 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-/* ---------------- Light Mode Variables (Puspsaar — Off-White & Gold) ---------------- */
+/* ---------------- Light Mode Variables (Arabian Aroma — White & Black) ---------------- */
 :root {
-  --primary: #0F0F0F;         /* obsidian black */
-  --secondary: #C6A969;       /* gold accent */
-  --tertiary: #9a8050;        /* dark gold */
-  --radius: 0.85rem;
-  --background: #F5F5F5;      /* off-white */
-  --foreground: #0F0F0F;
-  --card: #ffffff;
-  --card-foreground: #0F0F0F;
-  --popover: #ffffff;
-  --popover-foreground: #0F0F0F;
-  --primary-foreground: #F5F5F5;
-  --secondary-foreground: #0F0F0F;
-  --muted: #EAEAEA;            /* light gray */
-  --muted-foreground: #555555;
-  --accent: #f0ece3;
-  --accent-foreground: #0F0F0F;
-  --destructive: #dc2626;
-  --border: #DDDDD8;
-  --input: #E8E5DE;
-  --ring: rgba(198, 169, 105, 0.45);
-  --chart-1: #0F0F0F;
-  --chart-2: #C6A969;
-  --chart-3: #9a8050;
-  --chart-4: #d4b87a;
-  --chart-5: #6e5c30;
-  --sidebar: #ffffff;
-  --sidebar-foreground: #0F0F0F;
-  --sidebar-primary: #0F0F0F;
-  --sidebar-primary-foreground: #F5F5F5;
-  --sidebar-accent: #EAEAEA;
-  --sidebar-accent-foreground: #0F0F0F;
-  --sidebar-border: #DDDDD8;
-  --sidebar-ring: rgba(198, 169, 105, 0.45);
+  --primary: #000000;         /* pure black */
+  --secondary: #1C1C1C;       /* near black */
+  --tertiary: #6B6B6B;        /* muted gray */
+  --radius: 0.25rem;
+  --background: #FFFFFF;      /* pure white */
+  --foreground: #1C1C1C;
+  --card: #FFFFFF;
+  --card-foreground: #1C1C1C;
+  --popover: #FFFFFF;
+  --popover-foreground: #1C1C1C;
+  --primary-foreground: #FFFFFF;
+  --secondary-foreground: #FFFFFF;
+  --muted: #F5F5F5;            /* light gray */
+  --muted-foreground: #6B6B6B;
+  --accent: #F5F5F5;
+  --accent-foreground: #1C1C1C;
+  --destructive: #E32C2B;
+  --border: #E0E0E0;
+  --input: #F5F5F5;
+  --ring: rgba(0, 0, 0, 0.2);
+  --chart-1: #000000;
+  --chart-2: #1C1C1C;
+  --chart-3: #6B6B6B;
+  --chart-4: #ABABAB;
+  --chart-5: #E0E0E0;
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #1C1C1C;
+  --sidebar-primary: #000000;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #F5F5F5;
+  --sidebar-accent-foreground: #1C1C1C;
+  --sidebar-border: #E0E0E0;
+  --sidebar-ring: rgba(0, 0, 0, 0.2);
 
   /* Additional semantic colors for components */
-  --nav-background: rgba(245, 245, 245, 0.97);
-  --nav-text: #0F0F0F;
-  --nav-text-muted: #555555;
-  --nav-border: #DDDDD8;
-  --hero-gradient-from: #0F0F0F;
+  --nav-background: rgba(255, 255, 255, 0.97);
+  --nav-text: #1C1C1C;
+  --nav-text-muted: #6B6B6B;
+  --nav-border: #E0E0E0;
+  --hero-gradient-from: transparent;
   --hero-gradient-to: transparent;
-  --glass-bg: rgba(255, 255, 255, 0.88);
+  --glass-bg: rgba(255, 255, 255, 0.95);
   --glass-border: rgba(0, 0, 0, 0.08);
-  --footer-bg: #0F0F0F;
-  --footer-text: #F5F5F5;
-  --footer-text-muted: rgba(245, 245, 245, 0.65);
-  --footer-border: rgba(255, 255, 255, 0.12);
+  --footer-bg: #F5F5F5;
+  --footer-text: #1C1C1C;
+  --footer-text-muted: #6B6B6B;
+  --footer-border: #E0E0E0;
+  /* Sale/rating colors */
+  --sale-color: #E32C2B;
+  --star-color: #FFAF00;
 }
 
-/* ---------------- Dark Mode Variables (Puspsaar — Deep Black & Gold) ---------------- */
-.dark {
-  --primary: #C6A969;         /* gold accent becomes primary in dark */
-  --secondary: #e0c47a;       /* brighter gold */
-  --tertiary: #a08040;
-  --background: #0F0F0F;      /* obsidian */
-  --foreground: #F5F5F5;
-  --card: #1A1A1A;
-  --card-foreground: #F5F5F5;
-  --popover: #1C1C1C;
-  --popover-foreground: #F5F5F5;
-  --primary-foreground: #0F0F0F;
-  --secondary-foreground: #0F0F0F;
-  --muted: rgba(255, 255, 255, 0.07);
-  --muted-foreground: rgba(255, 255, 255, 0.65);
-  --accent: rgba(198, 169, 105, 0.15);
-  --accent-foreground: #F5F5F5;
-  --destructive: #f87171;
-  --border: rgba(255, 255, 255, 0.1);
-  --input: rgba(255, 255, 255, 0.08);
-  --ring: rgba(198, 169, 105, 0.5);
-  --chart-1: #C6A969;
-  --chart-2: #e0c47a;
-  --chart-3: #a08040;
-  --chart-4: #d4b87a;
-  --chart-5: #8a6e2e;
-  --sidebar: rgba(12, 12, 12, 0.95);
-  --sidebar-foreground: #F5F5F5;
-  --sidebar-primary: #C6A969;
-  --sidebar-primary-foreground: #0F0F0F;
-  --sidebar-accent: rgba(255, 255, 255, 0.06);
-  --sidebar-accent-foreground: #F5F5F5;
-  --sidebar-border: rgba(255, 255, 255, 0.1);
-  --sidebar-ring: rgba(198, 169, 105, 0.5);
-
-  /* Additional semantic colors for components */
-  --nav-background: rgba(15, 15, 15, 0.97);
-  --nav-text: #F5F5F5;
-  --nav-text-muted: rgba(245, 245, 245, 0.65);
-  --nav-border: rgba(255, 255, 255, 0.08);
-  --hero-gradient-from: #0F0F0F;
-  --hero-gradient-to: transparent;
-  --glass-bg: rgba(20, 20, 20, 0.88);
-  --glass-border: rgba(198, 169, 105, 0.15);
-  --footer-bg: #0a0a0a;
-  --footer-text: #F5F5F5;
-  --footer-text-muted: rgba(245, 245, 245, 0.6);
-  --footer-border: rgba(198, 169, 105, 0.12);
-}
+/* Dark mode removed — site is light-only */
 
 /* ---------------- Base Layer ---------------- */
 @layer base {
@@ -280,28 +235,22 @@
   background-clip: text;
 }
 
-/* Gold accent for buttons */
+/* Primary black button */
 .btn-blue {
-  background: linear-gradient(135deg, #0F0F0F 0%, #2a2a2a 100%);
-  color: #C6A969;
-  border: 1px solid rgba(198, 169, 105, 0.3);
+  background: #000000;
+  color: #FFFFFF;
+  border: 1px solid #000000;
   transition: all 0.2s ease;
+  border-radius: 0;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  font-weight: 600;
 }
 
 .btn-blue:hover {
-  background: linear-gradient(135deg, #C6A969 0%, #d4b87a 100%);
-  color: #0F0F0F;
-  box-shadow: 0 4px 20px rgba(198, 169, 105, 0.4);
-}
-
-.dark .btn-blue {
-  background: linear-gradient(135deg, #C6A969 0%, #d4b87a 100%);
-  color: #0F0F0F;
-}
-
-.dark .btn-blue:hover {
-  background: linear-gradient(135deg, #d4b87a 0%, #C6A969 100%);
-  box-shadow: 0 4px 20px rgba(198, 169, 105, 0.5);
+  background: #1C1C1C;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 /* ---------------- Smooth Theme Transitions ---------------- */

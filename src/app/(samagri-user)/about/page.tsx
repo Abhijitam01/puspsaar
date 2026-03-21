@@ -1,15 +1,14 @@
 'use client'
 
-import { Award, Flower2, Heart, Shield, Users, Clock, Sparkles, ArrowRight, Star, Zap, Target, Globe } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Award, Flower2, Heart, Shield, Users, Clock, ArrowRight, Star, Zap, Globe } from 'lucide-react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 
 const stats = [
-  { value: '250+', label: 'Artisanal Blends', icon: Flower2, color: 'text-[#C6A969]', bgColor: 'bg-[#C6A969]/10' },
-  { value: '15K+', label: 'Global Connoisseurs', icon: Users, color: 'text-[#C6A969]', bgColor: 'bg-[#C6A969]/10' },
-  { value: '12', label: 'Master Perfumers', icon: Award, color: 'text-[#C6A969]', bgColor: 'bg-[#C6A969]/10' },
-  { value: '100%', label: 'Pure Essence', icon: Heart, color: 'text-[#C6A969]', bgColor: 'bg-[#C6A969]/10' },
+  { value: '250+', label: 'Artisanal Blends', icon: Flower2 },
+  { value: '15K+', label: 'Global Connoisseurs', icon: Users },
+  { value: '12', label: 'Master Perfumers', icon: Award },
+  { value: '100%', label: 'Pure Essence', icon: Heart },
 ]
 
 const values = [
@@ -17,52 +16,21 @@ const values = [
     icon: Shield,
     title: 'Purity & Provenance',
     description: 'Every essence is sourced from its origin, ensuring the highest concentration of natural oils and absolute transparency in our distillation process.',
-    iconBg: 'bg-[#C6A969]/20',
   },
   {
     icon: Award,
     title: 'Artisanal Excellence',
     description: 'We reject mass production. Each bottle of Puspsaar is hand-filled and aged to perfection, honoring the slow-craft philosophy of haute parfumerie.',
-    iconBg: 'bg-[#C6A969]/20',
   },
   {
     icon: Heart,
     title: 'Sustenance of Soul',
     description: 'A fragrance is more than a scent; it is an emotional anchor. Our creations are designed to evoke memories and define identities.',
-    iconBg: 'bg-[#C6A969]/20',
   },
   {
     icon: Clock,
     title: 'Timeless Longevity',
     description: 'Our proprietary "Infusion-X" technique ensures that our extraits de parfum linger for 24+ hours, creating a silken sillage that never fades.',
-    iconBg: 'bg-[#C6A969]/20',
-  },
-]
-
-const team = [
-  {
-    name: 'Aravind K. Iyer',
-    role: 'Founder & Chief Curator',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
-    bio: 'A third-generation botanist dedicated to preserving the ancient art of Indian attars through modern olfaction.',
-    roleColor: 'text-[#C6A969]',
-    iconBg: 'bg-[#C6A969]/10',
-  },
-  {
-    name: 'Elena Vance',
-    role: 'Master Perfumer',
-    image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80',
-    bio: 'Trained in Grasse, Elena brings European finesse to Puspsaar\'s rich, exotic botanical palette.',
-    roleColor: 'text-[#C6A969]',
-    iconBg: 'bg-[#C6A969]/10',
-  },
-  {
-    name: 'Samuel Thorne',
-    role: 'Head of Distillation',
-    image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&q=80',
-    bio: 'The architect behind our signature extraits, mastering the delicate balance of heat and pressure.',
-    roleColor: 'text-[#C6A969]',
-    iconBg: 'bg-[#C6A969]/10',
   },
 ]
 
@@ -75,71 +43,50 @@ const milestones = [
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-[#0A0A0A] text-white overflow-hidden">
-      {/* Hero Section */}
-      <section className="relative py-32 lg:py-48 overflow-hidden">
-        {/* Cinematic Background */}
-        <div className="absolute inset-0">
-          <img
-            src="https://images.unsplash.com/photo-1592945403244-b3fbafd7ef53?auto=format&fit=crop&w=2500&q=80"
-            alt="Perfume Distillation"
-            className="w-full h-full object-cover opacity-30"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0A0A0A] via-transparent to-[#0A0A0A]" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A] via-transparent to-[#0A0A0A]" />
-        </div>
-        
-        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-            className="text-center max-w-4xl mx-auto"
+    <div className="min-h-screen bg-white">
+      {/* Hero */}
+      <section className="relative h-[60vh] overflow-hidden">
+        <img
+          src="https://images.unsplash.com/photo-1592945403244-b3fbafd7ef53?auto=format&fit=crop&w=2500&q=80"
+          alt="Perfume Distillation"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-black/60" />
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+          <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-white/60 mb-4">Our Heritage</p>
+          <h1
+            className="text-5xl sm:text-7xl font-bold text-white mb-4 leading-tight"
+            style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}
           >
-            <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#C6A969]/10 border border-[#C6A969]/30 mb-8 backdrop-blur-sm">
-              <Sparkles className="w-4 h-4 text-[#C6A969]" />
-              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#C6A969]">Our Heritage</span>
-            </div>
-            
-            <h1 className="text-6xl sm:text-7xl lg:text-9xl font-light mb-8 leading-tight tracking-tighter" style={{ fontFamily: 'Georgia, serif' }}>
-              The Archive of <br />
-              <span className="italic text-[#C6A969]">Rare Essences</span>
-            </h1>
-            
-            <p className="text-lg lg:text-xl text-white/60 max-w-2xl mx-auto leading-relaxed font-serif">
-              Maison Puspsaar is curated for those who seek more than a scent. We capture movement, memory, and the ephemeral beauty of the natural world.
-            </p>
-            
-            <div className="flex flex-wrap justify-center gap-6 mt-12">
-              <Link href="/product">
-                <Button size="lg" className="bg-[#C6A969] hover:bg-[#B59858] text-black gap-3 rounded-full px-10 py-7 text-[10px] font-bold uppercase tracking-widest transition-all">
-                  Browse the archive
-                  <ArrowRight className="w-4 h-4" />
-                </Button>
-              </Link>
-            </div>
-          </motion.div>
+            The Archive of <br />
+            <em>Rare Essences</em>
+          </h1>
+          <p className="text-white/70 max-w-lg text-sm sm:text-base leading-relaxed">
+            Maison Puspsaar is curated for those who seek more than a scent. We capture movement, memory, and the ephemeral beauty of the natural world.
+          </p>
+          <Link
+            href="/product"
+            className="mt-8 inline-flex items-center gap-2 px-8 py-3 bg-white text-black text-xs font-bold uppercase tracking-[0.15em] hover:bg-[#F5F5F5] transition-colors"
+          >
+            Browse the Archive
+            <ArrowRight className="w-4 h-4" />
+          </Link>
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="relative py-24 bg-zinc-900/50 border-y border-white/5">
-        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      {/* Stats */}
+      <section className="border-y border-[#E0E0E0] py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat) => {
               const IconComponent = stat.icon
               return (
-                <div 
-                  key={stat.label} 
-                  className="group text-center"
-                >
-                  <div className={`inline-flex items-center justify-center w-16 h-16 rounded-3xl ${stat.bgColor} mb-6 transition-transform group-hover:scale-110 duration-500`}>
-                    <IconComponent className={`w-8 h-8 ${stat.color}`} />
+                <div key={stat.label} className="text-center">
+                  <div className="w-12 h-12 border border-[#E0E0E0] flex items-center justify-center mx-auto mb-4">
+                    <IconComponent className="w-5 h-5 text-[#1C1C1C]" />
                   </div>
-                  <p className="text-5xl font-light text-white mb-2 tabular-nums">
-                    {stat.value}
-                  </p>
-                  <p className="text-[10px] text-white/40 font-bold uppercase tracking-widest">{stat.label}</p>
+                  <p className="text-4xl font-bold text-[#1C1C1C] mb-1">{stat.value}</p>
+                  <p className="text-[10px] text-[#6B6B6B] font-semibold uppercase tracking-widest">{stat.label}</p>
                 </div>
               )
             })}
@@ -147,96 +94,80 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Heritage Section */}
-      <section className="py-32 lg:py-48">
+      {/* Heritage / Philosophy */}
+      <section className="py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-24 items-center">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 1 }}
+              transition={{ duration: 0.8 }}
             >
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#C6A969]/10 border border-[#C6A969]/20 mb-8">
-                <Target className="w-4 h-4 text-[#C6A969]" />
-                <span className="text-[10px] font-bold uppercase tracking-widest text-[#C6A969]">The philosophy</span>
-              </div>
-              
-              <h2 className="text-4xl lg:text-6xl font-light text-white mb-8 leading-tight" style={{ fontFamily: 'Georgia, serif' }}>
+              <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-[#6B6B6B] mb-4">The Philosophy</p>
+              <h2
+                className="text-4xl lg:text-5xl font-bold text-[#1C1C1C] mb-6 leading-tight"
+                style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}
+              >
                 Sculpting Air into <br />
-                <span className="italic">Profound Memories</span>
+                <em>Profound Memories</em>
               </h2>
-              
-              <p className="text-lg text-white/60 mb-10 leading-relaxed font-serif">
+              <p className="text-[#6B6B6B] text-sm leading-relaxed mb-8">
                 We believe olfaction is the highest form of art. Unlike sight or sound, scent bypasses logic and strikes the heart directly. At Puspsaar, we don't just "mix" perfumes; we sculpt them using botanical extractions and rare molecular structures.
               </p>
-              
-              <div className="space-y-6">
+              <div className="space-y-4">
                 {[
                   { icon: Zap, text: 'Proprietary Cold-Press Distillation' },
                   { icon: Globe, text: 'Globally Sourced, Ethically Harvested' },
                   { icon: Star, text: 'Limited Edition Serialized Batches' },
                 ].map((item, index) => (
-                  <div key={index} className="flex items-center gap-5">
-                    <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
-                      <item.icon className="w-5 h-5 text-[#C6A969]" />
+                  <div key={index} className="flex items-center gap-4">
+                    <div className="w-10 h-10 border border-[#E0E0E0] flex items-center justify-center shrink-0">
+                      <item.icon className="w-4 h-4 text-[#1C1C1C]" />
                     </div>
-                    <span className="text-sm text-white/80 font-medium tracking-wide">{item.text}</span>
+                    <span className="text-sm text-[#1C1C1C] font-medium">{item.text}</span>
                   </div>
                 ))}
               </div>
             </motion.div>
-            
-            <div className="relative">
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 1.5 }}
-                className="relative rounded-[3rem] overflow-hidden border border-white/10 aspect-[4/5]"
-              >
-                <img
-                  src="https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=1200&q=100"
-                  alt="Artisanal Perfumery"
-                  className="w-full h-full object-cover grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-1000"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-transparent" />
-                <div className="absolute bottom-10 left-10">
-                  <p className="text-[#C6A969] text-[10px] font-bold uppercase tracking-widest mb-1">Maison Workshop</p>
-                  <p className="text-2xl font-light italic">Batch No. 892 Extraction</p>
-                </div>
-              </motion.div>
+
+            <div className="relative aspect-[4/5] overflow-hidden">
+              <img
+                src="https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=1200&q=100"
+                alt="Artisanal Perfumery"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute bottom-6 left-6 bg-black text-white p-4">
+                <p className="text-[9px] uppercase tracking-widest text-white/60 mb-1">Maison Workshop</p>
+                <p className="text-sm font-medium italic">Batch No. 892 Extraction</p>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Our Values */}
-      <section className="py-32 bg-zinc-950">
+      {/* Values */}
+      <section className="py-24 bg-[#F5F5F5]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-24">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#C6A969]/10 border border-[#C6A969]/20 mb-8">
-              <Heart className="w-4 h-4 text-[#C6A969]" />
-              <span className="text-[10px] font-bold uppercase tracking-widest text-[#C6A969]">The Core</span>
-            </div>
-            <h2 className="text-4xl sm:text-5xl font-light text-white mb-6" style={{ fontFamily: 'Georgia, serif' }}>
-              Built on <span className="italic text-[#C6A969]">Legacy & Essence</span>
+          <div className="text-center mb-16">
+            <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-[#6B6B6B] mb-4">The Core</p>
+            <h2
+              className="text-3xl sm:text-4xl font-bold text-[#1C1C1C]"
+              style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}
+            >
+              Built on Legacy & Essence
             </h2>
           </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {values.map((value) => {
               const IconComponent = value.icon
               return (
-                <div
-                  key={value.title}
-                  className="group relative"
-                >
-                  <div className={`w-16 h-16 rounded-3xl ${value.iconBg} flex items-center justify-center mb-8 border border-[#C6A969]/30 transition-all duration-500 group-hover:bg-[#C6A969] group-hover:rotate-6`}>
-                    <IconComponent className="w-7 h-7 text-[#C6A969] group-hover:text-black transition-colors" />
+                <div key={value.title} className="bg-white border border-[#E0E0E0] p-6">
+                  <div className="w-12 h-12 border border-[#E0E0E0] flex items-center justify-center mb-5">
+                    <IconComponent className="w-5 h-5 text-[#1C1C1C]" />
                   </div>
-                  <h3 className="font-bold text-[11px] uppercase tracking-widest text-[#C6A969] mb-4">{value.title}</h3>
-                  <p className="text-sm text-white/50 leading-relaxed font-serif">{value.description}</p>
+                  <h3 className="font-bold text-[11px] uppercase tracking-widest text-[#1C1C1C] mb-3">{value.title}</h3>
+                  <p className="text-sm text-[#6B6B6B] leading-relaxed">{value.description}</p>
                 </div>
               )
             })}
@@ -245,28 +176,30 @@ export default function AboutPage() {
       </section>
 
       {/* Timeline */}
-      <section className="py-32 lg:py-48">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-24">
-            <h2 className="text-4xl font-light text-white mb-4" style={{ fontFamily: 'Georgia, serif' }}>The Puspsaar Journey</h2>
-            <div className="h-px w-24 bg-[#C6A969] mx-auto" />
+      <section className="py-24">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2
+              className="text-3xl font-bold text-[#1C1C1C] mb-4"
+              style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}
+            >
+              The Puspsaar Journey
+            </h2>
+            <div className="h-px w-16 bg-[#1C1C1C] mx-auto" />
           </div>
-
-          <div className="space-y-24">
-            {milestones.map((milestone, index) => (
-              <motion.div 
+          <div className="space-y-12">
+            {milestones.map((milestone) => (
+              <motion.div
                 key={milestone.year}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="flex flex-col md:flex-row gap-10 items-start"
+                className="flex gap-8 items-start"
               >
-                <div className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-[#C6A969] to-transparent opacity-40 shrink-0">
-                  {milestone.year}
-                </div>
-                <div className="pt-2 border-l border-white/10 pl-10">
-                  <h3 className="text-xl font-bold uppercase tracking-widest text-white mb-3">{milestone.title}</h3>
-                  <p className="text-white/50 font-serif leading-relaxed">{milestone.description}</p>
+                <div className="text-4xl font-black text-[#E0E0E0] shrink-0 w-20 text-right">{milestone.year}</div>
+                <div className="border-l-2 border-[#E0E0E0] pl-8 pt-1">
+                  <h3 className="text-sm font-bold uppercase tracking-widest text-[#1C1C1C] mb-2">{milestone.title}</h3>
+                  <p className="text-sm text-[#6B6B6B] leading-relaxed">{milestone.description}</p>
                 </div>
               </motion.div>
             ))}
@@ -274,31 +207,28 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-32 lg:py-48">
+      {/* CTA */}
+      <section className="py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="relative rounded-[4rem] overflow-hidden group">
-            <div className="absolute inset-0">
-              <img
-                src="https://images.unsplash.com/photo-1594125355975-d01138bb5244?auto=format&fit=crop&w=2000&q=80"
-                alt="Luxury Lifestyle"
-                className="w-full h-full object-cover grayscale opacity-40 group-hover:scale-110 transition-transform duration-[3s]"
-              />
-              <div className="absolute inset-0 bg-black/80" />
-            </div>
-            
-            <div className="relative z-10 py-32 px-8 text-center max-w-3xl mx-auto">
-              <h2 className="text-4xl sm:text-6xl font-light text-white mb-10 leading-tight" style={{ fontFamily: 'Georgia, serif' }}>
-                Your Signature <br /> 
-                <span className="italic text-[#C6A969]">Awaits Discovery</span>
+          <div className="relative overflow-hidden">
+            <img
+              src="https://images.unsplash.com/photo-1594125355975-d01138bb5244?auto=format&fit=crop&w=2000&q=80"
+              alt="Luxury Lifestyle"
+              className="w-full h-80 object-cover"
+            />
+            <div className="absolute inset-0 bg-black/75 flex flex-col items-center justify-center text-center px-4">
+              <h2
+                className="text-3xl sm:text-5xl font-bold text-white mb-8 leading-tight"
+                style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}
+              >
+                Your Signature <em>Awaits Discovery</em>
               </h2>
-              <div className="flex flex-wrap justify-center gap-6">
-                <Link href="/product">
-                  <Button size="lg" className="bg-white text-black hover:bg-[#C6A969] transition-colors rounded-full px-12 py-8 text-[10px] font-bold uppercase tracking-widest">
-                    Enter the archive
-                  </Button>
-                </Link>
-              </div>
+              <Link
+                href="/product"
+                className="inline-block px-10 py-4 bg-white text-black text-xs font-bold uppercase tracking-[0.2em] hover:bg-[#F5F5F5] transition-colors"
+              >
+                Enter the Archive
+              </Link>
             </div>
           </div>
         </div>

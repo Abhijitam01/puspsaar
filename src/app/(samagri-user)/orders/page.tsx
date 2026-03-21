@@ -155,37 +155,40 @@ export default function OrdersPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+    <div className="min-h-screen bg-white">
+      <div className="border-b border-[#E0E0E0] py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-foreground">My Orders</h1>
-            <p className="text-muted-foreground mt-1">Track and manage your fragrance orders</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#6B6B6B] mb-1">Puspsaar</p>
+            <h1 className="text-3xl font-bold text-[#1C1C1C]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>My Orders</h1>
+            <p className="text-[#6B6B6B] mt-1 text-sm">Track and manage your fragrance orders</p>
           </div>
-          <Link href="/product">
-            <Button variant="outline" className="gap-2">
-              <Car className="w-4 h-4" />
-              Browse More Cars
-            </Button>
+          <Link
+            href="/product"
+            className="border border-[#1C1C1C] px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.1em] text-[#1C1C1C] hover:bg-black hover:text-white transition-colors"
+          >
+            Browse Fragrances
           </Link>
         </div>
+      </div>
 
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Filters */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-8">
+        <div className="flex flex-col sm:flex-row gap-3 mb-8">
           <div className="relative flex-1 max-w-md">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-            <Input
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B6B6B]" />
+            <input
+              type="text"
               placeholder="Search by order ID or fragrance name..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 bg-muted/50"
+              className="w-full border border-[#E0E0E0] py-2.5 pl-9 pr-4 text-sm text-[#1C1C1C] placeholder:text-[#ABABAB] focus:outline-none focus:border-black transition-colors"
             />
           </div>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="h-10 px-4 rounded-md bg-muted/50 border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+            className="border border-[#E0E0E0] px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-[#1C1C1C] focus:outline-none focus:border-black bg-white cursor-pointer"
           >
             <option value="all">All Status</option>
             <option value="processing">Processing</option>
@@ -198,160 +201,144 @@ export default function OrdersPage() {
 
         {/* Orders List */}
         {filteredOrders.length === 0 ? (
-          <Card className="border-dashed">
-            <CardContent className="py-16 text-center">
-              <Package className="w-16 h-16 mx-auto text-muted-foreground/50 mb-4" />
-              <h3 className="text-lg font-semibold text-foreground mb-2">No orders found</h3>
-              <p className="text-muted-foreground mb-6">
-                {searchTerm || statusFilter !== 'all' 
-                  ? "Try adjusting your search or filters"
-                  : "You haven't placed any orders yet"}
-              </p>
-              <Link href="/product">
-                <Button>Start Shopping</Button>
-              </Link>
-            </CardContent>
-          </Card>
+          <div className="text-center py-32 border border-[#E0E0E0]">
+            <Package className="w-16 h-16 mx-auto text-[#E0E0E0] mb-6" />
+            <h3 className="text-xl font-bold text-[#1C1C1C] mb-3" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+              No orders found
+            </h3>
+            <p className="text-[#6B6B6B] text-sm mb-8">
+              {searchTerm || statusFilter !== 'all'
+                ? 'Try adjusting your search or filters'
+                : "You haven't placed any orders yet"}
+            </p>
+            <Link
+              href="/product"
+              className="inline-block px-8 py-3 bg-black text-white text-xs font-bold uppercase tracking-[0.15em] hover:bg-[#1C1C1C] transition-colors"
+            >
+              Start Shopping
+            </Link>
+          </div>
         ) : (
-          <div className="space-y-6">
+          <div className="space-y-4">
             {filteredOrders.map((order) => {
               const StatusIcon = getStatusIcon(order.status)
               return (
-                <Card key={order.id} className="overflow-hidden hover:border-primary/30 transition-all">
-                  <CardContent className="p-0">
-                    {/* Order Header */}
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 bg-muted/30 border-b border-border/50">
-                      <div className="flex items-center gap-4">
-                        <div className="text-sm">
-                          <p className="text-muted-foreground">Order ID</p>
-                          <p className="font-semibold text-foreground">{order.id}</p>
-                        </div>
-                        <div className="text-sm">
-                          <p className="text-muted-foreground">Order Date</p>
-                          <p className="font-medium text-foreground">
-                            {new Date(order.date).toLocaleDateString('en-IN', {
-                              day: 'numeric',
-                              month: 'short',
-                              year: 'numeric',
-                            })}
-                          </p>
-                        </div>
+                <div key={order.id} className="border border-[#E0E0E0] overflow-hidden">
+                  {/* Order Header */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 bg-[#F5F5F5] border-b border-[#E0E0E0]">
+                    <div className="flex items-center gap-6">
+                      <div className="text-sm">
+                        <p className="text-[10px] uppercase tracking-[0.1em] text-[#6B6B6B]">Order ID</p>
+                        <p className="font-semibold text-[#1C1C1C]">{order.id}</p>
                       </div>
-                      <Badge className={`${getStatusColor(order.status)} border gap-1.5`}>
-                        <StatusIcon className="w-3.5 h-3.5" />
-                        {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
-                      </Badge>
+                      <div className="text-sm">
+                        <p className="text-[10px] uppercase tracking-[0.1em] text-[#6B6B6B]">Order Date</p>
+                        <p className="font-medium text-[#1C1C1C]">
+                          {new Date(order.date).toLocaleDateString('en-IN', {
+                            day: 'numeric',
+                            month: 'short',
+                            year: 'numeric',
+                          })}
+                        </p>
+                      </div>
+                    </div>
+                    <span className={`inline-flex items-center gap-1.5 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.1em] border ${getStatusColor(order.status)}`}>
+                      <StatusIcon className="w-3 h-3" />
+                      {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                    </span>
+                  </div>
+
+                  {/* Order Items */}
+                  {order.items.map((item) => (
+                    <div key={item.id} className="flex gap-4 p-4">
+                      <div className="w-24 h-20 overflow-hidden shrink-0 bg-[#F5F5F5]">
+                        <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-[#1C1C1C] text-sm line-clamp-1">{item.name}</h3>
+                        <p className="text-xs text-[#6B6B6B] mt-1">{item.specs}</p>
+                        <p className="text-base font-bold text-[#1C1C1C] mt-2">{formatPrice(item.price)}</p>
+                      </div>
+                    </div>
+                  ))}
+
+                  {/* Order Footer */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 border-t border-[#E0E0E0]">
+                    <div className="flex flex-wrap items-center gap-4 text-xs text-[#6B6B6B]">
+                      <div className="flex items-center gap-1.5">
+                        <MapPin className="w-3.5 h-3.5" />
+                        {order.deliveryAddress.city}
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <CreditCard className="w-3.5 h-3.5" />
+                        {order.paymentMethod}
+                      </div>
+                      {order.estimatedDelivery && order.status !== 'delivered' && (
+                        <div className="flex items-center gap-1.5">
+                          <Calendar className="w-3.5 h-3.5" />
+                          Est. {new Date(order.estimatedDelivery).toLocaleDateString('en-IN', {
+                            day: 'numeric',
+                            month: 'short',
+                          })}
+                        </div>
+                      )}
                     </div>
 
-                    {/* Order Items */}
-                    {order.items.map((item) => (
-                      <div key={item.id} className="flex gap-4 p-4">
-                        <div className="w-24 h-24 sm:w-32 sm:h-24 rounded-xl overflow-hidden flex-shrink-0">
-                          <img
-                            src={item.image}
-                            alt={item.name}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-semibold text-foreground line-clamp-1">{item.name}</h3>
-                          <p className="text-sm text-muted-foreground mt-1">{item.specs}</p>
-                          <p className="text-lg font-bold text-primary mt-2">{formatPrice(item.price)}</p>
-                        </div>
-                      </div>
-                    ))}
-
-                    {/* Order Footer */}
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 bg-muted/20 border-t border-border/50">
-                      <div className="flex items-center gap-6 text-sm">
-                        <div className="flex items-center gap-2 text-muted-foreground">
-                          <MapPin className="w-4 h-4" />
-                          {order.deliveryAddress.city}
-                        </div>
-                        <div className="flex items-center gap-2 text-muted-foreground">
-                          <CreditCard className="w-4 h-4" />
-                          {order.paymentMethod}
-                        </div>
-                        {order.estimatedDelivery && order.status !== 'delivered' && (
-                          <div className="flex items-center gap-2 text-muted-foreground">
-                            <Calendar className="w-4 h-4" />
-                            Est. {new Date(order.estimatedDelivery).toLocaleDateString('en-IN', {
-                              day: 'numeric',
-                              month: 'short',
-                            })}
-                          </div>
-                        )}
-                      </div>
-
-                      <div className="flex gap-3">
-                        <Dialog>
-                          <DialogTrigger asChild>
-                            <Button variant="outline" size="sm" className="gap-2">
-                              <Eye className="w-4 h-4" />
-                              View Details
-                            </Button>
-                          </DialogTrigger>
-                          <DialogContent className="max-w-lg">
-                            <DialogHeader>
-                              <DialogTitle>Order Details - {order.id}</DialogTitle>
-                            </DialogHeader>
-                            <div className="space-y-6 pt-4">
-                              {/* Vehicle */}
-                              <div>
-                                <h4 className="text-sm font-medium text-muted-foreground mb-3">Vehicle</h4>
-                                {order.items.map((item) => (
-                                  <div key={item.id} className="flex gap-4">
-                                    <img
-                                      src={item.image}
-                                      alt={item.name}
-                                      className="w-20 h-20 rounded-lg object-cover"
-                                    />
-                                    <div>
-                                      <p className="font-semibold text-foreground">{item.name}</p>
-                                      <p className="text-sm text-muted-foreground">{item.specs}</p>
-                                      <p className="font-bold text-primary mt-1">{formatPrice(item.price)}</p>
-                                    </div>
+                    <div className="flex gap-2">
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <button className="border border-[#E0E0E0] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.1em] text-[#1C1C1C] hover:border-black transition-colors flex items-center gap-1.5">
+                            <Eye className="w-3.5 h-3.5" />
+                            View Details
+                          </button>
+                        </DialogTrigger>
+                        <DialogContent className="max-w-lg bg-white border border-[#E0E0E0]">
+                          <DialogHeader>
+                            <DialogTitle className="text-[#1C1C1C]">Order Details — {order.id}</DialogTitle>
+                          </DialogHeader>
+                          <div className="space-y-6 pt-4">
+                            <div>
+                              <h4 className="text-[10px] uppercase tracking-[0.1em] font-semibold text-[#6B6B6B] mb-3">Products</h4>
+                              {order.items.map((item) => (
+                                <div key={item.id} className="flex gap-4">
+                                  <img src={item.image} alt={item.name} className="w-16 h-16 object-cover border border-[#E0E0E0]" />
+                                  <div>
+                                    <p className="font-semibold text-[#1C1C1C] text-sm">{item.name}</p>
+                                    <p className="text-xs text-[#6B6B6B] mt-0.5">{item.specs}</p>
+                                    <p className="font-bold text-[#1C1C1C] mt-1">{formatPrice(item.price)}</p>
                                   </div>
-                                ))}
-                              </div>
-
-                              {/* Delivery Address */}
-                              <div>
-                                <h4 className="text-sm font-medium text-muted-foreground mb-2">Delivery Address</h4>
-                                <p className="text-foreground">{order.deliveryAddress.name}</p>
-                                <p className="text-sm text-muted-foreground">
-                                  {order.deliveryAddress.address}<br />
-                                  {order.deliveryAddress.city} - {order.deliveryAddress.pincode}
-                                </p>
-                              </div>
-
-                              {/* Payment */}
-                              <div>
-                                <h4 className="text-sm font-medium text-muted-foreground mb-2">Payment Method</h4>
-                                <p className="text-foreground">{order.paymentMethod}</p>
-                              </div>
-
-                              {/* Total */}
-                              <div className="pt-4 border-t border-border">
-                                <div className="flex justify-between items-center">
-                                  <span className="font-semibold text-foreground">Total Amount</span>
-                                  <span className="text-xl font-bold text-primary">{formatPrice(order.total)}</span>
                                 </div>
-                              </div>
+                              ))}
                             </div>
-                          </DialogContent>
-                        </Dialog>
+                            <div>
+                              <h4 className="text-[10px] uppercase tracking-[0.1em] font-semibold text-[#6B6B6B] mb-2">Delivery Address</h4>
+                              <p className="text-[#1C1C1C] text-sm">{order.deliveryAddress.name}</p>
+                              <p className="text-xs text-[#6B6B6B]">
+                                {order.deliveryAddress.address}<br />
+                                {order.deliveryAddress.city} — {order.deliveryAddress.pincode}
+                              </p>
+                            </div>
+                            <div>
+                              <h4 className="text-[10px] uppercase tracking-[0.1em] font-semibold text-[#6B6B6B] mb-2">Payment Method</h4>
+                              <p className="text-[#1C1C1C] text-sm">{order.paymentMethod}</p>
+                            </div>
+                            <div className="pt-4 border-t border-[#E0E0E0] flex justify-between items-center">
+                              <span className="font-semibold text-[#1C1C1C]">Total Amount</span>
+                              <span className="text-xl font-bold text-[#1C1C1C]">{formatPrice(order.total)}</span>
+                            </div>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
 
-                        {order.status === 'shipped' && (
-                          <Button size="sm" className="gap-2">
-                            <Truck className="w-4 h-4" />
-                            Track Order
-                          </Button>
-                        )}
-                      </div>
+                      {order.status === 'shipped' && (
+                        <button className="bg-black text-white px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.1em] hover:bg-[#1C1C1C] transition-colors flex items-center gap-1.5">
+                          <Truck className="w-3.5 h-3.5" />
+                          Track Order
+                        </button>
+                      )}
                     </div>
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
               )
             })}
           </div>

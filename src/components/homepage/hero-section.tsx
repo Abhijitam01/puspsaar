@@ -5,53 +5,78 @@ import Link from 'next/link';
 
 export default function HeroBanner() {
   return (
-    <section className="relative w-full h-[95vh] flex items-center justify-center overflow-hidden bg-[#0A0A0A]">
-      {/* Cinematic Background Video */}
-      <div className="absolute inset-0">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-cover opacity-40 scale-105"
-        >
-          <source 
-            src="https://player.vimeo.com/external/494252666.hd.mp4?s=2f5c78673899661414467c699926d83377755866&profile_id=175" 
-            type="video/mp4" 
-          />
-        </video>
-        {/* Subtle vignette and gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0A0A0A] via-transparent to-[#0A0A0A]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.6)_100%)]" />
-      </div>
-
-      {/* Hero Content - True Minimalism */}
-      <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 mt-20">
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
-          className="flex flex-col items-center"
-        >
-          <span className="text-[#C6A969] text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-6 sm:mb-8 font-light">
-            Maison Puspsaar
-          </span>
-          
-          <h1 className="text-5xl sm:text-7xl md:text-[6rem] lg:text-[8rem] font-normal text-white leading-[0.9] tracking-[-0.03em] mb-8" style={{ fontFamily: 'Georgia, serif' }}>
-            L'Essence<br />
-            <span className="italic font-light">du Temps</span>
-          </h1>
-          
-          <p className="text-white/70 max-w-md text-sm sm:text-base font-light tracking-wide mb-12">
-            Discover a curated archive of the world's most evocative, rare, and sophisticated fragrances.
-          </p>
-          
-          <Link href="/product">
-            <span className="inline-block border-b border-[#C6A969] pb-1 text-[#C6A969] text-xs sm:text-sm tracking-[0.2em] uppercase transition-all hover:text-white hover:border-white">
-              Discover the Collection
+    <section className="relative w-full overflow-hidden bg-[#F5F5F5]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 min-h-[85vh] items-center">
+          {/* Text Content */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
+            className="flex flex-col justify-center py-16 lg:py-24 lg:pr-12 order-2 lg:order-1"
+          >
+            <span className="text-[11px] font-semibold uppercase tracking-[0.3em] text-[#6B6B6B] mb-6">
+              Premium Fragrances
             </span>
-          </Link>
-        </motion.div>
+            <h1
+              className="text-5xl sm:text-6xl lg:text-7xl font-bold text-[#1C1C1C] leading-[1.05] tracking-tight mb-6"
+              style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}
+            >
+              Discover<br />
+              <span className="italic font-normal">Your</span> Scent
+            </h1>
+            <p className="text-[#6B6B6B] text-base sm:text-lg leading-relaxed max-w-md mb-10">
+              Middle Eastern-quality perfumes, attars, and gifting sets — crafted for those who know the language of fragrance.
+            </p>
+            <div className="flex flex-wrap items-center gap-4">
+              <Link
+                href="/product"
+                className="bg-black text-white px-8 py-3.5 text-xs font-bold uppercase tracking-[0.15em] hover:bg-[#1C1C1C] transition-colors"
+              >
+                Shop Now
+              </Link>
+              <Link
+                href="/collections/gifting"
+                className="border border-[#1C1C1C] text-[#1C1C1C] px-8 py-3.5 text-xs font-bold uppercase tracking-[0.15em] hover:bg-[#1C1C1C] hover:text-white transition-colors"
+              >
+                View Gifting Sets
+              </Link>
+            </div>
+
+            {/* Stats */}
+            <div className="flex items-center gap-10 mt-12 pt-8 border-t border-[#E0E0E0]">
+              {[
+                { value: '500+', label: 'Fragrances' },
+                { value: '50k+', label: 'Happy Customers' },
+                { value: '100%', label: 'Authentic' },
+              ].map(stat => (
+                <div key={stat.label}>
+                  <p className="text-xl font-bold text-[#1C1C1C]">{stat.value}</p>
+                  <p className="text-xs text-[#6B6B6B] mt-0.5">{stat.label}</p>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Image */}
+          <motion.div
+            initial={{ opacity: 0, scale: 1.02 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, ease: 'easeOut' }}
+            className="relative order-1 lg:order-2 h-[50vw] lg:h-full min-h-[320px] lg:min-h-[85vh]"
+          >
+            <img
+              src="https://images.unsplash.com/photo-1541643600914-78b084683702?auto=format&fit=crop&w=1200&q=80"
+              alt="Premium Fragrances — Puspsaar"
+              className="w-full h-full object-cover"
+            />
+            {/* Promo badge */}
+            <div className="absolute bottom-8 left-8 bg-black text-white px-5 py-4">
+              <p className="text-[10px] uppercase tracking-[0.2em] text-white/70 mb-1">Limited Offer</p>
+              <p className="text-sm font-bold uppercase tracking-wider">Buy 2 Get 1 Free</p>
+            </div>
+          </motion.div>
+        </div>
       </div>
     </section>
   );

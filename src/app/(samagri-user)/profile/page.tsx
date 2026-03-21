@@ -7,9 +7,6 @@ import {
   Settings,
   Clock
 } from 'lucide-react'
-import { Card, CardContent } from '@/components/ui/card'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Badge } from '@/components/ui/badge'
 import ProfileDetails from '@/components/profile/profile-details'
 import QucikActionsOption from '@/components/profile/quick-action-option'
 import QuickStats from '@/components/profile/quick-stats'
@@ -33,7 +30,6 @@ export interface IExtendedUserProfile extends IUserProfile {
 }
 
 export default function ProfilePage() {
-  // Move profile data inside the component
   const userProfile: IUserProfile = {
     name: "John Doe",
     email: "john.doe@example.com",
@@ -52,70 +48,65 @@ export default function ProfilePage() {
     wishlistItems: 8
   }
 
-  const quickActions = [
-    { icon: Heart, label: 'Wishlist', href: '/wishlist', iconColor: 'text-rose-600' },
-    { icon: ShoppingBag, label: 'Orders', href: '/orders', iconColor: 'text-blue-600' },
-    { icon: Package, label: 'History', href: '/orders', iconColor: 'text-indigo-600' },
-    { icon: Settings, label: 'Settings', href: '#', iconColor: 'text-slate-600' },
-  ]
-
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
-        <div className="flex justify-start py-6 text-2xl font-semibold text-foreground">
-          My Profile
+    <div className="min-h-screen bg-white">
+      <div className="border-b border-[#E0E0E0] py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#6B6B6B] mb-1">Puspsaar</p>
+          <h1 className="text-3xl font-bold text-[#1C1C1C]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>My Profile</h1>
         </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Left Sidebar */}
           <div className="lg:col-span-4 xl:col-span-3 space-y-6">
-            <Card className="border border-border bg-card shadow-none relative">
-              <CardContent className="p-6">
-                <div className="flex flex-col items-center text-center">
-                  {/* Avatar */}
-                  <div className="relative mb-4">
-                    <Avatar className="h-24 w-24 border-2 border-border">
-                      <AvatarImage src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" />
-                      <AvatarFallback className="text-xl bg-muted text-muted-foreground">
-                        {extendedUserProfile.name.split(" ").map((n) => n[0]).join("")}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="absolute -bottom-1 -right-1 h-6 w-6 bg-emerald-500 rounded-full border-2 border-card"></div>
+            <div className="border border-[#E0E0E0] p-6 bg-white relative">
+              <div className="flex flex-col items-center text-center">
+                {/* Avatar */}
+                <div className="relative mb-4">
+                  <div className="w-24 h-24 border-2 border-[#E0E0E0] overflow-hidden bg-[#F5F5F5]">
+                    <img
+                      src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+                      alt={extendedUserProfile.name}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
+                  <div className="absolute -bottom-1 -right-1 h-5 w-5 bg-emerald-500 border-2 border-white" />
+                </div>
 
-                  {/* User Info */}
-                  <h2 className="text-lg font-semibold text-foreground">{extendedUserProfile.name}</h2>
-                  <p className="text-sm text-muted-foreground mt-0.5">{extendedUserProfile.email}</p>
+                {/* User Info */}
+                <h2 className="text-lg font-bold text-[#1C1C1C]">{extendedUserProfile.name}</h2>
+                <p className="text-sm text-[#6B6B6B] mt-0.5">{extendedUserProfile.email}</p>
 
-                  <div className="flex items-center gap-1.5 mt-3 text-xs text-muted-foreground">
-                    <Clock className="h-3.5 w-3.5" />
-                    <span>Joined {extendedUserProfile.joinDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
-                  </div>
+                <div className="flex items-center gap-1.5 mt-3 text-xs text-[#6B6B6B]">
+                  <Clock className="h-3.5 w-3.5" />
+                  <span>Joined {extendedUserProfile.joinDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                </div>
 
-                  <Badge variant="outline" className="absolute -top-2 right-0 bg-secondary rounded-full border-secondary text-secondary-foreground px-3 py-1">
-                    Premium Member
-                  </Badge>
+                <span className="absolute -top-2 right-3 bg-black text-white text-[9px] font-bold uppercase tracking-[0.1em] px-3 py-1">
+                  Premium Member
+                </span>
 
-                  {/* Stats */}
-                  <div className="w-full mt-6 pt-6 border-t border-border">
-                    <div className="grid grid-cols-3 gap-4 text-center">
-                      <div>
-                        <div className="text-2xl font-bold text-primary">{extendedUserProfile.totalOrders}</div>
-                        <div className="text-xs text-muted-foreground mt-1">Orders</div>
-                      </div>
-                      <div>
-                        <div className="text-2xl font-bold text-primary">₹{(extendedUserProfile.totalSpent / 1000).toFixed(0)}k</div>
-                        <div className="text-xs text-muted-foreground mt-1">Spent</div>
-                      </div>
-                      <div>
-                        <div className="text-2xl font-bold text-primary">{extendedUserProfile.wishlistItems}</div>
-                        <div className="text-xs text-muted-foreground mt-1">Saved</div>
-                      </div>
+                {/* Stats */}
+                <div className="w-full mt-6 pt-6 border-t border-[#E0E0E0]">
+                  <div className="grid grid-cols-3 gap-4 text-center">
+                    <div>
+                      <div className="text-2xl font-bold text-[#1C1C1C]">{extendedUserProfile.totalOrders}</div>
+                      <div className="text-[10px] text-[#6B6B6B] mt-1 uppercase tracking-widest">Orders</div>
+                    </div>
+                    <div>
+                      <div className="text-2xl font-bold text-[#1C1C1C]">₹{(extendedUserProfile.totalSpent / 1000).toFixed(0)}k</div>
+                      <div className="text-[10px] text-[#6B6B6B] mt-1 uppercase tracking-widest">Spent</div>
+                    </div>
+                    <div>
+                      <div className="text-2xl font-bold text-[#1C1C1C]">{extendedUserProfile.wishlistItems}</div>
+                      <div className="text-[10px] text-[#6B6B6B] mt-1 uppercase tracking-widest">Saved</div>
                     </div>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
             {/* Quick Actions */}
             <QucikActionsOption />
@@ -123,8 +114,8 @@ export default function ProfilePage() {
 
           {/* Main Content Area */}
           <div className="lg:col-span-8 xl:col-span-9 space-y-6">
-           <ProfileDetails userProfile={userProfile} />
-           <QuickStats user={extendedUserProfile} />
+            <ProfileDetails userProfile={userProfile} />
+            <QuickStats user={extendedUserProfile} />
           </div>
         </div>
       </div>

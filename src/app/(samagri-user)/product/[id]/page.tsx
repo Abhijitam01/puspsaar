@@ -1,13 +1,10 @@
 'use client'
 import React, { useState } from 'react'
 import { Star, Heart, Share2, ShoppingBag, ChevronLeft, ChevronRight, Check, Minus, Plus, Wind, Flower2, Zap } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 import { useCartStore } from '@/store/cartStore'
-import { perfumeProducts } from '@/data/perfume-data'
 import { toast } from 'sonner'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-
 import { createClient } from '@/lib/supabase/client'
 import { IPerfumeProduct } from '@/model/product'
 import ProductCard from '@/components/product/productcard'
@@ -24,7 +21,6 @@ export default function ProductDetailPage(props: { params: Promise<{ id: string 
       const { data } = await supabase.from('products').select('*').eq('id', params.id).single()
       if (data) {
         setProduct(data)
-        // Also load some related items (same category)
         const { data: related } = await supabase
           .from('products')
           .select('*')
@@ -39,13 +35,17 @@ export default function ProductDetailPage(props: { params: Promise<{ id: string 
   }, [params.id, supabase])
 
   if (isLoading) {
-    return <div className="min-h-screen flex items-center justify-center"><div className="w-8 h-8 rounded-full border-4 border-[#C6A969] border-t-transparent animate-spin" /></div>
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-[#E0E0E0] border-t-black animate-spin" />
+      </div>
+    )
   }
 
   if (!product && !isLoading) return notFound()
 
   const [selectedImage, setSelectedImage] = useState(0)
-  const [selectedVolume, setSelectedVolume] = useState(product.volumes[0])
+  const [selectedVolume, setSelectedVolume] = useState(product.volumes?.[0] ?? product.volume)
   const [quantity, setQuantity] = useState(1)
   const [isWishlisted, setIsWishlisted] = useState(false)
   const [addingToCart, setAddingToCart] = useState(false)
@@ -71,69 +71,71 @@ export default function ProductDetailPage(props: { params: Promise<{ id: string 
     }
     await new Promise(r => setTimeout(r, 600))
     setAddingToCart(false)
-    toast.success(`${product.name} (${selectedVolume}) added to cart!`)
+    toast.success(`${product.name} added to cart!`)
   }
 
+  const volumes = product.volumes && product.volumes.length > 0 ? product.volumes : [product.volume].filter(Boolean)
+
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-white">
       {/* Breadcrumb */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-2">
-        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-          <Link href="/" className="hover:text-[#C6A969]">Home</Link>
-          <span>/</span>
-          <Link href="/product" className="hover:text-[#C6A969]">Shop</Link>
-          <span>/</span>
-          <Link href={`/product?category=${product.category}`} className="hover:text-[#C6A969]">{product.category}</Link>
-          <span>/</span>
-          <span className="text-foreground">{product.name}</span>
+      <div className="border-b border-[#E0E0E0]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+          <div className="flex items-center gap-2 text-xs text-[#6B6B6B]">
+            <Link href="/" className="hover:text-black transition-colors">Home</Link>
+            <span>/</span>
+            <Link href="/product" className="hover:text-black transition-colors">Shop</Link>
+            <span>/</span>
+            <Link href={`/product?category=${product.category}`} className="hover:text-black transition-colors">{product.category}</Link>
+            <span>/</span>
+            <span className="text-[#1C1C1C]">{product.name}</span>
+          </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-14">
-          {/* ── Image Gallery ── */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+          {/* Image Gallery */}
           <div className="space-y-4">
-            <div className="relative group aspect-square rounded-3xl overflow-hidden bg-muted">
+            <div className="relative group aspect-square overflow-hidden bg-[#F5F5F5]">
               <img
                 src={images[selectedImage]}
                 alt={product.name}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
               {discount && (
-                <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-[#C6A969] text-black text-xs font-bold">
+                <span className="absolute top-4 left-4 bg-[#E32C2B] text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1">
                   {discount}% OFF
                 </span>
               )}
-              <span className="absolute top-4 right-16 px-3 py-1 rounded-full glass-panel text-foreground text-xs font-medium">
+              <span className="absolute top-4 right-4 bg-black text-white text-[10px] font-semibold uppercase tracking-wider px-3 py-1">
                 {product.concentration}
               </span>
-              {/* Arrows */}
               {images.length > 1 && (
                 <>
                   <button
                     onClick={() => setSelectedImage(i => (i === 0 ? images.length - 1 : i - 1))}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/40 text-white opacity-0 group-hover:opacity-100 transition-all"
+                    className="absolute left-3 top-1/2 -translate-y-1/2 p-2 bg-white border border-[#E0E0E0] text-[#1C1C1C] opacity-0 group-hover:opacity-100 transition-all"
                   >
-                    <ChevronLeft className="w-5 h-5" />
+                    <ChevronLeft className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => setSelectedImage(i => (i === images.length - 1 ? 0 : i + 1))}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/40 text-white opacity-0 group-hover:opacity-100 transition-all"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 p-2 bg-white border border-[#E0E0E0] text-[#1C1C1C] opacity-0 group-hover:opacity-100 transition-all"
                   >
-                    <ChevronRight className="w-5 h-5" />
+                    <ChevronRight className="w-4 h-4" />
                   </button>
                 </>
               )}
             </div>
-            {/* Thumbnails */}
             {images.length > 1 && (
               <div className="flex gap-3">
                 {images.map((img: string, i: number) => (
                   <button
                     key={i}
                     onClick={() => setSelectedImage(i)}
-                    className={`w-20 h-20 rounded-xl overflow-hidden border-2 transition-all ${
-                      selectedImage === i ? 'border-[#C6A969]' : 'border-border hover:border-[#C6A969]/50'
+                    className={`w-20 h-20 overflow-hidden border-2 transition-colors ${
+                      selectedImage === i ? 'border-black' : 'border-[#E0E0E0] hover:border-[#ABABAB]'
                     }`}
                   >
                     <img src={img} alt="" className="w-full h-full object-cover" />
@@ -143,155 +145,148 @@ export default function ProductDetailPage(props: { params: Promise<{ id: string 
             )}
           </div>
 
-          {/* ── Product Details ── */}
+          {/* Product Details */}
           <div className="space-y-6">
             {/* Header */}
             <div>
               <div className="flex items-center justify-between mb-2">
-                <span className="text-[#C6A969] text-sm font-semibold tracking-wide">{product.brand}</span>
-                <div className="flex items-center gap-2">
+                <span className="text-[11px] uppercase tracking-[0.2em] font-semibold text-[#6B6B6B]">{product.brand}</span>
+                <div className="flex items-center gap-1">
                   <button
                     onClick={() => setIsWishlisted(!isWishlisted)}
-                    className={`p-2 rounded-full transition-all ${isWishlisted ? 'bg-red-50 text-red-500' : 'hover:bg-muted text-muted-foreground'}`}
+                    className={`p-2 border transition-colors ${
+                      isWishlisted ? 'border-red-200 bg-red-50 text-red-500' : 'border-[#E0E0E0] text-[#6B6B6B] hover:text-black hover:border-black'
+                    }`}
                   >
-                    <Heart className={`w-5 h-5 ${isWishlisted ? 'fill-current' : ''}`} />
+                    <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-current' : ''}`} />
                   </button>
-                  <button className="p-2 rounded-full hover:bg-muted text-muted-foreground">
-                    <Share2 className="w-5 h-5" />
+                  <button className="p-2 border border-[#E0E0E0] text-[#6B6B6B] hover:text-black hover:border-black transition-colors">
+                    <Share2 className="w-4 h-4" />
                   </button>
                 </div>
               </div>
-              <h1 className="text-3xl font-bold text-foreground mb-1" style={{ fontFamily: 'Georgia, serif' }}>
+              <h1
+                className="text-3xl sm:text-4xl font-bold text-[#1C1C1C] mb-2"
+                style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}
+              >
                 {product.name}
               </h1>
-              <p className="text-muted-foreground text-sm mb-3">{product.subtitle}</p>
+              <p className="text-[#6B6B6B] text-sm mb-4">{product.subtitle}</p>
 
               {/* Rating */}
-              <div className="flex items-center gap-3">
-                <div className="flex items-center gap-1">
+              <div className="flex items-center gap-3 flex-wrap">
+                <div className="flex items-center gap-0.5">
                   {[...Array(5)].map((_, i) => (
                     <Star
                       key={i}
-                      className={`w-4 h-4 ${i < Math.floor(product.rating) ? 'fill-[#C6A969] text-[#C6A969]' : 'text-muted'}`}
+                      className={`w-4 h-4 ${i < Math.floor(product.rating) ? 'fill-[#FFAF00] text-[#FFAF00]' : 'text-[#E0E0E0]'}`}
                     />
                   ))}
                 </div>
-                <span className="text-sm font-semibold text-foreground">{product.rating}</span>
-                <span className="text-sm text-muted-foreground">({product.ratingCount || '15+'} reviews)</span>
-                <span className={`ml-2 px-2 py-0.5 rounded-full text-xs ${product.stock_quantity > 0 ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-red-100 text-red-700'}`}>
-                  {product.stock_quantity > 5 ? '✓ In Stock' : product.stock_quantity > 0 ? `Only ${product.stock_quantity} left` : 'Out of Stock'}
+                <span className="text-sm font-semibold text-[#1C1C1C]">{product.rating}</span>
+                <span className="text-sm text-[#6B6B6B]">({product.ratingCount || '15+'} reviews)</span>
+                <span className={`px-2.5 py-0.5 text-xs font-semibold ${
+                  product.stock_quantity > 0
+                    ? 'bg-green-100 text-green-700'
+                    : 'bg-red-100 text-red-700'
+                }`}>
+                  {product.stock_quantity > 5 ? 'In Stock' : product.stock_quantity > 0 ? `Only ${product.stock_quantity} left` : 'Out of Stock'}
                 </span>
               </div>
             </div>
 
             {/* Price */}
-            <div className="py-4 border-y border-border">
+            <div className="py-5 border-y border-[#E0E0E0]">
               <div className="flex items-baseline gap-3">
-                <span className="text-4xl font-bold text-foreground">₹{product.price.toLocaleString()}</span>
+                <span className="text-3xl font-bold text-[#1C1C1C]">₹{product.price.toLocaleString()}</span>
                 {product.original_price && (
                   <>
-                    <span className="text-lg text-muted-foreground line-through">₹{product.original_price.toLocaleString()}</span>
-                    <span className="px-2.5 py-0.5 rounded-full bg-[#C6A969]/10 text-[#C6A969] text-sm font-semibold">
+                    <span className="text-lg text-[#ABABAB] line-through">₹{product.original_price.toLocaleString()}</span>
+                    <span className="bg-[#E32C2B] text-white text-xs font-bold px-2 py-0.5">
                       Save {discount}%
                     </span>
                   </>
                 )}
               </div>
-              <p className="text-muted-foreground text-xs mt-1">Inclusive of all taxes. Free delivery on this order.</p>
+              <p className="text-[#6B6B6B] text-xs mt-1">Inclusive of all taxes. Free delivery on this order.</p>
             </div>
 
             {/* Description */}
-            <p className="text-muted-foreground text-sm leading-relaxed">{product.description}</p>
+            <p className="text-[#6B6B6B] text-sm leading-relaxed">{product.description}</p>
 
-            {/* Category + Tags */}
+            {/* Tags */}
             <div className="flex flex-wrap gap-2">
-              <span className="px-3 py-1 rounded-full border border-border text-xs text-muted-foreground">
-                {product.category}
-              </span>
-              <span className="px-3 py-1 rounded-full border border-border text-xs text-muted-foreground">
-                {product.concentration}
-              </span>
-              {product.tags && product.tags.length > 0 && product.tags.map((tag: string) => (
-                <span key={tag} className="px-3 py-1 rounded-full border border-border text-xs text-muted-foreground">
-                  {tag}
-                </span>
+              <span className="border border-[#E0E0E0] px-3 py-1 text-xs text-[#6B6B6B]">{product.category}</span>
+              <span className="border border-[#E0E0E0] px-3 py-1 text-xs text-[#6B6B6B]">{product.concentration}</span>
+              {product.tags?.map((tag: string) => (
+                <span key={tag} className="border border-[#E0E0E0] px-3 py-1 text-xs text-[#6B6B6B]">{tag}</span>
               ))}
             </div>
 
             {/* Volume Selector */}
-            <div>
-              <h3 className="text-sm font-semibold text-foreground mb-3">Select Volume</h3>
-              <div className="flex flex-wrap gap-3">
-                {product.volumes && product.volumes.length > 0 ? product.volumes.map((vol: string) => (
-                  <button
-                    key={vol}
-                    onClick={() => setSelectedVolume(vol)}
-                    className={`px-5 py-2.5 rounded-full text-sm font-medium border transition-all ${
-                      selectedVolume === vol
-                        ? 'bg-foreground text-background border-foreground'
-                        : 'border-border text-muted-foreground hover:border-[#C6A969] hover:text-foreground'
-                    }`}
-                  >
-                    {vol}
-                  </button>
-                )) : (
-                  <button
-                    key={product.volume}
-                    onClick={() => setSelectedVolume(product.volume)}
-                    className={`px-5 py-2.5 rounded-full text-sm font-medium border transition-all ${
-                      selectedVolume === product.volume
-                        ? 'bg-foreground text-background border-foreground'
-                        : 'border-border text-muted-foreground hover:border-[#C6A969] hover:text-foreground'
-                    }`}
-                  >
-                    {product.volume}
-                  </button>
-                )}
+            {volumes.length > 0 && (
+              <div>
+                <h3 className="text-sm font-semibold text-[#1C1C1C] mb-3">Select Volume</h3>
+                <div className="flex flex-wrap gap-2">
+                  {volumes.map((vol: string) => (
+                    <button
+                      key={vol}
+                      onClick={() => setSelectedVolume(vol)}
+                      className={`px-5 py-2 text-sm font-medium border transition-colors ${
+                        selectedVolume === vol
+                          ? 'bg-black text-white border-black'
+                          : 'border-[#E0E0E0] text-[#6B6B6B] hover:border-black hover:text-black'
+                      }`}
+                    >
+                      {vol}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Quantity + Add to Cart */}
             <div className="flex items-center gap-4">
-              <div className="flex items-center bg-muted rounded-xl border border-border">
+              <div className="flex items-center border border-[#E0E0E0]">
                 <button
                   onClick={() => quantity > 1 && setQuantity(q => q - 1)}
-                  className="p-3 hover:bg-accent rounded-l-xl transition-colors"
+                  className="p-3 hover:bg-[#F5F5F5] transition-colors disabled:opacity-40"
                   disabled={quantity <= 1}
                 >
-                  <Minus className="w-4 h-4 text-foreground" />
+                  <Minus className="w-4 h-4 text-[#1C1C1C]" />
                 </button>
-                <span className="px-5 font-semibold text-foreground">{quantity}</span>
+                <span className="px-5 font-semibold text-[#1C1C1C] min-w-[3rem] text-center">{quantity}</span>
                 <button
                   onClick={() => setQuantity(q => q + 1)}
-                  className="p-3 hover:bg-accent rounded-r-xl transition-colors"
+                  className="p-3 hover:bg-[#F5F5F5] transition-colors"
                 >
-                  <Plus className="w-4 h-4 text-foreground" />
+                  <Plus className="w-4 h-4 text-[#1C1C1C]" />
                 </button>
               </div>
-              <Button
+              <button
                 onClick={handleAddToCart}
                 disabled={addingToCart || product.stock_quantity <= 0}
-                className="flex-1 bg-foreground text-background hover:bg-[#C6A969] hover:text-black rounded-xl py-6 font-semibold text-base transition-all neon-glow"
+                className="flex-1 bg-black text-white py-4 text-sm font-bold uppercase tracking-[0.1em] hover:bg-[#1C1C1C] transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 {addingToCart ? (
-                  <span className="flex items-center gap-2">
-                    <span className="w-4 h-4 border-2 border-background/30 border-t-background rounded-full animate-spin" />
+                  <>
+                    <span className="w-4 h-4 border-2 border-white/30 border-t-white animate-spin" />
                     Adding...
-                  </span>
+                  </>
                 ) : (
-                  <span className="flex items-center gap-2">
-                    <ShoppingBag className="w-5 h-5" />
+                  <>
+                    <ShoppingBag className="w-4 h-4" />
                     Add to Cart — ₹{(product.price * quantity).toLocaleString()}
-                  </span>
+                  </>
                 )}
-              </Button>
+              </button>
             </div>
 
             {/* Trust badges */}
-            <div className="flex items-center gap-6 text-xs text-muted-foreground">
+            <div className="flex flex-wrap items-center gap-6 text-xs text-[#6B6B6B] pt-2">
               {['Authentic Guaranteed', 'Free Delivery', '7-Day Returns'].map(item => (
-                <div key={item} className="flex items-center gap-1">
-                  <Check className="w-3.5 h-3.5 text-[#C6A969]" />
+                <div key={item} className="flex items-center gap-1.5">
+                  <Check className="w-3.5 h-3.5 text-green-600" />
                   {item}
                 </div>
               ))}
@@ -299,92 +294,65 @@ export default function ProductDetailPage(props: { params: Promise<{ id: string 
           </div>
         </div>
 
-        {/* ── Fragrance Notes Pyramid ── */}
-        <div className="mt-24 max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <span className="inline-block px-4 py-1.5 rounded-full bg-[#C6A969]/10 text-[#C6A969] text-[10px] font-bold uppercase tracking-[0.3em] mb-4">
-              Olfactory Journey
-            </span>
-            <h2 className="text-4xl font-light text-foreground tracking-tight" style={{ fontFamily: 'Georgia, serif' }}>
-              The Scent Pyramid
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative items-stretch">
-            {/* Pyramid Connector Line (Desktop) */}
-            <div className="hidden md:block absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-transparent via-border to-transparent -translate-y-1/2 z-0" />
-
-            {/* Top Notes */}
-            <div className="relative z-10 group">
-              <div className="h-full bg-zinc-900/40 backdrop-blur-3xl rounded-[2.5rem] p-10 text-center border border-white/5 transition-all duration-700 hover:border-[#C6A969]/40 hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
-                <div className="w-20 h-20 mx-auto rounded-3xl bg-emerald-500/10 flex items-center justify-center mb-8 border border-emerald-500/20 group-hover:scale-110 group-hover:rotate-3 transition-all duration-700">
-                  <Wind className="w-8 h-8 text-emerald-400" />
-                </div>
-                <h3 className="text-xs font-bold uppercase tracking-[0.3em] text-[#C6A969] mb-3">Top Notes</h3>
-                <p className="text-[10px] text-white/40 uppercase tracking-widest mb-8 whitespace-nowrap">The First Impression</p>
-                <div className="flex flex-wrap justify-center gap-2">
-                  {product.fragrance_notes?.top?.map((note: string) => (
-                    <span key={note} className="px-4 py-2 rounded-full bg-white/5 text-white/80 text-[11px] font-medium border border-white/10 hover:border-[#C6A969]/40 transition-colors">
-                      {note}
-                    </span>
-                  ))}
-                </div>
-              </div>
+        {/* Fragrance Notes */}
+        {product.fragrance_notes && (
+          <div className="mt-20">
+            <div className="text-center mb-10">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#6B6B6B] mb-3">Olfactory Profile</p>
+              <h2
+                className="text-3xl font-bold text-[#1C1C1C]"
+                style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}
+              >
+                The Scent Pyramid
+              </h2>
             </div>
 
-            {/* Heart Notes */}
-            <div className="relative z-10 group">
-              <div className="h-full bg-zinc-900/40 backdrop-blur-3xl rounded-[2.5rem] p-10 text-center border border-[#C6A969]/20 transition-all duration-700 hover:border-[#C6A969]/60 hover:shadow-[0_20px_50px_rgba(198,169,105,0.15)]">
-                <div className="w-20 h-20 mx-auto rounded-3xl bg-rose-500/10 flex items-center justify-center mb-8 border border-rose-500/20 group-hover:scale-110 group-hover:-rotate-3 transition-all duration-700">
-                  <Flower2 className="w-8 h-8 text-rose-400" />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[
+                { icon: Wind, label: 'Top Notes', sub: 'The First Impression', notes: product.fragrance_notes.top, color: '#059669' },
+                { icon: Flower2, label: 'Heart Notes', sub: 'The Soul of Essence', notes: product.fragrance_notes.middle, color: '#e11d48' },
+                { icon: Zap, label: 'Base Notes', sub: 'The Lasting Memory', notes: product.fragrance_notes.base, color: '#d97706' },
+              ].map(({ icon: Icon, label, sub, notes, color }) => (
+                <div key={label} className="border border-[#E0E0E0] p-8 text-center">
+                  <div className="w-14 h-14 mx-auto border border-[#E0E0E0] flex items-center justify-center mb-5">
+                    <Icon className="w-6 h-6" style={{ color }} />
+                  </div>
+                  <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-[#1C1C1C] mb-1">{label}</h3>
+                  <p className="text-[10px] text-[#6B6B6B] uppercase tracking-widest mb-6">{sub}</p>
+                  <div className="flex flex-wrap justify-center gap-2">
+                    {notes?.map((note: string) => (
+                      <span key={note} className="border border-[#E0E0E0] text-[#1C1C1C] text-xs px-3 py-1.5">
+                        {note}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-                <h3 className="text-xs font-bold uppercase tracking-[0.3em] text-[#C6A969] mb-3">Heart Notes</h3>
-                <p className="text-[10px] text-white/40 uppercase tracking-widest mb-8 whitespace-nowrap">The Soul of Essence</p>
-                <div className="flex flex-wrap justify-center gap-2">
-                  {product.fragrance_notes?.middle?.map((note: string) => (
-                    <span key={note} className="px-4 py-2 rounded-full bg-white/5 text-white/80 text-[11px] font-medium border border-white/10 hover:border-[#C6A969]/40 transition-colors">
-                      {note}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Base Notes */}
-            <div className="relative z-10 group">
-              <div className="h-full bg-zinc-900/40 backdrop-blur-3xl rounded-[2.5rem] p-10 text-center border border-white/5 transition-all duration-700 hover:border-[#C6A969]/40 hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
-                <div className="w-20 h-20 mx-auto rounded-3xl bg-amber-500/10 flex items-center justify-center mb-8 border border-amber-500/20 group-hover:scale-110 group-hover:rotate-3 transition-all duration-700">
-                  <Zap className="w-8 h-8 text-amber-400" />
-                </div>
-                <h3 className="text-xs font-bold uppercase tracking-[0.3em] text-[#C6A969] mb-3">Base Notes</h3>
-                <p className="text-[10px] text-white/40 uppercase tracking-widest mb-8 whitespace-nowrap">The Lasting Memory</p>
-                <div className="flex flex-wrap justify-center gap-2">
-                  {product.fragrance_notes?.base?.map((note: string) => (
-                    <span key={note} className="px-4 py-2 rounded-full bg-white/5 text-white/80 text-[11px] font-medium border border-white/10 hover:border-[#C6A969]/40 transition-colors">
-                      {note}
-                    </span>
-                  ))}
-                </div>
-              </div>
+              ))}
             </div>
           </div>
-        </div>
+        )}
 
-        {/* ── Related Products ── */}
+        {/* Related Products */}
         {relatedProducts.length > 0 && (
-          <div className="mt-32 pb-20">
-            <div className="flex items-end justify-between mb-12">
+          <div className="mt-20 pb-10">
+            <div className="flex items-end justify-between mb-8">
               <div>
-                <p className="text-[#C6A969] text-xs font-bold tracking-[0.3em] uppercase mb-4">You May Also Like</p>
-                <h2 className="text-4xl font-light text-foreground" style={{ fontFamily: 'Georgia, serif' }}>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#6B6B6B] mb-2">You May Also Like</p>
+                <h2
+                  className="text-2xl font-bold text-[#1C1C1C]"
+                  style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}
+                >
                   Related Fragrances
                 </h2>
               </div>
-              <Link href={`/product?category=${product.category}`} className="text-xs font-bold uppercase tracking-widest hover:text-[#C6A969] transition-colors border-b border-[#C6A969]/30 pb-1">
-                View All {product.category}
+              <Link
+                href={`/product?category=${product.category}`}
+                className="text-xs font-semibold uppercase tracking-[0.1em] text-[#1C1C1C] underline underline-offset-4 hover:text-[#6B6B6B] transition-colors"
+              >
+                View All
               </Link>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
               {relatedProducts.map(rp => (
                 <ProductCard key={rp.id} product={rp as any} />
               ))}

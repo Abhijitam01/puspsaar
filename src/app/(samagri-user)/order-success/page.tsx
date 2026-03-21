@@ -3,7 +3,6 @@
 import { useSearchParams } from 'next/navigation'
 import { Suspense, useState } from 'react'
 import { CheckCircle, Download, ShoppingBag, Home } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 
@@ -43,8 +42,8 @@ function OrderSuccessContent() {
         transition={{ type: 'spring', damping: 15, delay: 0.1 }}
         className="mb-8"
       >
-        <div className="w-24 h-24 rounded-full bg-[#C6A969]/10 border-2 border-[#C6A969] flex items-center justify-center mx-auto">
-          <CheckCircle className="w-12 h-12 text-[#C6A969]" />
+        <div className="w-24 h-24 border-2 border-[#1C1C1C] flex items-center justify-center mx-auto">
+          <CheckCircle className="w-12 h-12 text-[#1C1C1C]" />
         </div>
       </motion.div>
 
@@ -53,74 +52,74 @@ function OrderSuccessContent() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
       >
+        <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-[#6B6B6B] mb-3">Puspsaar</p>
         <h1
-          className="text-3xl font-bold text-foreground mb-3"
-          style={{ fontFamily: 'Georgia, serif' }}
+          className="text-3xl font-bold text-[#1C1C1C] mb-3"
+          style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}
         >
           Order Confirmed!
         </h1>
-        <p className="text-muted-foreground text-base mb-2">
+        <p className="text-[#6B6B6B] text-sm mb-2">
           Thank you for shopping with Puspsaar
         </p>
         {orderId && (
-          <p className="text-sm text-muted-foreground mb-8">
-            Order ID: <span className="text-foreground font-mono font-medium">{orderId}</span>
+          <p className="text-sm text-[#6B6B6B] mb-8">
+            Order ID: <span className="text-[#1C1C1C] font-mono font-semibold">{orderId}</span>
           </p>
         )}
 
-        {/* Gold divider */}
-        <div className="h-px bg-gradient-to-r from-transparent via-[#C6A969]/50 to-transparent mb-8" />
+        <div className="h-px bg-[#E0E0E0] mb-8" />
 
         {/* Info box */}
-        <div className="glass-panel rounded-2xl p-5 mb-8 text-left space-y-3">
-          <div className="flex items-center gap-3 text-sm text-muted-foreground">
-            <span className="text-[#C6A969]">✓</span>
-            Your order has been confirmed and is being processed
-          </div>
-          <div className="flex items-center gap-3 text-sm text-muted-foreground">
-            <span className="text-[#C6A969]">✓</span>
-            Expected delivery: 2–5 business days
-          </div>
-          <div className="flex items-center gap-3 text-sm text-muted-foreground">
-            <span className="text-[#C6A969]">✓</span>
-            You can download your invoice below or from your profile
-          </div>
+        <div className="border border-[#E0E0E0] p-5 mb-8 text-left space-y-3 bg-[#F5F5F5]">
+          {[
+            'Your order has been confirmed and is being processed',
+            'Expected delivery: 2–5 business days',
+            'You can download your invoice below or from your profile',
+          ].map((text) => (
+            <div key={text} className="flex items-start gap-3 text-sm text-[#6B6B6B]">
+              <CheckCircle className="w-4 h-4 text-[#1C1C1C] shrink-0 mt-0.5" />
+              {text}
+            </div>
+          ))}
         </div>
 
         {/* Actions */}
         <div className="space-y-3">
           {orderId && (
-            <Button
+            <button
               onClick={handleDownloadInvoice}
               disabled={downloading}
-              className="w-full bg-foreground text-background hover:bg-[#C6A969] hover:text-black transition-all rounded-xl py-6 font-semibold neon-glow"
+              className="w-full py-3.5 bg-black text-white text-xs font-bold uppercase tracking-[0.15em] hover:bg-[#1C1C1C] transition-colors disabled:opacity-60 flex items-center justify-center gap-2"
             >
               {downloading ? (
-                <span className="flex items-center gap-2">
-                  <span className="w-4 h-4 border-2 border-background/30 border-t-background rounded-full animate-spin" />
+                <>
+                  <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                   Generating Invoice...
-                </span>
+                </>
               ) : (
-                <span className="flex items-center gap-2">
-                  <Download className="w-5 h-5" />
+                <>
+                  <Download className="w-4 h-4" />
                   Download Invoice (PDF)
-                </span>
+                </>
               )}
-            </Button>
+            </button>
           )}
 
           <div className="grid grid-cols-2 gap-3">
-            <Link href="/orders">
-              <Button variant="outline" className="w-full rounded-xl border-border hover:border-[#C6A969]/50">
-                <ShoppingBag className="w-4 h-4 mr-2" />
-                My Orders
-              </Button>
+            <Link
+              href="/orders"
+              className="flex items-center justify-center gap-2 border border-[#E0E0E0] py-3 text-[11px] font-semibold uppercase tracking-[0.1em] text-[#1C1C1C] hover:border-black transition-colors"
+            >
+              <ShoppingBag className="w-3.5 h-3.5" />
+              My Orders
             </Link>
-            <Link href="/">
-              <Button variant="outline" className="w-full rounded-xl border-border hover:border-[#C6A969]/50">
-                <Home className="w-4 h-4 mr-2" />
-                Home
-              </Button>
+            <Link
+              href="/"
+              className="flex items-center justify-center gap-2 border border-[#E0E0E0] py-3 text-[11px] font-semibold uppercase tracking-[0.1em] text-[#1C1C1C] hover:border-black transition-colors"
+            >
+              <Home className="w-3.5 h-3.5" />
+              Home
             </Link>
           </div>
         </div>
@@ -131,8 +130,10 @@ function OrderSuccessContent() {
 
 export default function OrderSuccessPage() {
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      <Suspense fallback={<div className="w-8 h-8 rounded-full border-4 border-[#C6A969] border-t-transparent animate-spin mx-auto"></div>}>
+    <div className="min-h-screen bg-white flex items-center justify-center p-4">
+      <Suspense fallback={
+        <div className="w-8 h-8 border-4 border-[#E0E0E0] border-t-[#1C1C1C] rounded-full animate-spin mx-auto" />
+      }>
         <OrderSuccessContent />
       </Suspense>
     </div>

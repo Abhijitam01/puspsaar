@@ -1,23 +1,13 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Settings2, ChevronDown, Search, Ribbon } from 'lucide-react';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
+import { Settings2, ChevronDown, Search, Ribbon, X } from 'lucide-react';
 import clsx from 'clsx';
 import FilterDialog from './filter-dialog';
 
 export default function FilterBar() {
-  const [filterOpen, setFilterOpen] = useState(false); // separate state for Filter Dialog
-  const [categoryOpen, setCategoryOpen] = useState(false); // separate state for Category Dialog
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [categoryOpen, setCategoryOpen] = useState(false);
   const [search, setSearch] = useState('');
   const [isSticky, setIsSticky] = useState(false);
   const barRef = useRef<HTMLDivElement | null>(null);
@@ -37,80 +27,74 @@ export default function FilterBar() {
     <div
       ref={barRef}
       className={clsx(
-        'w-full rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl transition-all duration-300',
-        isSticky ? 'fixed top-4 left-1/2 z-40 max-w-5xl -translate-x-1/2 shadow-2xl' : 'relative my-4'
+        'w-full border border-[#E0E0E0] bg-white transition-all duration-300',
+        isSticky ? 'fixed top-0 left-0 right-0 z-40 shadow-sm' : 'relative my-4'
       )}
     >
-      <div className="mx-auto flex flex-wrap gap-3 px-4 py-3 text-white">
+      <div className="mx-auto flex flex-wrap items-center gap-2 px-4 py-3">
         {/* Filters Button */}
-        <Button
-          variant="outline"
-          className="text-white text-sm rounded-full border-white/30 bg-white/10 shadow-none h-11 px-4 hover:bg-white/20"
-          onClick={() => setFilterOpen(true)} // open FilterDialog
+        <button
+          onClick={() => setFilterOpen(true)}
+          className="flex items-center gap-2 border border-[#E0E0E0] px-4 py-2 text-xs font-semibold uppercase tracking-[0.1em] text-[#1C1C1C] hover:border-black transition-colors"
         >
-          <Settings2 className="mr-2 w-4 h-4" />
+          <Settings2 className="w-3.5 h-3.5" />
           Filters
-        </Button>
+        </button>
 
-        {/* Brand Button */}
-        <Button
-          variant="outline"
-          className="text-white text-sm rounded-full border-white/30 bg-white/10 shadow-none h-11 px-4 hover:bg-white/20"
-        >
-          <Ribbon className="mr-2 w-4 h-4" />
+        {/* Collections Button */}
+        <button className="flex items-center gap-2 border border-[#E0E0E0] px-4 py-2 text-xs font-semibold uppercase tracking-[0.1em] text-[#1C1C1C] hover:border-black transition-colors">
+          <Ribbon className="w-3.5 h-3.5" />
           Collections
-        </Button>
+        </button>
 
-        {/* Category Dialog */}
-        <Dialog open={categoryOpen} onOpenChange={setCategoryOpen}>
-          <DialogTrigger asChild>
-            <Button
-              variant="outline"
-              className="text-white text-sm rounded-full border-white/30 bg-white/10 shadow-none h-11 px-4 hover:bg-white/20"
-              onClick={() => setCategoryOpen(true)} // open category dialog only
-            >
-              Segments
-              <ChevronDown className="ml-2 w-4 h-4" />
-            </Button>
-          </DialogTrigger>
+        {/* Segments Button */}
+        <button
+          onClick={() => setCategoryOpen(true)}
+          className="flex items-center gap-2 border border-[#E0E0E0] px-4 py-2 text-xs font-semibold uppercase tracking-[0.1em] text-[#1C1C1C] hover:border-black transition-colors"
+        >
+          Segments
+          <ChevronDown className="w-3.5 h-3.5" />
+        </button>
+      </div>
 
-          <DialogContent className="max-w-md rounded-2xl border border-white/10 bg-[#070912] text-white">
-            <DialogHeader>
-              <DialogTitle className="text-lg font-semibold text-white">
-                Browse segments
-              </DialogTitle>
-            </DialogHeader>
-
-            {/* Search Input */}
-            <div className="relative mb-4">
-              <Search className="absolute left-3 top-3 text-white/50 w-4 h-4" />
-              <Input
-                placeholder="Search here"
-                className="pl-9 h-11 font-medium bg-white/5 border-white/20 text-white placeholder:text-white/40"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
+      {/* Category Dialog */}
+      {categoryOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/20">
+          <div className="w-full max-w-md bg-white border border-[#E0E0E0]">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-[#E0E0E0]">
+              <h3 className="text-sm font-bold uppercase tracking-[0.1em] text-[#1C1C1C]">Browse Segments</h3>
+              <button onClick={() => setCategoryOpen(false)} className="text-[#6B6B6B] hover:text-[#1C1C1C]">
+                <X className="w-4 h-4" />
+              </button>
             </div>
-
-            {/* Footer Buttons */}
-            <DialogFooter className="flex justify-end gap-3 pt-4">
-              <Button
-                variant="ghost"
-                className="text-white bg-white/5 hover:bg-white/10"
+            <div className="p-6">
+              <div className="relative mb-4">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#ABABAB]" />
+                <input
+                  placeholder="Search segments"
+                  className="w-full pl-9 pr-4 py-2.5 border border-[#E0E0E0] text-sm text-[#1C1C1C] placeholder:text-[#ABABAB] focus:outline-none focus:border-black transition-colors"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="flex justify-end gap-2 px-6 py-4 border-t border-[#E0E0E0]">
+              <button
                 onClick={() => setSearch('')}
+                className="px-4 py-2 border border-[#E0E0E0] text-xs font-semibold uppercase tracking-[0.1em] text-[#1C1C1C] hover:border-black transition-colors"
               >
-                Clear all
-              </Button>
-              <Button
-                className="bg-secondary hover:bg-secondary/90 text-secondary-foreground"
+                Clear All
+              </button>
+              <button
                 onClick={() => setCategoryOpen(false)}
+                className="px-4 py-2 bg-black text-white text-xs font-semibold uppercase tracking-[0.1em] hover:bg-[#1C1C1C] transition-colors"
               >
                 Apply
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-      </div>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Filter Dialog */}
       <FilterDialog open={filterOpen} setOpen={setFilterOpen} />
