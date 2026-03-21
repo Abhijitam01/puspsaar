@@ -299,80 +299,70 @@ export default function ProductDetailPage(props: { params: Promise<{ id: string 
         </div>
 
         {/* ── Fragrance Notes Pyramid ── */}
-        <div className="mt-16 max-w-2xl mx-auto">
-          <div className="text-center mb-8">
-            <p className="text-[#C6A969] text-xs tracking-[0.3em] uppercase mb-2">Olfactory Profile</p>
-            <h2 className="text-2xl font-bold text-foreground" style={{ fontFamily: 'Georgia, serif' }}>
-              Fragrance Notes
+        <div className="mt-24 max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-[#C6A969]/10 text-[#C6A969] text-[10px] font-bold uppercase tracking-[0.3em] mb-4">
+              Olfactory Journey
+            </span>
+            <h2 className="text-4xl font-light text-foreground tracking-tight" style={{ fontFamily: 'Georgia, serif' }}>
+              The Scent Pyramid
             </h2>
           </div>
 
-          <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative items-stretch">
+            {/* Pyramid Connector Line (Desktop) */}
+            <div className="hidden md:block absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-transparent via-border to-transparent -translate-y-1/2 z-0" />
+
             {/* Top Notes */}
-            <div className="glass-panel rounded-2xl p-5 relative overflow-hidden">
-              <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-[#C6A969] to-transparent" />
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-[#C6A969]/10 border border-[#C6A969]/20 flex items-center justify-center shrink-0 text-lg">
-                  🌿
+            <div className="relative z-10 group">
+              <div className="h-full glass-panel rounded-[2rem] p-8 text-center transition-all duration-500 hover:border-[#C6A969]/40 hover:shadow-2xl">
+                <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-emerald-400/20 to-teal-500/20 flex items-center justify-center text-2xl mb-6 border border-emerald-500/20 group-hover:scale-110 transition-transform duration-500">
+                  🍃
                 </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <h3 className="font-semibold text-foreground text-sm">Top Notes</h3>
-                    <span className="text-muted-foreground text-xs">· First impression (0–15 min)</span>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {product.fragrance_notes?.top?.map((note: string) => (
-                      <span key={note} className="px-3 py-1 rounded-full bg-muted text-foreground text-xs border border-border">
-                        {note}
-                      </span>
-                    ))}
-                  </div>
+                <h3 className="text-sm font-bold uppercase tracking-[0.2em] mb-2">Top Notes</h3>
+                <p className="text-[10px] text-muted-foreground uppercase tracking-widest mb-6 whitespace-nowrap">The First Impression</p>
+                <div className="flex flex-wrap justify-center gap-2">
+                  {product.fragrance_notes?.top?.map((note: string) => (
+                    <span key={note} className="px-3 py-1.5 rounded-full bg-muted/50 text-foreground text-[11px] font-medium border border-border/50">
+                      {note}
+                    </span>
+                  ))}
                 </div>
               </div>
             </div>
 
-            {/* Middle Notes */}
-            <div className="glass-panel rounded-2xl p-5 relative overflow-hidden">
-              <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-[#C6A969]/60 to-transparent" />
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-[#C6A969]/10 border border-[#C6A969]/20 flex items-center justify-center shrink-0 text-lg">
-                  🌸
+            {/* Heart Notes */}
+            <div className="relative z-10 group">
+              <div className="h-full glass-panel rounded-[2rem] p-8 text-center border-[#C6A969]/20 transition-all duration-500 hover:border-[#C6A969]/50 hover:shadow-2xl">
+                <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-rose-400/20 to-pink-500/20 flex items-center justify-center text-2xl mb-6 border border-rose-500/20 group-hover:scale-110 transition-transform duration-500">
+                  🌹
                 </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <h3 className="font-semibold text-foreground text-sm">Heart Notes</h3>
-                    <span className="text-muted-foreground text-xs">· Soul of the fragrance (15 min–4 hrs)</span>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {product.fragrance_notes?.middle?.map((note: string) => (
-                      <span key={note} className="px-3 py-1 rounded-full bg-muted text-foreground text-xs border border-border">
-                        {note}
-                      </span>
-                    ))}
-                  </div>
+                <h3 className="text-sm font-bold uppercase tracking-[0.2em] mb-2">Heart Notes</h3>
+                <p className="text-[10px] text-muted-foreground uppercase tracking-widest mb-6 whitespace-nowrap">The Soul of Essence</p>
+                <div className="flex flex-wrap justify-center gap-2">
+                  {product.fragrance_notes?.middle?.map((note: string) => (
+                    <span key={note} className="px-3 py-1.5 rounded-full bg-muted/50 text-foreground text-[11px] font-medium border border-border/50">
+                      {note}
+                    </span>
+                  ))}
                 </div>
               </div>
             </div>
 
             {/* Base Notes */}
-            <div className="glass-panel rounded-2xl p-5 relative overflow-hidden">
-              <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-[#C6A969]/30 to-transparent" />
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-[#C6A969]/10 border border-[#C6A969]/20 flex items-center justify-center shrink-0 text-lg">
+            <div className="relative z-10 group">
+              <div className="h-full glass-panel rounded-[2rem] p-8 text-center transition-all duration-500 hover:border-[#C6A969]/40 hover:shadow-2xl">
+                <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-amber-400/20 to-orange-500/20 flex items-center justify-center text-2xl mb-6 border border-amber-500/20 group-hover:scale-110 transition-transform duration-500">
                   🪵
                 </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <h3 className="font-semibold text-foreground text-sm">Base Notes</h3>
-                    <span className="text-muted-foreground text-xs">· Lasting impression (4+ hrs)</span>
-                  </div>
-                    <div className="flex flex-wrap gap-2">
-                    {product.fragrance_notes?.base?.map((note: string) => (
-                      <span key={note} className="px-3 py-1 rounded-full bg-muted text-foreground text-xs border border-border">
-                        {note}
-                      </span>
-                    ))}
-                  </div>
+                <h3 className="text-sm font-bold uppercase tracking-[0.2em] mb-2">Base Notes</h3>
+                <p className="text-[10px] text-muted-foreground uppercase tracking-widest mb-6 whitespace-nowrap">The Lasting Memory</p>
+                <div className="flex flex-wrap justify-center gap-2">
+                  {product.fragrance_notes?.base?.map((note: string) => (
+                    <span key={note} className="px-3 py-1.5 rounded-full bg-muted/50 text-foreground text-[11px] font-medium border border-border/50">
+                      {note}
+                    </span>
+                  ))}
                 </div>
               </div>
             </div>
@@ -381,34 +371,33 @@ export default function ProductDetailPage(props: { params: Promise<{ id: string 
 
         {/* ── Related Products ── */}
         {relatedProducts.length > 0 && (
-          <div className="mt-20">
-            <div className="flex items-end justify-between mb-8">
+          <div className="mt-32 pb-20">
+            <div className="flex items-end justify-between mb-12">
               <div>
-                <p className="text-[#C6A969] text-xs tracking-[0.3em] uppercase mb-2">You May Also Like</p>
-                <h2 className="text-2xl font-bold text-foreground" style={{ fontFamily: 'Georgia, serif' }}>
+                <p className="text-[#C6A969] text-xs font-bold tracking-[0.3em] uppercase mb-4">You May Also Like</p>
+                <h2 className="text-4xl font-light text-foreground" style={{ fontFamily: 'Georgia, serif' }}>
                   Related Fragrances
                 </h2>
               </div>
-              <Link href={`/product?category=${product.category}`} className="text-sm text-muted-foreground hover:text-[#C6A969] transition-colors">
-                View all {product.category} →
+              <Link href={`/product?category=${product.category}`} className="text-xs font-bold uppercase tracking-widest hover:text-[#C6A969] transition-colors border-b border-[#C6A969]/30 pb-1">
+                View All {product.category}
               </Link>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               {relatedProducts.map(rp => (
                 <Link key={rp.id} href={`/product/${rp.id}`} className="group block">
-                  <div className="bg-card border border-border rounded-2xl overflow-hidden card-hover">
-                    <div className="aspect-square overflow-hidden bg-muted">
-                      <img
-                        src={rp.image}
-                        alt={rp.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                    </div>
-                    <div className="p-3">
-                      <p className="text-[#C6A969] text-xs font-medium mb-0.5">{rp.brand}</p>
-                      <h3 className="text-foreground font-semibold text-sm line-clamp-1">{rp.name}</h3>
-                      <p className="text-foreground font-bold text-sm mt-2">₹{rp.price.toLocaleString()}</p>
-                    </div>
+                  <div className="relative aspect-[3/4] rounded-[1.5rem] overflow-hidden bg-muted mb-4">
+                    <img
+                      src={rp.image}
+                      alt={rp.name}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
+                    />
+                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-500" />
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-[10px] text-[#C6A969] font-bold uppercase tracking-widest">{rp.brand}</p>
+                    <h3 className="text-sm font-bold uppercase tracking-widest text-foreground group-hover:text-[#C6A969] transition-colors">{rp.name}</h3>
+                    <p className="text-sm font-black text-foreground pt-1">₹{rp.price.toLocaleString()}</p>
                   </div>
                 </Link>
               ))}

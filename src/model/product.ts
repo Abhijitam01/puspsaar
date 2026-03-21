@@ -25,7 +25,7 @@ export interface IPerfumeProduct {
   image: string;             // primary image
   rating: number;
   ratingCount: string;
-  fragranceNotes: FragranceNotes;
+  fragrance_notes: FragranceNotes;
   tags: string[];
   stock: number;
   isFeatured?: boolean;

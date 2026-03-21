@@ -885,3 +885,13 @@ html.dark {
 .shadow-glow-cyan {
   box-shadow: 0 10px 40px -10px rgba(6, 182, 212, 0.4);
 }
+
+/* Announcement Bar Marquee */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-33.333%); }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}

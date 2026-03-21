@@ -38,6 +38,21 @@ export default function TopNavbar() {
 
   return (
     <header className="w-full sticky top-0 z-50 border-b nav-border bg-background/95 backdrop-blur-2xl">
+      {/* Announcement Bar */}
+      <div className="bg-black text-white py-2 overflow-hidden border-b border-white/5">
+        <div className="flex whitespace-nowrap animate-marquee">
+          <p className="inline-block text-[10px] font-bold uppercase tracking-[0.3em] px-4">
+            Complimentary shipping on orders over ₹5,000 • Discover our Limited Edition Private Reserve • 
+          </p>
+          <p className="inline-block text-[10px] font-bold uppercase tracking-[0.3em] px-4">
+            Complimentary shipping on orders over ₹5,000 • Discover our Limited Edition Private Reserve • 
+          </p>
+          <p className="inline-block text-[10px] font-bold uppercase tracking-[0.3em] px-4">
+            Complimentary shipping on orders over ₹5,000 • Discover our Limited Edition Private Reserve • 
+          </p>
+        </div>
+      </div>
+
       {/* Gold top strip */}
       <div className="h-0.5 bg-gradient-to-r from-transparent via-[#C6A969] to-transparent" />
 

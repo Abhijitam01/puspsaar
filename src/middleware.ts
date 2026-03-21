@@ -34,10 +34,22 @@ export async function middleware(request: NextRequest) {
 
   // Protect routes that need auth
   const protectedPaths = ['/profile', '/checkout', '/order-success']
+  const isAdminPath = request.nextUrl.pathname.startsWith('/admin')
   const isProtected = protectedPaths.some(path =>
     request.nextUrl.pathname.startsWith(path)
   )
 
+  // 1. Handle Admin Security
+  if (isAdminPath && !request.nextUrl.pathname.startsWith('/admin/login')) {
+    if (!user) {
+      const url = request.nextUrl.clone()
+      url.pathname = '/admin/login'
+      return NextResponse.redirect(url)
+    }
+    // Optional: Add role check here later if needed
+  }
+
+  // 2. Handle User Security
   if (isProtected && !user) {
     const url = request.nextUrl.clone()
     url.pathname = '/login'
