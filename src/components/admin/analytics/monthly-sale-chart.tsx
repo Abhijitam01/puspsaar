@@ -1,0 +1,36 @@
+'use client'
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+
+export const salesData = [
+    { month: 'Jan', sales: 12000, orders: 145, customers: 89 },
+    { month: 'Feb', sales: 19000, orders: 178, customers: 112 },
+    { month: 'Mar', sales: 15000, orders: 156, customers: 98 },
+    { month: 'Apr', sales: 25000, orders: 234, customers: 145 },
+    { month: 'May', sales: 22000, orders: 198, customers: 134 },
+    { month: 'Jun', sales: 31000, orders: 267, customers: 189 },
+    { month: 'Jul', sales: 28000, orders: 245, customers: 167 },
+    { month: 'Aug', sales: 35000, orders: 289, customers: 201 },
+    { month: 'Sep', sales: 32000, orders: 276, customers: 189 }
+]
+
+export default function MonthlySaleChart() {
+    return (
+        <div>
+            <Card>
+
+                <CardContent>
+                    <ResponsiveContainer width="100%" height={300}>
+                        <BarChart data={salesData}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="month" />
+                            <YAxis />
+                            <Tooltip formatter={(value) => [`₹${value.toLocaleString()}`, 'Sales']} />
+                            <Bar dataKey="sales" fill="#3b82f6" />
+                        </BarChart>
+                    </ResponsiveContainer>
+                </CardContent>
+            </Card>
+        </div>
+    )
+}
