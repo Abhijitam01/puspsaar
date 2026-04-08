@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo, useEffect, Suspense } from 'react'
+import React, { useState, useMemo, useEffect, Suspense } from 'react'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { Search, X, SlidersHorizontal } from 'lucide-react'
@@ -219,7 +219,8 @@ function CollectionPageContent({ slug }: { slug: string }) {
   )
 }
 
-export default function CollectionPage({ params }: { params: { slug: string } }) {
+export default function CollectionPage(props: { params: Promise<{ slug: string }> }) {
+  const params = React.use(props.params)
   return (
     <Suspense fallback={
       <div className="min-h-screen flex items-center justify-center">

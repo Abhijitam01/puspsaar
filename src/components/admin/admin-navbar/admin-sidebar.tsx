@@ -98,6 +98,12 @@ const navigationMenu: MenuItem[] = [
     href: "/admin/inventory",
     icon: Warehouse,
     roles: ["SUPER_ADMIN", "ADMIN"],
+  },
+  {
+    label: "Site Settings",
+    href: "/admin/settings",
+    icon: Settings,
+    roles: ["SUPER_ADMIN", "ADMIN"],
   }
 ]
 

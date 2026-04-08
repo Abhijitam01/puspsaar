@@ -18,8 +18,8 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey, {
   }
 })
 
-const adminEmail = 'admin@puspsaar.com'
-const adminPassword = 'PuspsaarAdmin2026!'
+const adminEmail = process.env.ADMIN_EMAIL || 'admin@puspsaar.com'
+const adminPassword = process.env.ADMIN_PASSWORD || 'PuspsaarAdmin2026!'
 
 async function createAdmin() {
   console.log('--- Establishing Admin Credentials ---')

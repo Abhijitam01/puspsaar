@@ -1,9 +1,22 @@
 'use client';
 
+import React from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 
-export default function HeroBanner() {
+interface HeroBannerProps {
+  settings?: {
+    image?: string;
+    title?: string;
+    subtitle?: string;
+  };
+}
+
+export default function HeroBanner({ settings }: HeroBannerProps) {
+  const heroImage = settings?.image || "https://images.unsplash.com/photo-1541643600914-78b084683702?auto=format&fit=crop&w=1200&q=80";
+  const heroTitle = settings?.title || "Discover Your Scent";
+  const heroSubtitle = settings?.subtitle || "Middle Eastern-quality perfumes, attars, and gifting sets — crafted for those who know the language of fragrance.";
+
   return (
     <section className="relative w-full overflow-hidden bg-[#F5F5F5]">
       <div className="max-w-7xl mx-auto px-4 sm:px-8">
@@ -22,11 +35,14 @@ export default function HeroBanner() {
               className="text-5xl sm:text-6xl lg:text-7xl font-bold text-[#1C1C1C] leading-[1.05] tracking-tight mb-6"
               style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}
             >
-              Discover<br />
-              <span className="italic font-normal">Your</span> Scent
+              {heroTitle.split(' ').map((word, i) => (
+                <React.Fragment key={i}>
+                  {i === 1 ? <><span className="italic font-normal">{word}</span> </> : word + ' '}
+                </React.Fragment>
+              ))}
             </h1>
             <p className="text-[#6B6B6B] text-base sm:text-lg leading-relaxed max-w-md mb-10">
-              Middle Eastern-quality perfumes, attars, and gifting sets — crafted for those who know the language of fragrance.
+              {heroSubtitle}
             </p>
             <div className="flex flex-wrap items-center gap-4">
               <Link
@@ -66,7 +82,7 @@ export default function HeroBanner() {
             className="relative order-1 lg:order-2 h-[50vw] lg:h-full min-h-[320px] lg:min-h-[85vh]"
           >
             <img
-              src="https://images.unsplash.com/photo-1541643600914-78b084683702?auto=format&fit=crop&w=1200&q=80"
+              src={heroImage}
               alt="Premium Fragrances — Puspsaar"
               className="w-full h-full object-cover"
             />

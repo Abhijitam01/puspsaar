@@ -41,8 +41,22 @@ const categories = [
   },
 ]
 
-export default function CollectionGrid() {
+interface CollectionGridProps {
+  settings?: {
+    images?: string[];
+  };
+}
+
+export default function CollectionGrid({ settings }: CollectionGridProps) {
+  const dynamicCategories = categories.map((cat, index) => {
+    if (settings?.images && settings.images[index]) {
+      return { ...cat, image: settings.images[index] };
+    }
+    return cat;
+  });
+
   return (
+
     <section className="w-full">
       <div className="text-center mb-10">
         <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#6B6B6B] mb-3">Shop by Category</p>
@@ -55,7 +69,7 @@ export default function CollectionGrid() {
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-        {categories.map((cat, i) => (
+        {dynamicCategories.map((cat, i) => (
           <motion.div
             key={cat.id}
             initial={{ opacity: 0, y: 20 }}

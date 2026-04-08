@@ -9,41 +9,7 @@ import { createClient } from '@/lib/supabase/client'
 import { IPerfumeProduct } from '@/model/product'
 import ProductCard from '@/components/product/productcard'
 
-export default function ProductDetailPage(props: { params: Promise<{ id: string }> }) {
-  const params = React.use(props.params)
-  const [product, setProduct] = useState<any>(null)
-  const [relatedProducts, setRelatedProducts] = useState<any[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const supabase = createClient()
-
-  React.useEffect(() => {
-    async function loadData() {
-      const { data } = await supabase.from('products').select('*').eq('id', params.id).single()
-      if (data) {
-        setProduct(data)
-        const { data: related } = await supabase
-          .from('products')
-          .select('*')
-          .eq('category', data.category)
-          .neq('id', data.id)
-          .limit(4)
-        if (related) setRelatedProducts(related)
-      }
-      setIsLoading(false)
-    }
-    loadData()
-  }, [params.id, supabase])
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-[#E0E0E0] border-t-black animate-spin" />
-      </div>
-    )
-  }
-
-  if (!product && !isLoading) return notFound()
-
+function ProductDetailContent({ product, relatedProducts }: { product: any, relatedProducts: any[] }) {
   const [selectedImage, setSelectedImage] = useState(0)
   const [selectedVolume, setSelectedVolume] = useState(product.volumes?.[0] ?? product.volume)
   const [quantity, setQuantity] = useState(1)
@@ -317,7 +283,7 @@ export default function ProductDetailPage(props: { params: Promise<{ id: string 
                   <div className="w-14 h-14 mx-auto border border-[#E0E0E0] flex items-center justify-center mb-5">
                     <Icon className="w-6 h-6" style={{ color }} />
                   </div>
-                  <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-[#1C1C1C] mb-1">{label}</h3>
+                  <h3 className="text-xs font-bold uppercase tracking-[0.1em] text-[#1C1C1C] mb-1">{label}</h3>
                   <p className="text-[10px] text-[#6B6B6B] uppercase tracking-widest mb-6">{sub}</p>
                   <div className="flex flex-wrap justify-center gap-2">
                     {notes?.map((note: string) => (
@@ -362,4 +328,42 @@ export default function ProductDetailPage(props: { params: Promise<{ id: string 
       </div>
     </div>
   )
+}
+
+export default function ProductDetailPage(props: { params: Promise<{ id: string }> }) {
+  const params = React.use(props.params)
+  const [product, setProduct] = useState<any>(null)
+  const [relatedProducts, setRelatedProducts] = useState<any[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const supabase = createClient()
+
+  React.useEffect(() => {
+    async function loadData() {
+      const { data } = await supabase.from('products').select('*').eq('id', params.id).single()
+      if (data) {
+        setProduct(data)
+        const { data: related } = await supabase
+          .from('products')
+          .select('*')
+          .eq('category', data.category)
+          .neq('id', data.id)
+          .limit(4)
+        if (related) setRelatedProducts(related)
+      }
+      setIsLoading(false)
+    }
+    loadData()
+  }, [params.id, supabase])
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-[#E0E0E0] border-t-black animate-spin" />
+      </div>
+    )
+  }
+
+  if (!product && !isLoading) return notFound()
+
+  return <ProductDetailContent product={product} relatedProducts={relatedProducts} />
 }

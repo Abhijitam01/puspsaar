@@ -1,5 +1,6 @@
 'use client'
 
+import React from 'react';
 import { motion } from 'framer-motion'
 import { ArrowRight, Check } from 'lucide-react'
 import Link from 'next/link'
@@ -10,7 +11,19 @@ const highlights = [
   'Redeemable against full-size bottles',
 ]
 
-export default function DiscoverySet() {
+interface DiscoverySetProps {
+  settings?: {
+    image?: string;
+    title?: string;
+    subtitle?: string;
+  };
+}
+
+export default function DiscoverySet({ settings }: DiscoverySetProps) {
+  const discoveryImage = settings?.image || "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=1200&q=80";
+  const discoveryTitle = settings?.title || "The Discovery Collection";
+  const discoverySubtitle = settings?.subtitle || "Six 5ml extraits de parfum, curated to reveal the entire Puspsaar archive. A silken journey through Oud, Rose, and rare Botanicals.";
+
   return (
     <section className="w-full">
       <div className="border border-[#E0E0E0] overflow-hidden">
@@ -18,7 +31,7 @@ export default function DiscoverySet() {
           {/* Image */}
           <div className="relative aspect-square sm:aspect-video lg:aspect-auto lg:min-h-[500px] overflow-hidden">
             <img
-              src="https://images.unsplash.com/photo-1592945403244-b3fbafd7ef53?auto=format&fit=crop&w=1200&q=80"
+              src={discoveryImage}
               alt="Puspsaar Discovery Set"
               className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
             />
@@ -38,11 +51,15 @@ export default function DiscoverySet() {
               className="text-3xl sm:text-5xl font-bold text-[#1C1C1C] leading-tight mb-4"
               style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}
             >
-              The Discovery<br />
-              <span className="italic font-normal">Collection</span>
+              {discoveryTitle.split(' ').map((word, i) => (
+                <React.Fragment key={i}>
+                  {word === 'Collection' ? <span className="italic font-normal">{word}</span> : word}{' '}
+                  {i === 1 && word !== 'Collection' && <br />}
+                </React.Fragment>
+              ))}
             </h2>
             <p className="text-[#6B6B6B] text-base leading-relaxed mb-8 max-w-md">
-              Six 5ml extraits de parfum, curated to reveal the entire Puspsaar archive. A silken journey through Oud, Rose, and rare Botanicals.
+              {discoverySubtitle}
             </p>
 
             <ul className="space-y-3 mb-10">

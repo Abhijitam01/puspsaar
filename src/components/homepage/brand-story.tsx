@@ -1,5 +1,6 @@
 'use client'
 
+import React from 'react';
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 
@@ -9,7 +10,19 @@ const stats = [
   { label: 'Luxury Houses', value: '12+' },
 ]
 
-export default function BrandStory() {
+interface BrandStoryProps {
+  settings?: {
+    image?: string;
+    title?: string;
+    subtitle?: string;
+  };
+}
+
+export default function BrandStory({ settings }: BrandStoryProps) {
+  const brandImage = settings?.image || "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=1200&q=80";
+  const brandTitle = settings?.title || "The Art of Perfumery";
+  const brandSubtitle = settings?.subtitle || "Puspsaar was born from a deep love of fragrance — the belief that a scent is more than a smell; it is a memory, an emotion, an identity. We bring you the world's finest perfumes, curated with passion and delivered with care.";
+
   return (
     <section className="w-full">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -22,7 +35,7 @@ export default function BrandStory() {
         >
           <div className="aspect-[4/5] overflow-hidden">
             <img
-              src="https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=1200&q=80"
+              src={brandImage}
               alt="The Art of Perfumery — Puspsaar"
               className="w-full h-full object-cover"
             />
@@ -46,10 +59,14 @@ export default function BrandStory() {
             className="text-3xl md:text-5xl font-bold text-[#1C1C1C] mb-6 leading-tight"
             style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}
           >
-            The Art of<br />Perfumery
+            {brandTitle.split(' ').map((word, i) => (
+              <React.Fragment key={i}>
+                {word} {i === 2 && <br />}
+              </React.Fragment>
+            ))}
           </h2>
           <p className="text-[#6B6B6B] text-base mb-5 leading-relaxed">
-            Puspsaar was born from a deep love of fragrance — the belief that a scent is more than a smell; it is a memory, an emotion, an identity. We bring you the world's finest perfumes, curated with passion and delivered with care.
+            {brandSubtitle}
           </p>
           <p className="text-[#6B6B6B] text-base mb-10 leading-relaxed">
             Every bottle in our collection is certified authentic, sourced directly from the world's most prestigious fragrance houses — from the ateliers of Paris to the oud souks of the Middle East.
