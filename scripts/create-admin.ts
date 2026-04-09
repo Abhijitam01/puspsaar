@@ -1,8 +1,8 @@
 import * as dotenv from 'dotenv'
 dotenv.config({ path: '.env.local' })
 
-import { db } from './src/db/index.ts'
-import { users } from './src/db/schema'
+import { db } from '../src/db/index'
+import { users } from '../src/db/schema'
 import { eq } from 'drizzle-orm'
 import * as bcrypt from 'bcryptjs'
 

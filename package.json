@@ -16,8 +16,8 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx --env-file=.env.local src/db/migrate.ts",
     "db:studio": "drizzle-kit studio",
-    "seed": "tsx --env-file=.env.local seed.ts",
-    "create-admin": "tsx --env-file=.env.local create-admin.ts"
+    "seed": "tsx --env-file=.env.local scripts/seed.ts",
+    "create-admin": "tsx --env-file=.env.local scripts/create-admin.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

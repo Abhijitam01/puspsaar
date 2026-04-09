@@ -1,9 +1,9 @@
 import * as dotenv from 'dotenv';
 dotenv.config({ path: '.env.local' });
 
-import { db } from './src/db/index.ts';
-import { products as productsTable } from './src/db/schema';
-import { perfumeProducts } from './src/data/perfume-data';
+import { db } from '../src/db/index';
+import { products as productsTable } from '../src/db/schema';
+import { perfumeProducts } from '../src/data/perfume-data';
 
 async function seed() {
   console.log('--- Seeding NeonDB Products ---');
