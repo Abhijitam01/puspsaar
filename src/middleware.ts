@@ -15,7 +15,8 @@ export default auth((req) => {
 
   // 1. Handle Admin Security
   if (isAdminPath && !nextUrl.pathname.startsWith('/admin/login')) {
-    if (!isLoggedIn) {
+    const isAdmin = isLoggedIn && (req.auth as any)?.user?.role === 'admin';
+    if (!isAdmin) {
       return NextResponse.redirect(new URL('/admin/login', nextUrl));
     }
   }

@@ -5,6 +5,7 @@ import ModeToggle from '@/components/admin/admin-navbar/toggle-mode';
 import { Separator } from '@/components/ui/separator';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { ThemeProvider } from 'next-themes';
+import { SessionProvider } from 'next-auth/react';
 import { Bell } from 'lucide-react';
 
 export default function AdminLayout({
@@ -13,6 +14,7 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
+    <SessionProvider>
     <ThemeProvider
       attribute="class"
       defaultTheme="system"
@@ -39,5 +41,6 @@ export default function AdminLayout({
         </div>
       </SidebarProvider>
     </ThemeProvider>
+    </SessionProvider>
   );
 }

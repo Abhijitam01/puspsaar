@@ -3,6 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { useSession, signOut } from "next-auth/react"
 import {
   LayoutDashboard, ShoppingCart,Users,Truck, Settings, HelpCircle, User,Bell,LogOut,  UserPlus, ChevronDown,
   Warehouse, BarChart3, ShoppingBag, Building2,
@@ -107,21 +108,9 @@ const navigationMenu: MenuItem[] = [
   }
 ]
 
-// User profile menu
-const userProfileData = {
-  user: {
-    name: "Admin User",
-    email: "admin@dpbazaar.com",
-    role: "Super Admin",
-    avatar: "/avatars/admin.jpg"
-  },
-  menuItems: [
-    { label: "Profile Settings", href: "/admin/profile", icon: User },
-    { label: "Notifications", href: "/admin/notifications", icon: Bell, badge: "5" },
-    { label: "Preferences", href: "/admin/preferences", icon: Settings },
-    { label: "Sign Out", action: "logout", icon: LogOut }
-  ]
-}
+const profileMenuItems = [
+  { label: "Sign Out", action: "logout", icon: LogOut }
+]
 
 // Recursive menu item component
 function MenuItemComponent({ item, level = 0 }: { item: MenuItem; level?: number }) {
@@ -242,6 +231,10 @@ function MenuItemComponent({ item, level = 0 }: { item: MenuItem; level?: number
 }
 
 export function AdminSidebarModern() {
+  const { data: session } = useSession()
+  const adminName = session?.user?.name ?? 'Admin'
+  const adminEmail = session?.user?.email ?? ''
+
   return (
     <Sidebar variant="inset" className=" border-r">
       <SidebarHeader className=" py-4">
@@ -288,29 +281,24 @@ export function AdminSidebarModern() {
                     <User className="size-4" />
                   </div>
                   <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-semibold">{userProfileData.user.name}</span>
-                    <span className="truncate text-xs">{userProfileData.user.email}</span>
+                    <span className="truncate font-semibold">{adminName}</span>
+                    <span className="truncate text-xs">{adminEmail}</span>
                   </div>
                   <ChevronDown className="ml-auto h-4 w-4 transition-transform group-data-[state=open]/collapsible:rotate-180" />
                 </SidebarMenuButton>
               </CollapsibleTrigger>
               <CollapsibleContent>
                 <SidebarMenuSub>
-                  {userProfileData.menuItems.map((item, index) => (
+                  {profileMenuItems.map((item, index) => (
                     <SidebarMenuSubItem key={index}>
                       <SidebarMenuSubButton asChild>
-                        {item.action === "logout" ? (
-                          <button onClick={() => console.log("Logout")} className="w-full justify-start">
-                            <item.icon className="h-4 w-4" />
-                            <span>{item.label}</span>
-                          </button>
-                        ) : (
-                          <Link href={item.href!}>
-                            <item.icon className="h-4 w-4" />
-                            <span>{item.label}</span>
-                            {item.badge && <MenuBadge badge={item.badge} />}
-                          </Link>
-                        )}
+                        <button
+                          onClick={() => signOut({ callbackUrl: '/admin/login' })}
+                          className="w-full justify-start"
+                        >
+                          <item.icon className="h-4 w-4" />
+                          <span>{item.label}</span>
+                        </button>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
                   ))}

@@ -21,6 +21,8 @@ export const metadata: Metadata = {
   description: "Discover premium fragrances — Middle Eastern-quality perfumes, attars, and gifting sets at unbeatable prices.",
 };
 
+import { Analytics } from "@vercel/analytics/react"
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -31,6 +33,7 @@ export default function RootLayout({
         style={{ fontFamily: "var(--font-inter), sans-serif" }}
       >
         {children}
+        <Analytics />
       </body>
     </html>
   );
