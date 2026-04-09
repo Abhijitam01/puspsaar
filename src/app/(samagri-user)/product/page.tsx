@@ -3,7 +3,6 @@
 import { useState, useMemo, Suspense, useEffect } from 'react';
 import { IPerfumeProduct } from '@/model/product';
 import { Search, Grid, List, SlidersHorizontal, X } from 'lucide-react';
-import { createClient } from '@/lib/supabase/client';
 import ProductCard from '@/components/product/productcard';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';

@@ -21,7 +21,7 @@ export const perfumeProducts: IPerfumeProduct[] = [
     image: 'https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&w=1200&q=80',
     rating: 4.9,
     ratingCount: '12.4k',
-    fragranceNotes: {
+    fragrance_notes: {
       top: ['Calabrian Bergamot', 'Sichuan Pepper'],
       middle: ['Lavender', 'Pink Pepper', 'Vetiver'],
       base: ['Ambroxan', 'Cedar', 'Labdanum'],
@@ -50,7 +50,7 @@ export const perfumeProducts: IPerfumeProduct[] = [
     image: 'https://images.unsplash.com/photo-1588776814546-1ffbb679e1c2?auto=format&fit=crop&w=1200&q=80',
     rating: 4.8,
     ratingCount: '18.2k',
-    fragranceNotes: {
+    fragrance_notes: {
       top: ['Aldehydes', 'Neroli', 'Ylang-Ylang'],
       middle: ['Iris', 'Rose', 'Lily of the Valley'],
       base: ['Sandalwood', 'Musk', 'Vetiver', 'Vanilla'],
@@ -79,7 +79,7 @@ export const perfumeProducts: IPerfumeProduct[] = [
     image: 'https://images.unsplash.com/photo-1590156206657-acd3d6e3e231?auto=format&fit=crop&w=1200&q=80',
     rating: 4.7,
     ratingCount: '9.8k',
-    fragranceNotes: {
+    fragrance_notes: {
       top: ['Black Truffle', 'Ylang-Ylang'],
       middle: ['Black Orchid', 'Lotus Wood', 'Fruit'],
       base: ['Patchouli', 'Vanilla', 'Sandalwood', 'Dark Chocolate'],
@@ -108,7 +108,7 @@ export const perfumeProducts: IPerfumeProduct[] = [
     image: 'https://images.unsplash.com/photo-1600459020919-a43b2e4abcd5?auto=format&fit=crop&w=1200&q=80',
     rating: 4.8,
     ratingCount: '21.5k',
-    fragranceNotes: {
+    fragrance_notes: {
       top: ['Black Currant', 'Pear'],
       middle: ['Iris', 'Jasmine', 'Orange Blossom'],
       base: ['Praline', 'Vanilla', 'Patchouli', 'Musk'],
@@ -136,7 +136,7 @@ export const perfumeProducts: IPerfumeProduct[] = [
     image: 'https://images.unsplash.com/photo-1547887538-e3a2f32cb1cc?auto=format&fit=crop&w=1200&q=80',
     rating: 4.9,
     ratingCount: '7.2k',
-    fragranceNotes: {
+    fragrance_notes: {
       top: ['Rosewood', 'Cardamom', 'Pepper'],
       middle: ['Oud Wood', 'Sichuan Pepper'],
       base: ['Vetiver', 'Sandalwood', 'Amber'],
@@ -164,7 +164,7 @@ export const perfumeProducts: IPerfumeProduct[] = [
     image: 'https://images.unsplash.com/photo-1594194457282-f3e0cda65bec?auto=format&fit=crop&w=1200&q=80',
     rating: 4.8,
     ratingCount: '14.3k',
-    fragranceNotes: {
+    fragrance_notes: {
       top: ['Pear', 'Cantaloupe', 'Bergamot'],
       middle: ['Rose', 'Jasmine', 'Ylang-Ylang', 'Orchid'],
       base: ['Musk', 'Blackberry', 'Sandalwood'],
@@ -192,7 +192,7 @@ export const perfumeProducts: IPerfumeProduct[] = [
     image: 'https://images.unsplash.com/photo-1541643600914-78b084683702?auto=format&fit=crop&w=1200&q=80',
     rating: 4.8,
     ratingCount: '16.7k',
-    fragranceNotes: {
+    fragrance_notes: {
       top: ['Citrus', 'Mint', 'Pink Pepper', 'Grapefruit'],
       middle: ['Ginger', 'Jasmine', 'Melon', 'Nutmeg'],
       base: ['Incense', 'Cedar', 'Sandalwood', 'Patchouli'],
@@ -220,7 +220,7 @@ export const perfumeProducts: IPerfumeProduct[] = [
     image: 'https://images.unsplash.com/photo-1571290274554-6a2eaa771e5f?auto=format&fit=crop&w=1200&q=80',
     rating: 4.7,
     ratingCount: '5.9k',
-    fragranceNotes: {
+    fragrance_notes: {
       top: ['Violet Leaf', 'Iris'],
       middle: ['Rose', 'Peony', 'Green Notes'],
       base: ['White Musk', 'Vetiver', 'Cedarwood'],
@@ -248,7 +248,7 @@ export const perfumeProducts: IPerfumeProduct[] = [
     image: 'https://images.unsplash.com/photo-1585386959984-a4155224a1ad?auto=format&fit=crop&w=1200&q=80',
     rating: 4.6,
     ratingCount: '6.1k',
-    fragranceNotes: {
+    fragrance_notes: {
       top: ['Bergamot', 'Lemon', 'Lavender'],
       middle: ['Almond', 'Heliotrope', 'Fern'],
       base: ['Tonka Bean', 'Leather', 'Vetiver'],
@@ -276,7 +276,7 @@ export const perfumeProducts: IPerfumeProduct[] = [
     image: 'https://images.unsplash.com/photo-1556228578-f3df5f64e22e?auto=format&fit=crop&w=1200&q=80',
     rating: 4.8,
     ratingCount: '13.8k',
-    fragranceNotes: {
+    fragrance_notes: {
       top: ['Peony', 'Pear', 'Rose'],
       middle: ['Grasse Rose', 'Rose Centifolia'],
       base: ['Patchouli', 'Sandalwood', 'Musk'],
@@ -304,7 +304,7 @@ export const perfumeProducts: IPerfumeProduct[] = [
     image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1200&q=80',
     rating: 4.7,
     ratingCount: '22.1k',
-    fragranceNotes: {
+    fragrance_notes: {
       top: ['Sea Water', 'Bergamot', 'Neroli'],
       middle: ['Jasmine', 'Rosemary', 'Persimmon', 'Calone'],
       base: ['Musk', 'Cedarwood', 'Oakmoss'],
@@ -332,7 +332,7 @@ export const perfumeProducts: IPerfumeProduct[] = [
     image: 'https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=1200&q=80',
     rating: 4.6,
     ratingCount: '8.9k',
-    fragranceNotes: {
+    fragrance_notes: {
       top: ['Bergamot', 'Lemon', 'Rose', 'Rosewood'],
       middle: ['Iris', 'Jasmine', 'Rose'],
       base: ['Vanilla', 'Opoponax', 'Tonka Bean', 'Musk'],

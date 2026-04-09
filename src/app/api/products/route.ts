@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getProducts, getFeaturedProducts, createProduct } from '@/lib/queries';
+import { getProducts, getFeaturedProducts, createProduct, getProductsByCategory } from '@/lib/queries';
 import { auth } from '@/lib/auth';
 
 export async function GET(req: NextRequest) {

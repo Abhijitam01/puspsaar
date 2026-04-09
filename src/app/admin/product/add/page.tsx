@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { createClient } from '@/lib/supabase/client';
 import { toast } from 'sonner';
 import { ArrowLeft, Save, Upload, Image as ImageIcon, Loader2 } from 'lucide-react';
 import Link from 'next/link';
@@ -184,7 +183,7 @@ export default function AddProductPage() {
           <div className="pt-6 border-t flex justify-end">
             <Button 
               type="submit" 
-              disabled={isSubmitting || uploading} 
+              disabled={isSubmitting} 
               className="bg-[#C6A969] text-black hover:bg-[#C6A969]/90 font-bold px-10 py-6 rounded-xl shadow-lg transition-all"
             >
               <Save className="w-4 h-4 mr-2" />

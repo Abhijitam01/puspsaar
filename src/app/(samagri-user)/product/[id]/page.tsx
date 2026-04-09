@@ -5,7 +5,6 @@ import { useCartStore } from '@/store/cartStore'
 import { toast } from 'sonner'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { createClient } from '@/lib/supabase/client'
 import { IPerfumeProduct } from '@/model/product'
 import ProductCard from '@/components/product/productcard'
 

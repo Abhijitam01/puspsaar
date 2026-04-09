@@ -57,15 +57,18 @@ export async function GET(
     doc.text('Order Details', 15, metaY);
     doc.setFont('helvetica', 'normal');
     doc.text(`Order ID: ${order.id}`, 15, metaY + 7);
-    doc.text(`Date: ${new Date(order.createdAt).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' })}`, 15, metaY + 14);
-    doc.text(`Status: ${order.status.toUpperCase()}`, 15, metaY + 21);
+    const dateStr = order.createdAt 
+      ? new Date(order.createdAt).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' })
+      : 'N/A';
+    doc.text(`Date: ${dateStr}`, 15, metaY + 14);
+    doc.text(`Status: ${(order.status || 'confirmed').toUpperCase()}`, 15, metaY + 21);
 
     doc.setFont('helvetica', 'bold');
     doc.text('Shipping Details', 115, metaY);
     doc.setFont('helvetica', 'normal');
-    doc.text(`${order.customerName}`, 115, metaY + 7);
-    doc.text(`Phone: ${order.customerPhone}`, 115, metaY + 14);
-    const addressLines = doc.splitTextToSize(order.shippingAddress || '', 80);
+    doc.text(`${order.customerName || 'Customer'}`, 115, metaY + 7);
+    doc.text(`Phone: ${order.customerPhone || 'N/A'}`, 115, metaY + 14);
+    const addressLines = doc.splitTextToSize(order.shippingAddress || 'No address provided', 80);
     doc.text(addressLines, 115, metaY + 21);
 
     // --- Divider ---
@@ -77,9 +80,9 @@ export async function GET(
     const tableHead = [['#', 'Product', 'Volume', 'Qty', 'Unit Price', 'Total']];
     const tableBody = (order.order_items || []).map((item: {
       productName: string;
-      volume: string;
+      volume: string | null;
       quantity: number;
-      price: number;
+      price: string | number;
     }, idx: number) => [
       idx + 1,
       item.productName,

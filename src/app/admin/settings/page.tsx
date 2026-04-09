@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { createClient } from '@/lib/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -298,7 +297,7 @@ export default function AdminSettingsPage() {
 
       <div className="pt-10 border-t flex flex-col items-center gap-4 text-center">
         <p className="text-sm text-muted-foreground italic">
-          Tip: You can use Supabase Storage for your own images and paste the public URLs here.
+          Tip: You can use any external image hosting service and paste the public URLs here.
         </p>
       </div>
     </div>
