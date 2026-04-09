@@ -1,4 +1,6 @@
-import { createClient } from '@/lib/supabase/server';
+import { db } from '@/db';
+import { orders as ordersTable, products as productsTable } from '@/db/schema';
+import { desc, sql } from 'drizzle-orm';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { IndianRupee, Package, ShoppingBag, AlertTriangle, Users, TrendingUp } from 'lucide-react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -7,31 +9,27 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
 export default async function AdminDashboardPage() {
-  const supabase = await createClient();
-
   // 1. Fetch Orders for Revenue, Count, and Recent Sales
-  const { data: orders, error: ordersError } = await supabase
-    .from('orders')
-    .select('id, total_amount, status, customer_name, customer_email, created_at')
-    .order('created_at', { ascending: false });
+  const orders = await db.select().from(ordersTable).orderBy(desc(ordersTable.createdAt));
 
-  const totalOrders = orders?.length || 0;
-  const totalRevenue = orders?.reduce((sum, order) => sum + (Number(order.total_amount) || 0), 0) || 0;
+  const totalOrders = orders.length;
+  const totalRevenue = orders.reduce((sum, order) => sum + (Number(order.totalAmount) || 0), 0);
   const avgOrderValue = totalOrders > 0 ? totalRevenue / totalOrders : 0;
   
   // Unique customers based on email
-  const uniqueEmails = new Set(orders?.map(o => o.customer_email).filter(Boolean));
+  const uniqueEmails = new Set(orders.map(o => o.customerEmail).filter(Boolean));
   const totalCustomers = uniqueEmails.size;
 
-  const recentOrders = orders?.slice(0, 5) || [];
+  const recentOrders = orders.slice(0, 5);
 
   // 2. Fetch Products for Total Count & Low Stock
-  const { data: products, error: productsError } = await supabase
-    .from('products')
-    .select('id, stock_quantity');
+  const products = await db.select({
+    id: productsTable.id,
+    stockQuantity: productsTable.stockQuantity
+  }).from(productsTable);
 
-  const totalProducts = products?.length || 0;
-  const lowStockCount = products?.filter(p => p.stock_quantity < 10).length || 0;
+  const totalProducts = products.length;
+  const lowStockCount = products.filter(p => (p.stockQuantity ?? 0) < 10).length;
 
   return (
     <div className="p-8 space-y-10">
@@ -119,8 +117,8 @@ export default async function AdminDashboardPage() {
                   recentOrders.map((order) => (
                     <TableRow key={order.id}>
                       <TableCell className="pl-6">
-                        <div className="font-medium">{order.customer_name}</div>
-                        <div className="text-xs text-muted-foreground">{order.customer_email}</div>
+                        <div className="font-medium">{order.customerName}</div>
+                        <div className="text-xs text-muted-foreground">{order.customerEmail}</div>
                       </TableCell>
                       <TableCell>
                         <Badge variant="outline" className={`text-[10px] font-bold ${
@@ -131,7 +129,7 @@ export default async function AdminDashboardPage() {
                         </Badge>
                       </TableCell>
                       <TableCell className="text-right pr-6 font-semibold">
-                        ₹{order.total_amount.toLocaleString()}
+                        ₹{Number(order.totalAmount).toLocaleString()}
                       </TableCell>
                     </TableRow>
                   ))

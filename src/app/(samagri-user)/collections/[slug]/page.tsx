@@ -70,19 +70,26 @@ function CollectionPageContent({ slug }: { slug: string }) {
   const [isLoading, setIsLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
   const [sortBy, setSortBy] = useState('newest')
-  const supabase = createClient()
 
   useEffect(() => {
     async function fetchProducts() {
       setIsLoading(true)
-      let query = supabase.from('products').select('*')
-      if (config.category) query = query.eq('category', config.category)
-      const { data, error } = await query.order('created_at', { ascending: false })
-      if (!error && data) setProducts(data as IPerfumeProduct[])
+      try {
+        const url = config.category 
+          ? `/api/products?category=${encodeURIComponent(config.category)}`
+          : '/api/products';
+        const response = await fetch(url);
+        const data = await response.json();
+        if (data && Array.isArray(data)) {
+          setProducts(data as IPerfumeProduct[]);
+        }
+      } catch (error) {
+        console.error('Failed to fetch collection products:', error);
+      }
       setIsLoading(false)
     }
     fetchProducts()
-  }, [supabase, slug, config.category])
+  }, [slug, config.category])
 
   const filteredProducts = useMemo(() => {
     let result = [...products]

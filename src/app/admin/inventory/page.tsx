@@ -1,9 +1,10 @@
-import { createClient } from '@/lib/supabase/server';
+import { db } from '@/db';
+import { products as productsTable } from '@/db/schema';
+import { desc } from 'drizzle-orm';
 import InventoryClient from './inventory-client';
 
 export default async function InventoryPage() {
-  const supabase = await createClient();
-  const { data: products } = await supabase.from('products').select('*').order('created_at', { ascending: false });
+  const products = await db.select().from(productsTable).orderBy(desc(productsTable.createdAt));
 
-  return <InventoryClient initialProducts={products || []} />;
+  return <InventoryClient initialProducts={products} />;
 }

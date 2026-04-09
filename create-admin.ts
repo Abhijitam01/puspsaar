@@ -1,22 +1,10 @@
-import { createClient } from '@supabase/supabase-js'
 import * as dotenv from 'dotenv'
-
 dotenv.config({ path: '.env.local' })
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-
-if (!supabaseUrl || !supabaseServiceKey) {
-  console.error('Missing Supabase environment variables in .env.local')
-  process.exit(1)
-}
-
-const supabase = createClient(supabaseUrl, supabaseServiceKey, {
-  auth: {
-    autoRefreshToken: false,
-    persistSession: false
-  }
-})
+import { db } from './src/db/index.ts'
+import { users } from './src/db/schema'
+import { eq } from 'drizzle-orm'
+import * as bcrypt from 'bcryptjs'
 
 const adminEmail = process.env.ADMIN_EMAIL || 'admin@puspsaar.com'
 const adminPassword = process.env.ADMIN_PASSWORD || 'PuspsaarAdmin2026!'
@@ -25,22 +13,29 @@ async function createAdmin() {
   console.log('--- Establishing Admin Credentials ---')
   console.log(`Setting up account for: ${adminEmail}`)
 
-  const { data, error } = await supabase.auth.admin.createUser({
-    email: adminEmail,
-    password: adminPassword,
-    email_confirm: true,
-    user_metadata: { role: 'admin' }
-  })
+  try {
+    // Check if user already exists
+    const existing = await db.select().from(users).where(eq(users.email, adminEmail)).limit(1);
 
-  if (error) {
-    if (error.message.includes('already registered')) {
+    if (existing.length > 0) {
       console.log('Account status: ALREADY ACTIVE.')
-    } else {
-      console.error('Provisioning failed:', error.message)
+      return;
     }
-  } else {
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(adminPassword, 10);
+
+    // Insert admin
+    await db.insert(users).values({
+      email: adminEmail,
+      password: hashedPassword,
+      role: 'admin',
+    });
+
     console.log('Account status: SUCCESSFULLY CREATED.')
-    console.log('Credentials provisioned via service role.')
+    console.log('Credentials provisioned via Drizzle/NeonDB.')
+  } catch (error: any) {
+    console.error('Provisioning failed:', error.message)
   }
 }
 

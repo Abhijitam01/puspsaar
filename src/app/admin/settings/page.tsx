@@ -18,7 +18,6 @@ export default function AdminSettingsPage() {
   const [settings, setSettings] = useState<Record<string, any>>({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState<string | null>(null);
-  const supabase = createClient();
 
   useEffect(() => {
     fetchSettings();
@@ -26,15 +25,14 @@ export default function AdminSettingsPage() {
 
   const fetchSettings = async () => {
     setLoading(true);
-    const { data, error } = await supabase.from('site_settings').select('*');
-    if (error) {
+    try {
+      const response = await fetch('/api/settings');
+      const data = await response.json();
+      if (data) {
+        setSettings(data);
+      }
+    } catch (error) {
       toast.error('Failed to load settings');
-    } else {
-      const settingsMap = data.reduce((acc: any, curr: SiteSetting) => {
-        acc[curr.id] = curr.value;
-        return acc;
-      }, {});
-      setSettings(settingsMap);
     }
     setLoading(false);
   };
@@ -51,15 +49,18 @@ export default function AdminSettingsPage() {
 
   const saveSetting = async (id: string) => {
     setSaving(id);
-    const { error } = await supabase
-      .from('site_settings')
-      .update({ value: settings[id], updated_at: new Date().toISOString() })
-      .eq('id', id);
+    try {
+      const response = await fetch('/api/settings', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, value: settings[id] }),
+      });
 
-    if (error) {
-      toast.error(`Failed to save ${id}`);
-    } else {
+      if (!response.ok) throw new Error('Failed to save');
+      
       toast.success(`${id} updated successfully`);
+    } catch (error) {
+      toast.error(`Failed to save ${id}`);
     }
     setSaving(null);
   };

@@ -14,29 +14,31 @@ import Link from 'next/link';
 export default function InventoryClient({ initialProducts }: { initialProducts: any[] }) {
   const [products, setProducts] = useState(initialProducts);
   const [searchTerm, setSearchTerm] = useState('');
-  const supabase = createClient();
 
   const handleUpdateStock = async (id: string, currentStock: number, change: number) => {
     const newStock = Math.max(0, currentStock + change);
     
     // Optimistic UI update
     setProducts(prev => 
-      prev.map(p => p.id === id ? { ...p, stock_quantity: newStock } : p)
+      prev.map(p => p.id === id ? { ...p, stockQuantity: newStock } : p)
     );
 
-    const { error } = await supabase
-      .from('products')
-      .update({ stock_quantity: newStock })
-      .eq('id', id);
+    try {
+      const response = await fetch(`/api/products/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ stock_quantity: newStock }), // API route expects stock_quantity
+      });
 
-    if (error) {
+      if (!response.ok) throw new Error('Failed to update stock');
+      
+      toast.success(change > 0 ? 'Stock augmented' : 'Stock reduced');
+    } catch (error) {
       toast.error('Failed to update stock');
       // Revert optimism
       setProducts(prev => 
-        prev.map(p => p.id === id ? { ...p, stock_quantity: currentStock } : p)
+        prev.map(p => p.id === id ? { ...p, stockQuantity: currentStock } : p)
       );
-    } else {
-      toast.success(change > 0 ? 'Stock augmented' : 'Stock reduced');
     }
   };
 
@@ -101,9 +103,9 @@ export default function InventoryClient({ initialProducts }: { initialProducts: 
                 </TableCell>
                 <TableCell>₹{product.price.toLocaleString()}</TableCell>
                 <TableCell>
-                  {product.stock_quantity > 10 ? (
+                  {product.stockQuantity > 10 ? (
                     <Badge variant="default" className="bg-emerald-500/15 text-emerald-500 hover:bg-emerald-500/20">In Stock</Badge>
-                  ) : product.stock_quantity > 0 ? (
+                  ) : product.stockQuantity > 0 ? (
                     <Badge variant="default" className="bg-amber-500/15 text-amber-500 hover:bg-amber-500/20">Low Stock</Badge>
                   ) : (
                     <Badge variant="destructive">Out of Stock</Badge>
@@ -115,17 +117,17 @@ export default function InventoryClient({ initialProducts }: { initialProducts: 
                       variant="outline" 
                       size="icon" 
                       className="h-8 w-8 rounded-full border-muted-foreground/30 hover:border-[#C6A969] hover:text-[#C6A969]"
-                      onClick={() => handleUpdateStock(product.id, product.stock_quantity, -1)}
-                      disabled={product.stock_quantity <= 0}
+                      onClick={() => handleUpdateStock(product.id, product.stockQuantity, -1)}
+                      disabled={product.stockQuantity <= 0}
                     >
                       <Minus className="h-3 w-3" />
                     </Button>
-                    <span className="w-8 text-center font-medium">{product.stock_quantity}</span>
+                    <span className="w-8 text-center font-medium">{product.stockQuantity}</span>
                     <Button 
                       variant="outline" 
                       size="icon" 
                       className="h-8 w-8 rounded-full border-muted-foreground/30 hover:border-[#C6A969] hover:text-[#C6A969]"
-                      onClick={() => handleUpdateStock(product.id, product.stock_quantity, 1)}
+                      onClick={() => handleUpdateStock(product.id, product.stockQuantity, 1)}
                     >
                       <Plus className="h-3 w-3" />
                     </Button>

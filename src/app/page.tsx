@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react';
-import { createClient } from "@/lib/supabase/client";
 import HeroBanner from "@/components/homepage/hero-section";
 import CollectionGrid from "@/components/homepage/collection-grid";
 import TrustSection from "@/components/homepage/trust-section";
@@ -15,17 +14,17 @@ import DiscoverySet from "@/components/homepage/discovery-set";
 
 export default function Home() {
   const [settings, setSettings] = useState<Record<string, any>>({});
-  const supabase = createClient();
 
   useEffect(() => {
     async function getSettings() {
-      const { data } = await supabase.from('site_settings').select('*');
-      if (data) {
-        const settingsMap = data.reduce((acc: any, curr: any) => {
-          acc[curr.id] = curr.value;
-          return acc;
-        }, {});
-        setSettings(settingsMap);
+      try {
+        const response = await fetch('/api/settings');
+        const data = await response.json();
+        if (data) {
+          setSettings(data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch settings:', error);
       }
     }
     getSettings();

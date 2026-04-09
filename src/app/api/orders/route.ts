@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
+import { createOrder, getOrdersByUserId } from '@/lib/queries';
+import { auth } from '@/lib/auth';
 
 /**
  * POST /api/orders
- * Creates order + order_items in Supabase. Works with or without auth.
+ * Creates order + order_items in NeonDB. Works with or without auth.
  */
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createClient();
+    const session = await auth();
     const body = await request.json();
 
     const { items, total_amount, shipping_name, shipping_phone, shipping_address } = body;
@@ -16,57 +17,31 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Cart items are required' }, { status: 400 });
     }
 
-    // Get current user (optional — guest checkout supported)
-    const { data: { user } } = await supabase.auth.getUser();
+    // Insert order using the centralized query
+    const orderData = {
+      userId: session?.user?.id ?? null,
+      totalAmount: total_amount,
+      customerName: shipping_name,
+      customerPhone: shipping_phone,
+      shippingAddress: shipping_address,
+      status: 'confirmed',
+    };
 
-    // Insert order
-    const { data: order, error: orderError } = await supabase
-      .from('orders')
-      .insert({
-        user_id: user?.id ?? null,
-        total_amount,
-        shipping_name,
-        shipping_phone,
-        shipping_address,
-        status: 'confirmed',
-      })
-      .select()
-      .single();
-
-    if (orderError) {
-      console.error('Order insert error:', orderError);
-      return NextResponse.json({ error: orderError.message }, { status: 500 });
-    }
-
-    // Insert order items
-    const orderItems = items.map((item: {
-      product_id: string;
-      product_name: string;
-      product_image: string;
-      volume: string;
-      quantity: number;
-      price: number;
-    }) => ({
-      order_id: order.id,
-      product_id: item.product_id,
-      product_name: item.product_name,
-      product_image: item.product_image,
+    const itemsData = items.map((item: any) => ({
+      productId: item.product_id,
+      productName: item.product_name,
+      productImage: item.product_image,
       volume: item.volume,
       quantity: item.quantity,
       price: item.price,
     }));
 
-    const { error: itemsError } = await supabase.from('order_items').insert(orderItems);
-
-    if (itemsError) {
-      console.error('Order items insert error:', itemsError);
-      // Order was created — still return success but log the error
-    }
+    const order = await createOrder(orderData, itemsData);
 
     return NextResponse.json({ orderId: order.id, status: 'confirmed' }, { status: 201 });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Order creation error:', error);
-    return NextResponse.json({ error: 'Failed to create order' }, { status: 500 });
+    return NextResponse.json({ error: error.message || 'Failed to create order' }, { status: 500 });
   }
 }
 
@@ -76,20 +51,12 @@ export async function POST(request: NextRequest) {
  */
 export async function GET(request: NextRequest) {
   try {
-    const supabase = await createClient();
-
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
+    const session = await auth();
+    if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { data: orders, error } = await supabase
-      .from('orders')
-      .select(`*, order_items (*)`)
-      .eq('user_id', user.id)
-      .order('created_at', { ascending: false });
-
-    if (error) throw error;
+    const orders = await getOrdersByUserId(session.user.id);
 
     return NextResponse.json({ orders });
   } catch (error) {

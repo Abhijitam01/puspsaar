@@ -31,7 +31,6 @@ function ProductPageContent() {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [products, setProducts] = useState<IPerfumeProduct[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const supabase = createClient();
 
   useEffect(() => {
     setActiveCategory(categoryParam);
@@ -50,15 +49,19 @@ function ProductPageContent() {
   useEffect(() => {
     async function fetchProducts() {
       setIsLoading(true);
-      const { data, error } = await supabase
-        .from('products')
-        .select('*')
-        .order('created_at', { ascending: false });
-      if (!error && data) setProducts(data as IPerfumeProduct[]);
+      try {
+        const response = await fetch('/api/products');
+        const data = await response.json();
+        if (data && Array.isArray(data)) {
+          setProducts(data as IPerfumeProduct[]);
+        }
+      } catch (error) {
+        console.error('Failed to fetch products:', error);
+      }
       setIsLoading(false);
     }
     fetchProducts();
-  }, [supabase]);
+  }, []);
 
   const filteredProducts = useMemo(() => {
     let result = [...products];

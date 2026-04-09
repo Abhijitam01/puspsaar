@@ -1,67 +1,34 @@
-import { createServerClient } from '@supabase/ssr'
-import { NextResponse, type NextRequest } from 'next/server'
+import { auth } from '@/lib/auth';
+import { NextResponse, type NextRequest } from 'next/server';
 
-export async function middleware(request: NextRequest) {
-  let supabaseResponse = NextResponse.next({
-    request,
-  })
-
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll()
-        },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
-          supabaseResponse = NextResponse.next({
-            request,
-          })
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
-          )
-        },
-      },
-    }
-  )
-
-  // Refresh session
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  // Protect routes that need auth
-  const protectedPaths = ['/profile', '/checkout', '/order-success']
-  const isAdminPath = request.nextUrl.pathname.startsWith('/admin')
-  const isProtected = protectedPaths.some(path =>
-    request.nextUrl.pathname.startsWith(path)
-  )
+export default auth((req) => {
+  const { nextUrl, auth: session } = req;
+  const isLoggedIn = !!session;
+  
+  const isAdminPath = nextUrl.pathname.startsWith('/admin');
+  const isProtectedPath = ['/profile', '/checkout', '/order-success'].some(path => 
+    nextUrl.pathname.startsWith(path)
+  );
 
   // 1. Handle Admin Security
-  if (isAdminPath && !request.nextUrl.pathname.startsWith('/admin/login')) {
-    if (!user) {
-      const url = request.nextUrl.clone()
-      url.pathname = '/admin/login'
-      return NextResponse.redirect(url)
+  if (isAdminPath && !nextUrl.pathname.startsWith('/admin/login')) {
+    if (!isLoggedIn) {
+      return NextResponse.redirect(new URL('/admin/login', nextUrl));
     }
-    // Optional: Add role check here later if needed
   }
 
   // 2. Handle User Security
-  if (isProtected && !user) {
-    const url = request.nextUrl.clone()
-    url.pathname = '/login'
-    url.searchParams.set('redirectTo', request.nextUrl.pathname)
-    return NextResponse.redirect(url)
+  if (isProtectedPath && !isLoggedIn) {
+    const loginUrl = new URL('/login', nextUrl);
+    loginUrl.searchParams.set('redirectTo', nextUrl.pathname);
+    return NextResponse.redirect(loginUrl);
   }
 
-  return supabaseResponse
-}
+  return NextResponse.next();
+});
 
 export const config = {
   matcher: [
     '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
-}
+};

@@ -335,25 +335,24 @@ export default function ProductDetailPage(props: { params: Promise<{ id: string 
   const [product, setProduct] = useState<any>(null)
   const [relatedProducts, setRelatedProducts] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const supabase = createClient()
 
   React.useEffect(() => {
     async function loadData() {
-      const { data } = await supabase.from('products').select('*').eq('id', params.id).single()
-      if (data) {
-        setProduct(data)
-        const { data: related } = await supabase
-          .from('products')
-          .select('*')
-          .eq('category', data.category)
-          .neq('id', data.id)
-          .limit(4)
-        if (related) setRelatedProducts(related)
+      try {
+        const response = await fetch(`/api/products/${params.id}?related=true`);
+        const data = await response.json();
+        if (data.product) {
+          // Normalize camelCase if necessary, though Drizzle does this
+          setProduct(data.product);
+          if (data.related) setRelatedProducts(data.related);
+        }
+      } catch (error) {
+        console.error('Failed to load product data:', error);
       }
-      setIsLoading(false)
+      setIsLoading(false);
     }
     loadData()
-  }, [params.id, supabase])
+  }, [params.id])
 
   if (isLoading) {
     return (
@@ -365,5 +364,24 @@ export default function ProductDetailPage(props: { params: Promise<{ id: string 
 
   if (!product && !isLoading) return notFound()
 
-  return <ProductDetailContent product={product} relatedProducts={relatedProducts} />
+  // Update snake_case to camelCase in the content component call or inner logic
+  // Based on the schema created earlier:
+  // stockQuantity, originalPrice, fragranceNotes
+  
+  return (
+    <ProductDetailContent 
+      product={{
+        ...product,
+        stock_quantity: product.stockQuantity,
+        original_price: product.originalPrice,
+        fragrance_notes: product.fragranceNotes
+      }} 
+      relatedProducts={relatedProducts.map(rp => ({
+        ...rp,
+        stock_quantity: rp.stockQuantity,
+        original_price: rp.originalPrice,
+        fragrance_notes: rp.fragranceNotes
+      }))} 
+    />
+  )
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { createClient } from '@/lib/supabase/client';
+import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -16,24 +16,30 @@ export default function AdminLoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const supabase = createClient();
   const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    try {
+      const result = await signIn('credentials', {
+        email,
+        password,
+        redirect: false,
+      });
 
-    if (error) {
-      toast.error(error.message);
+      if (result?.error) {
+        toast.error('Invalid credentials');
+        setLoading(false);
+      } else {
+        toast.success('Access Granted. Welcome, Administrator.');
+        router.push('/admin');
+        router.refresh();
+      }
+    } catch (error) {
+      toast.error('An error occurred during sign in');
       setLoading(false);
-    } else {
-      toast.success('Access Granted. Welcome, Administrator.');
-      router.push('/admin');
     }
   };
 

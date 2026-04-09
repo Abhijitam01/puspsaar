@@ -12,67 +12,13 @@ import Link from 'next/link';
 
 export default function AddProductPage() {
   const router = useRouter();
-  const supabase = createClient();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [uploading, setUploading] = useState(false);
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setImageFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const uploadImage = async (file: File): Promise<string | null> => {
-    try {
-      setUploading(true);
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
-      const filePath = `products/${fileName}`;
-
-      const { error: uploadError } = await supabase.storage
-        .from('product-images')
-        .upload(filePath, file);
-
-      if (uploadError) {
-        throw uploadError;
-      }
-
-      const { data } = supabase.storage
-        .from('product-images')
-        .getPublicUrl(filePath);
-
-      return data.publicUrl;
-    } catch (error: any) {
-      toast.error('Error uploading image: ' + error.message);
-      return null;
-    } finally {
-      setUploading(false);
-    }
-  };
+  const [imageUrl, setImageUrl] = useState('');
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    let imageUrl = 'https://images.unsplash.com/photo-1594035910387-fea47728cefd?w=800&auto=format&fit=crop';
-    
-    if (imageFile) {
-      const uploadedUrl = await uploadImage(imageFile);
-      if (!uploadedUrl) {
-        setIsSubmitting(false);
-        return;
-      }
-      imageUrl = uploadedUrl;
-    }
-
     const formData = new FormData(e.currentTarget);
     const topNotes = formData.get('topNotes')?.toString().split(',').map(s => s.trim()) || [];
     const middleNotes = formData.get('middleNotes')?.toString().split(',').map(s => s.trim()) || [];
@@ -84,27 +30,33 @@ export default function AddProductPage() {
       subtitle: formData.get('subtitle'),
       description: formData.get('description'),
       price: Number(formData.get('price')),
-      image: imageUrl,
+      image: imageUrl || formData.get('imageUrl'),
       volume: formData.get('volume'),
       concentration: formData.get('concentration'),
-      stock_quantity: Number(formData.get('stock')),
-      fragrance_notes: {
+      stockQuantity: Number(formData.get('stock')),
+      fragranceNotes: {
         top: topNotes,
         middle: middleNotes,
         base: baseNotes
       }
     };
 
-    const { error } = await supabase.from('products').insert([newProduct]);
+    try {
+      const response = await fetch('/api/products', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newProduct),
+      });
 
-    setIsSubmitting(false);
+      if (!response.ok) throw new Error('Failed to add product');
 
-    if (error) {
-      toast.error(error.message || 'Failed to add product');
-    } else {
       toast.success('Perfume added successfully!');
       router.push('/admin/inventory');
       router.refresh();
+    } catch (error: any) {
+      toast.error(error.message || 'Failed to add product');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -126,36 +78,32 @@ export default function AddProductPage() {
         <form onSubmit={handleSubmit} className="space-y-10">
           
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-            {/* Left Column: Image Upload */}
+            {/* Left Column: Image URL */}
             <div className="lg:col-span-1 space-y-4">
               <h3 className="font-semibold text-sm uppercase tracking-widest text-[#C6A969]">Product Visual</h3>
-              <div className="relative group aspect-[3/4] rounded-2xl border-2 border-dashed border-muted-foreground/20 overflow-hidden bg-muted/30 flex flex-col items-center justify-center transition-all hover:border-[#C6A969]/50">
-                {imagePreview ? (
-                  <>
-                    <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
-                    <label className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity">
-                      <div className="flex flex-col items-center text-white text-xs font-bold uppercase tracking-widest">
-                        <Upload className="w-6 h-6 mb-2" />
-                        Change Image
-                      </div>
-                      <input type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
-                    </label>
-                  </>
-                ) : (
-                  <label className="w-full h-full flex flex-col items-center justify-center cursor-pointer p-6 text-center">
-                    <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center mb-3">
-                      <ImageIcon className="w-6 h-6 text-muted-foreground" />
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground ml-1">Image URL</label>
+                  <Input 
+                    name="imageUrl" 
+                    placeholder="https://images.unsplash.com/..." 
+                    className="bg-muted/30 border-none h-11"
+                    value={imageUrl}
+                    onChange={(e) => setImageUrl(e.target.value)}
+                  />
+                </div>
+                <div className="relative aspect-[3/4] rounded-2xl border border-muted-foreground/20 overflow-hidden bg-muted/30 flex flex-col items-center justify-center transition-all">
+                  {imageUrl ? (
+                    <img src={imageUrl} alt="Preview" className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="flex flex-col items-center justify-center p-6 text-center">
+                      <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center mb-3">
+                        <ImageIcon className="w-6 h-6 text-muted-foreground" />
+                       </div>
+                      <p className="text-[10px] text-muted-foreground mt-1 uppercase tracking-wider text-center">Preview will appear here</p>
                     </div>
-                    <p className="text-sm font-medium">Click to upload image</p>
-                    <p className="text-[10px] text-muted-foreground mt-1 uppercase tracking-wider">JPG, PNG or WEBP</p>
-                    <input type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
-                  </label>
-                )}
-                {uploading && (
-                  <div className="absolute inset-0 bg-black/60 flex items-center justify-center z-10">
-                    <Loader2 className="w-8 h-8 text-[#C6A969] animate-spin" />
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             </div>
 

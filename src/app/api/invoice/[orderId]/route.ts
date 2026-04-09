@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
+import { getOrderById } from '@/lib/queries';
 // jsPDF will be dynamically imported to avoid SSR issues
 import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
@@ -15,17 +15,12 @@ export async function GET(
   { params }: { params: Promise<{ orderId: string }> }
 ) {
   try {
-    const supabase = await createClient();
     const { orderId } = await params;
 
     // Fetch order with items
-    const { data: order, error } = await supabase
-      .from('orders')
-      .select(`*, order_items (*)`)
-      .eq('id', orderId)
-      .single();
+    const order = await getOrderById(orderId);
 
-    if (error || !order) {
+    if (!order) {
       return NextResponse.json({ error: 'Order not found' }, { status: 404 });
     }
 
@@ -62,15 +57,15 @@ export async function GET(
     doc.text('Order Details', 15, metaY);
     doc.setFont('helvetica', 'normal');
     doc.text(`Order ID: ${order.id}`, 15, metaY + 7);
-    doc.text(`Date: ${new Date(order.created_at).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' })}`, 15, metaY + 14);
+    doc.text(`Date: ${new Date(order.createdAt).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' })}`, 15, metaY + 14);
     doc.text(`Status: ${order.status.toUpperCase()}`, 15, metaY + 21);
 
     doc.setFont('helvetica', 'bold');
     doc.text('Shipping Details', 115, metaY);
     doc.setFont('helvetica', 'normal');
-    doc.text(`${order.shipping_name}`, 115, metaY + 7);
-    doc.text(`Phone: ${order.shipping_phone}`, 115, metaY + 14);
-    const addressLines = doc.splitTextToSize(order.shipping_address || '', 80);
+    doc.text(`${order.customerName}`, 115, metaY + 7);
+    doc.text(`Phone: ${order.customerPhone}`, 115, metaY + 14);
+    const addressLines = doc.splitTextToSize(order.shippingAddress || '', 80);
     doc.text(addressLines, 115, metaY + 21);
 
     // --- Divider ---
@@ -81,13 +76,13 @@ export async function GET(
     // --- Items table ---
     const tableHead = [['#', 'Product', 'Volume', 'Qty', 'Unit Price', 'Total']];
     const tableBody = (order.order_items || []).map((item: {
-      product_name: string;
+      productName: string;
       volume: string;
       quantity: number;
       price: number;
     }, idx: number) => [
       idx + 1,
-      item.product_name,
+      item.productName,
       item.volume || '—',
       item.quantity,
       `₹${Number(item.price).toLocaleString('en-IN')}`,
@@ -128,7 +123,7 @@ export async function GET(
     doc.setTextColor(15, 15, 15);
     doc.text('Total Amount:', 140, finalY);
     doc.setTextColor(198, 169, 105);
-    doc.text(`₹${Number(order.total_amount).toLocaleString('en-IN')}`, 195, finalY, { align: 'right' });
+    doc.text(`₹${Number(order.totalAmount).toLocaleString('en-IN')}`, 195, finalY, { align: 'right' });
 
     // Delivery note
     doc.setTextColor(100, 100, 100);

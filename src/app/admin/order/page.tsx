@@ -1,23 +1,19 @@
-import { createClient } from '@/lib/supabase/server';
+import { db } from '@/db';
+import { orders as ordersTable } from '@/db/schema';
+import { desc } from 'drizzle-orm';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 
 export default async function AdminOrdersPage() {
-  const supabase = await createClient();
-
   // Fetch orders
-  const { data: orders, error } = await supabase
-    .from('orders')
-    .select('*')
-    .order('created_at', { ascending: false });
+  const orders = await db.query.orders.findMany({
+    orderBy: [desc(ordersTable.createdAt)],
+  });
 
-  if (error) {
-    console.error('Failed to fetch orders:', error);
-  }
-
-  const formatDate = (dateStr: string) => {
+  const formatDate = (dateStr: string | Date | null) => {
+    if (!dateStr) return 'N/A';
     return new Intl.DateTimeFormat('en-IN', {
       day: 'numeric', month: 'short', year: 'numeric',
       hour: '2-digit', minute: '2-digit'
@@ -53,14 +49,14 @@ export default async function AdminOrdersPage() {
                     {(order.id as string).split('-')[0].toUpperCase()}
                   </TableCell>
                   <TableCell className="text-sm">
-                    {formatDate(order.created_at)}
+                    {formatDate(order.createdAt)}
                   </TableCell>
                   <TableCell>
-                    <p className="font-medium">{order.delivery_address?.fullName || 'Guest'}</p>
-                    <p className="text-xs text-muted-foreground">{order.delivery_address?.email || 'N/A'}</p>
+                    <p className="font-medium">{order.customerName || 'Guest'}</p>
+                    <p className="text-xs text-muted-foreground">{order.customerEmail || 'N/A'}</p>
                   </TableCell>
                   <TableCell>
-                    <span className="font-semibold">₹{Number(order.total_amount).toLocaleString()}</span>
+                    <span className="font-semibold">₹{Number(order.totalAmount).toLocaleString()}</span>
                   </TableCell>
                   <TableCell>
                     <Badge variant={order.status === 'Completed' ? 'default' : 'outline'} className={order.status === 'Completed' ? 'bg-emerald-500/15 text-emerald-500 hover:bg-emerald-500/20' : ''}>
@@ -69,7 +65,7 @@ export default async function AdminOrdersPage() {
                   </TableCell>
                   <TableCell className="text-right">
                     <Badge variant="secondary" className="text-xs font-mono">
-                      {order.payment_method || 'CASH_ON_DELIVERY'}
+                      CASH_ON_DELIVERY
                     </Badge>
                   </TableCell>
                 </TableRow>

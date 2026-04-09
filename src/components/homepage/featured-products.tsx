@@ -4,24 +4,25 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Heart } from 'lucide-react';
-import { createClient } from '@/lib/supabase/client';
 import { IPerfumeProduct } from '@/model/product';
 
 export default function FeaturedProducts() {
   const [products, setProducts] = useState<IPerfumeProduct[]>([]);
-  const supabase = createClient();
 
   useEffect(() => {
     async function loadFeatured() {
-      const { data } = await supabase
-        .from('products')
-        .select('*')
-        .order('price', { ascending: false })
-        .limit(4);
-      if (data) setProducts(data as IPerfumeProduct[]);
+      try {
+        const response = await fetch('/api/products?featured=true&limit=4');
+        const data = await response.json();
+        if (data && Array.isArray(data)) {
+          setProducts(data as IPerfumeProduct[]);
+        }
+      } catch (error) {
+        console.error('Failed to load featured products:', error);
+      }
     }
     loadFeatured();
-  }, [supabase]);
+  }, []);
 
   return (
     <section className="w-full">
